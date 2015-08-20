@@ -1,0 +1,68 @@
+			<br />
+			<fieldset>
+				<b>{LANG_USER_ADMIN_CONFIG}</b><br /><br />
+				<form action="config.php?edit&do" method="post">
+				<table align="center" border="0">
+					<tr>
+						<td align="right">{LANG_SITENAME}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="sitename" value="{SITENAME}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_URL_SITE}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="url" value="{URL}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_MYSQL_BIN}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="mysql_bin" value="{MYSQL_BIN}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_BACKUPDIR}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="backupdir" value="{BACKUPDIR}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_BACKUPDIR2}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="backupdir2" value="{BACKUPDIR2}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_BACKUP_PLUS}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="backup_plus" value="{BACKUP_PLUS}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_BACKUP_LIMIT}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="backup_limit" value="{BACKLIMIT}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_ANONYMOUS_ALLOW}:&nbsp;&nbsp;</td>
+						<td><input type="checkbox" name="anonymous_allow" value="1"{ANONYMOUS_ALLOW_C} /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_TIMEOUT_AUHT}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="timeout_auht" value="{TIMEOUT_AUHT}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_PAGE_LIMIT}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="page_limit" value="{PAGE_LIMIT_SERVER}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_CRON_BACKUP}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="cron_backup_timeout" value="{CRON_BACKUP_TIMEOUT}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_CRON_BACKUP_ON_EMAIL}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="cron_backup_on_email_timeout" value="{CRON_BACKUP_ON_EMAIL_TIMEOUT}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_LOGIN_CHOOSE}:&nbsp;&nbsp;</td>
+						<td><input type="checkbox" name="login_choose" value="1"{LOGIN_CHOOSE_Ñ} /></td>
+					</tr>
+					<tr>
+						<td align="right">{LANG_YEAR_START}:&nbsp;&nbsp;</td>
+						<td><input type="text" name="year_start" value="{YEAR_START}" size="30" /></td>
+					</tr>
+					<tr>
+						<td align="right">&nbsp;</td>
+						<td align="center"><input type="submit" value="{LANG_SEND}" /></td>
+					</tr>
+				</table>
+				</form>
+			</fieldset>

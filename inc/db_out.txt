@@ -1,0 +1,17 @@
+CREATE TABLE `DB_{YEAR}_OUT` (
+`id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`time` INT( 11 ) NOT NULL ,
+`ip` VARCHAR( 15 ) NOT NULL ,
+`str` INT( 11 ) NOT NULL ,
+`nom` INT( 11 ) NOT NULL ,
+`data` DATETIME NOT NULL ,
+`to` VARCHAR( 250 ) NOT NULL ,
+`to_mail` VARCHAR( 250 ) NOT NULL ,
+`subj` VARCHAR( 250 ) NOT NULL ,
+`to_num` VARCHAR( 250 ) NOT NULL ,
+`user` INT( 11 ) NOT NULL ,
+`money` VARCHAR( 15 ) NOT NULL ,
+`how` INT( 11 ) NOT NULL ,
+`edit` INT( 1 ) NOT NULL ,
+`fav` INT( 1 ) NOT NULL
+) ;

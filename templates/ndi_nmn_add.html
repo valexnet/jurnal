@@ -1,0 +1,26 @@
+			<br />
+			<fieldset>
+				<b>{LANG_NMN}</b><br /><br />{LANG_NMN_ADMIN_ADD}<br /><br />
+				<FORM ACTION="?add&save" METHOD="POST">
+				<table border="0" cellspacing="0" cellpadding="2" width="100%">
+					<tr>
+						<td align="right"><b>{LANG_STRUCTURA}:&nbsp;&nbsp;</b></td>
+						<td align="left">
+							<select name="ndi_str" size="1" >
+								{LIST_STRUCTURA}
+							</select>
+						</td>
+					</tr>
+					<tr valign="middle">
+						<td width="100" height="30" align="right"><b>{LANG_NOMENCLATURA}:&nbsp;&nbsp;&nbsp;</b></td>
+						<td width="500" align="left"><INPUT TYPE="text" NAME="index" SIZE="20" MAXLENGTH="10" value="01">&nbsp;&nbsp;{LANG_NUM_FOLDER}.</td>
+					</tr>
+					<tr valign="middle" align="center">
+						<td height="30" align="right"><b>{LANG_DEPS_NAME}:&nbsp;&nbsp;&nbsp;</b></td>
+						<td align="left"><INPUT TYPE="text" NAME="name" SIZE="40">&nbsp;&nbsp;{LANG_NUM_NAME_FOLDER}.</td>
+					</tr>
+				</table>
+				<br /><INPUT TYPE="submit" VALUE="{LANG_SEND}" /><br />
+				</FORM>
+				<br />
+			</fieldset>

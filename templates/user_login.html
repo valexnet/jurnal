@@ -1,0 +1,20 @@
+			<br />
+			<fieldset>
+				<b>{LANG_USER_LOGIN_IN}</b><br /><br />
+				<form action="user.php?login" method="post">
+				<table align="center" border="0">
+					<tr valign="top">
+						<td width="200" align="center"><img src="templates/images/login.png" border="0"></td>
+						<td></td>
+						<td width="200" align="left" valign="middle">
+							<img src="templates/images/user.png" border="0" />&nbsp;&nbsp;{LANG_LOGIN}:<br />
+							{USERS_LIST}
+							<br /><br />
+							<img src="templates/images/key.png" border="0" />&nbsp;&nbsp;{LANG_PASSWORD}:<br />
+							<input type="password" name="pass" /><br /><br />
+							<a href="#" onclick="alert('{LANG_SEND_TO_ADMIN}')">{LANG_I_LOST_PASSWORD}</a><br /><br />
+							<input type="submit" value="{LANG_SEND}" />
+						</td>
+					</tr>
+				</table></form>
+			</fieldset>

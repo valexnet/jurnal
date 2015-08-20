@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css" media="all">
+body {
+  background: url(templates/images/logo.jpg) 4.2em 4em no-repeat #fff;
+  color: #000;
+  border: 1px solid #bbb;
+  margin: 3em;
+  padding: 1em 1em 1em 200px;
+}
+</style>
+</head>
+<body>
+<h1>АС Журнал: Настройка журналу</h1>
+<p>Введіть дані про MySQL сервер та ел. пошту адміністратора.</p>
+<p><form action="index.php?install=do" method="post">
+	<table align="center" border="0">
+		<tr>
+			<td align="right">Сервер MySQL:&nbsp;&nbsp;</td>
+			<td><input type="text" name="mysql" value="127.0.0.1" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">Логін MySQL:&nbsp;&nbsp;</td>
+			<td><input type="text" name="login" value="root" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">Пароль MySQL:&nbsp;&nbsp;</td>
+			<td><input type="password" name="password" value="" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">База MySQL:&nbsp;&nbsp;</td>
+			<td><input type="text" name="dbname" value="j2013" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">e-mail адміністратора:&nbsp;&nbsp;</td>
+			<td><input type="text" name="email" value="admin@****.ck.treasury.gov.ua" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">Відправка листів від імені:&nbsp;&nbsp;</td>
+			<td><input type="text" name="email_name" value="AS Jurnal" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">SMTP сервер:&nbsp;&nbsp;</td>
+			<td><input type="text" name="smtp_server" value="10.98.XX.YY" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">SMTP порт:&nbsp;&nbsp;</td>
+			<td><input type="text" name="smtp_port" value="25" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">Логін SMTP:&nbsp;&nbsp;</td>
+			<td><input type="text" name="smtp_login" value="admin" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">Пароль SMTP:&nbsp;&nbsp;</td>
+			<td><input type="password" name="smtp_pass" value="" size="30" required /></td>
+		</tr>
+		<tr>
+			<td align="right">SMTP авторизація:&nbsp;&nbsp;</td>
+			<td>Так <input type="radio" name="smtp_auth" value="smtp_auth_true" /> | <input type="radio" name="smtp_auth" value="smtp_auth_false" checked /> Ні</td>
+		</tr>
+		<tr>
+			<td align="right">SSL:&nbsp;&nbsp;</td>
+			<td>Так <input type="radio" name="smtp_ssl" value="ssl_true" /> | <input type="radio" name="smtp_ssl" value="ssl_false" checked /> Ні</td>
+		</tr>
+		<tr>
+			<td align="right">&nbsp;</td>
+			<td align="center"><input type="submit" value="Поїхали!" /></td>
+		</tr>
+	</table>
+</form></p>
+<p>В разі винекнення питать по настройці, звертайтесь по тел.:</p>
+<ul>
+	<li>Прямий телефон: <b>(3427) 003</b></li>
+	<li>Міський телефон: <b>(04731) 3-00-93</b></li>
+</ul>
+</body>
+</html>

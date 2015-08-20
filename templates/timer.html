@@ -1,0 +1,38 @@
+								<script type="text/javascript">
+									time_diff = {TIMEOUT_AUHT};
+
+									function countDown()
+									{
+										if (time_diff == 0)
+											{
+												document.getElementById('counter').innerHTML = '<font color="red">Сесія завершена!</font>';
+											}
+											else
+											{
+												work_number = time_diff--;
+												hours = Math.floor(work_number / 3600);
+												work_number -= hours * 3600;
+												minutes = Math.floor(work_number / 60);
+												work_number -= minutes * 60;
+												seconds = Math.floor(work_number % 60);
+												hours = (hours < 10) ? "0"+hours : hours;
+												minutes = (minutes < 10) ? "0"+minutes : minutes;
+												seconds = (seconds < 10) ? "0"+seconds : seconds;
+												values = [
+													{LANG_TIMEOUT_MORE_THEN_HOUR}
+													declOfNum(minutes, ["хвилина", "хвилини", "хвилин"]),
+													declOfNum(seconds, ["секунда", "секунди", "секунд"])
+												];
+												document.getElementById('counter').innerHTML =  values.join(" ") + ".";
+											}
+									}
+
+									function declOfNum(number, titles)
+									{
+										cases = [2, 0, 1, 1, 1, 2];
+										return "<b>" + number + "</b> " + titles[ (number%100>4 && number%100<20)? 2 : cases[Math.min(number%10, 5)] ];
+									}
+								</script>{LANG_TIMER_TO_CLOSE_SESSION}
+								<script type="text/javascript">
+									setInterval("countDown()", 1000);
+								</script>

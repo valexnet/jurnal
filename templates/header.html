@@ -1,0 +1,58 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" id="nojs">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	{META_REFRESH}
+	<title>{LANG_HEADERINFO}</title>
+	<link rel="stylesheet" type="text/css" href="templates/css/common.css" />
+	<link rel="stylesheet" type="text/css" href="templates/css/tags.css" />
+	<link rel="stylesheet" type="text/css" href="templates/css/classes.css" />
+	<link rel="stylesheet" type="text/css" href="templates/css/layout.css" />
+	<!--[if lte IE 7]>
+	<link rel="stylesheet" type="text/css" href="templates/css/common-ie.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/css/tags-ie.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/css/classes-ie.css"/>
+	<link rel="stylesheet" type="text/css" href="templates/css/layout-ie.css"/>
+	<![endif]-->
+	<script type="text/javascript">
+	// <![CDATA[
+	function skm_LockScreen(str)
+		{
+			var lock = document.getElementById('skm_LockPane');
+			if (lock)
+			lock.className = 'LockOn';
+			lock.innerHTML = '<h1><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND}</font></h1>';
+		}
+	// ]]>
+</script>
+<style>
+	.LockOff { display: none; visibility: hidden; }
+	.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 105%; height: 105%; background-color: #fff; text-align: center; padding-top: 15%; }
+</style>
+</head>
+<body>
+<table width="100%" height="100%" align="center">
+	<tr valign="middle">
+		<td align="center">
+			<fieldset>
+				<table align="center" border="0">
+					<tr>
+						<td align="center" width="160"><a href="/"><img src="templates/images/logo.png" border="0" /></a></td>
+						<td align="center" width="450">
+							<h2><b>{LANG_HEADERINFO}</b><br />{SITENAME}</h2>
+							<div align="right">
+								{LANG_VER_NUM} : <b>{VER_NUM}</b> | {IP}<br />{TIME}<br />
+								{LANG_AUTORISED_US} : <b>{USER_NAME}</b><br />
+							</div>
+						</td>
+					</tr>
+				</table>
+			</fieldset>
+			<br />
+			<fieldset>
+				<table align="center" border="0">
+					<tr>
+						<td align="center">{MENU}</td>
+					</tr>
+				</table>
+			</fieldset>
