@@ -148,6 +148,7 @@ if (isset($_SESSION['user_id']))
 															}
 													}
 												$print_nomer = "<b>".$nomer."</b> / ".$nom_str."-".$nom_index."";
+												$print_regular = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer."</b>";
 											}
 
 										$page.= file_get_contents("templates/information.html");
@@ -158,6 +159,9 @@ if (isset($_SESSION['user_id']))
 												$page.= file_get_contents("templates/information.html");
 												$page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <h1><b>".$blank."</b></h1>", $page);
 											}
+											
+										$page.= file_get_contents("templates/information.html");
+										$page = str_replace("{INFORMATION}", "{RETURN_REGULAR_N}: <h1>".$print_regular."</h1>", $page);
 /*
 										if (isset($_POST['file[]'])
 											{

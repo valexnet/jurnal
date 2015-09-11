@@ -478,6 +478,7 @@ $page = str_replace("{LANG_FORM_NO_TO}", "Не вказано Кому лист!
 $page = str_replace("{LANG_FORM_NO_TEMA}", "Тема листа не вказана!", $page);
 $page = str_replace("{LANG_FORM_NO_NOM}", "Не вказано номенклатуру!", $page);
 $page = str_replace("{RETURN_N}", "Ваш вихідний номер", $page);
+$page = str_replace("{RETURN_REGULAR_N}", "Рекомендована назва файлу та теми листа", $page);
 $page = str_replace("{LANG_JURNAL_OUT_FORM_ERROR_DATE}", "Дата Форми не співпадає з сьогоднішньою", $page);
 $page = str_replace("{LANG_JURNAL_OUT_FORM_ERROR_FORM_ID}", "Ви намагаєтесь відправити Форму двічі.", $page);
 $page = str_replace("{LANG_JURNAL_OUT_FORM_ERROR_NOM}", "Номенклатура вказана не вірно", $page);
