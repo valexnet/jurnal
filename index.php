@@ -1,7 +1,4 @@
 <?php
-/*
-PHP Скріпт для ведення вхідно та вихідної кореспонденції, недописався для ДКУ.
-*/
 session_start();
 
 if (isset($_GET['install']) AND $_GET['install'] == "do" AND !file_exists("inc/db_connect.txt")) include ('inc/install.php');

@@ -19,7 +19,10 @@ if ($user_p_config == 1)
 						$_POST['backupdir'] = str_replace($srch, $rpls, $_POST['backupdir']);
 						$_POST['backup_limit'] = str_replace($srch, $rpls, $_POST['backup_limit']);
 						$_POST['anonymous_allow'] = str_replace($srch, $rpls, $_POST['anonymous_allow']);
-
+						$_POST['n_ray'] = str_replace($srch, $rpls, $_POST['n_ray']);
+						$_POST['reg_file'] = str_replace($srch, $rpls, $_POST['reg_file']);
+						$_POST['file_size'] = str_replace($srch, $rpls, $_POST['file_size']);
+						
 						if ($_POST['sitename'] == "")
 							{
 								$error = "true";
@@ -106,7 +109,25 @@ if ($user_p_config == 1)
 								$error = "true";
 								$page.= file_get_contents("templates/information.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_YEAR_START}", $page);
-							}							
+							}
+						if ($_POST['file_size'] < 0 OR $_POST['file_size'] > 9999)
+							{
+								$error = "true";
+								$page.= file_get_contents("templates/information.html");
+								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_FILE_SIZE}", $page);
+							}
+						if ($_POST['n_ray'] == "" OR $_POST['n_ray'][4] != "")
+							{
+								$error = "true";
+								$page.= file_get_contents("templates/information.html");
+								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_N_RAY}", $page);
+							}
+						if ($_POST['reg_file'] == "")
+							{
+								$error = "true";
+								$page.= file_get_contents("templates/information.html");
+								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_REG_FILE}", $page);
+							}
 						if ($error <> "true")
 							{
 								if ($_POST['anonymous_allow'] == 1) {$anonymous_allow = 1;} else {$anonymous_allow = 0;}
@@ -123,7 +144,10 @@ if ($user_p_config == 1)
 								`user_timeout`='".$_POST['timeout_auht']."', 
 								`page_limit`='".$_POST['page_limit']."', 
 								`login_choose`='".$login_choose."', 
-								`year_start`='".$_POST['year_start']."' 
+								`year_start`='".$_POST['year_start']."', 
+								`n_ray`='".$_POST['n_ray']."', 
+								`reg_file`='".$_POST['reg_file']."', 
+								`file_size`='".$_POST['file_size']."' 
 								WHERE `id`='1' LIMIT 1;";
 								$temp345345 = $query;
 								$sql = mysql_query($query) or die(mysql_error());
