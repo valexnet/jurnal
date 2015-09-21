@@ -55,6 +55,7 @@ $page = str_replace("{LIST_RIGHT}", "", $page);
 $page = str_replace("{LIST_END}", "", $page);
 $page = str_replace("{JURNAL_OUT_PRE_LINK}", "?".$pre_link, $page);
 
+
 //Перелік доступних років
 for ($i = $c_y_s; ; $i++)
 	{
@@ -78,6 +79,7 @@ if ($user_p_mod == 1) {$page = str_replace("{USER_P_MOD}", "{LANG_ALLOW}", $page
 if ($c_ano == 1) {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_DISALLOW}", $page);}
 if ($c_lch == 1) {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_DISALLOW}", $page);}
 include ("lang/".$c_lng.".php");
+$page = str_replace("{MAX_FILE_SIZE_MB}", (($max_file_size / 1024) / 1024 )." MB", $page);
 $start_time = $_SERVER['REQUEST_TIME'];
 $start_array = explode(" ",$start_time);
 $start_time = $start_array[1] + $start_array[0];

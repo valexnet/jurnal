@@ -10,6 +10,8 @@ $page.= file_get_contents("templates/header.html");
 if (isset($_SESSION['user_id']))
 	{
 		$page .= file_get_contents("templates/jurnal_out_name.html");
+		// Заміняєм назву якщо користувач відкрив зареєстровані бланки
+		if ($_GET['blank'] == "do") $page = str_replace("{LANG_JURNAL_OUT}", "{LANG_JURNAL_BLANK_NAME}", $page);
 
 		$query = "SHOW TABLES LIKE \"DB_".date('Y')."_OUT\";";
 		$res = mysql_query($query) or die(mysql_error());
@@ -19,6 +21,8 @@ if (isset($_SESSION['user_id']))
 				$query = file_get_contents("inc/db_out.txt");
 				$query = str_replace("{YEAR}", date('Y'), $query);
 				mysql_query($query) or die(mysql_error());
+				// Робим папку для файлів
+				@mkdir("uploads\\".date('Y'));
 			}
 
 		$query = "SHOW TABLES LIKE \"DB_".date('Y')."_OUT_BLANK\";";
@@ -534,6 +538,193 @@ if (isset($_SESSION['user_id']))
 					}
 
 			}
+			
+		if (isset($_GET['attach']) && preg_match('/^[1-9][0-9]*$/', $_GET['attach']))
+			{
+				$adres = 'true';
+				$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `id`='".$_GET['attach']."' LIMIT 1 ; ";
+				$res = mysql_query($query) or $error = true;
+				$queryes_num++;
+				if ($error <> true)
+					{
+						if (mysql_num_rows($res) == 1)
+							{
+								$manage_files = 0;
+								$view_files = 0;
+								$row = mysql_fetch_assoc($res);
+								
+								$query_numenclatura = "SELECT * FROM `nomenclatura` WHERE `id`='".$row['nom']."' LIMIT 1 ; ";
+								$res_numenclatura = mysql_query($query_numenclatura) or $error = true;
+								$queryes_num++;
+								$row_numenclatura = mysql_fetch_assoc($res_numenclatura);
+								
+								$query_structura = "SELECT * FROM `structura` WHERE `id`='".$row_numenclatura['structura']."' LIMIT 1 ; ";
+								$res_structura = mysql_query($query_structura) or $error = true;
+								$queryes_num++;
+								$row_structura = mysql_fetch_assoc($res_structura);
+
+								
+								$page.= file_get_contents("templates/information.html");
+								$page = str_replace("{INFORMATION}", "{LANG_FILE_ABOUT_NUM} <b>".$row['id']." / ".$row_structura['index']."-".$row_numenclatura['index']."</b>", $page);
+								
+								if ($row['user'] == $_SESSION['user_id'])
+									{
+										$manage_files = 1;
+										$view_files = 1;
+									}
+								if ($privat3 == 1)
+									{
+										$view_files = 1;
+									}
+								
+								$tmp_add_new_file = 0;
+								if ($manage_files == 1)
+									{
+										if (isset($_FILES) AND !empty($_FILES))
+											{
+												foreach ($_FILES as $FILE)
+													{
+														for ($i = 0; ; $i++)
+															{
+																if (empty($FILE['name'][$i])) break;
+																$tmp_add_new_file = 1;
+																$ext = end(explode(".", strtolower($FILE['name'][$i])));
+																if (in_array($ext, $c_reg_file_array))
+																	{
+																		if ($max_file_size > $FILE['size'][$i])
+																			{
+																				if (is_uploaded_file($FILE['tmp_name'][$i]))
+																					{
+																						$file_new_name = $c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_".$FILE['name'][$i];
+																						$file_name = "uploads\\".$_SESSION['user_year']."\\".$file_new_name;
+																						$file_name = iconv('UTF-8', 'windows-1251', $file_name);
+																						if (!file_exists($file_name))
+																							{
+																								if (@move_uploaded_file($FILE['tmp_name'][$i], $file_name))
+																									{
+																										$page.= file_get_contents("templates/information.html");
+																										$page = str_replace("{INFORMATION}", "<font color=\"green\">{LANG_FILE_SAVE_OK} ".$file_new_name."</font>", $page);
+																									}
+																									else
+																									{
+																										$page.= file_get_contents("templates/information.html");
+																										$page = str_replace("{INFORMATION}", "<font color=\"green\">{LANG_FILE_SAVE_ERROR} ".$file_new_name."</font>", $page);
+																									}
+																							}
+																							else
+																							{
+																								$page.= file_get_contents("templates/information.html");
+																								$page = str_replace("{INFORMATION}", $file_new_name." <font color=\"red\">{LANG_FILE_ALREADY_EXIST}</font>", $page);
+																							}
+																					}
+																			}
+																			else
+																			{
+																				$page.= file_get_contents("templates/information.html");
+																				$page = str_replace("{INFORMATION}", "<font color=\"red\">{LANG_FILE_SIZE_NOT_ALLOWED}</font> <b>".(($FILE['size'][$i] / 1024) / 1024 )." MB</b>", $page);
+																			}
+																	}
+																	else
+																	{
+																		$page.= file_get_contents("templates/information.html");
+																		$page = str_replace("{INFORMATION}", "<b>".$ext."</b> <font color=\"red\">{LANG_FILE_EXT_NOT_ALLOWED}</font>", $page);
+																	}
+															}
+													}
+											}
+										$page.= file_get_contents("templates/jurnal_out_add_file.html");
+										$page = str_replace("{FILE_PRE_NAME}", "<b>".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_</b>", $page);
+										
+									}
+									
+								if ($view_files == 1)
+									{
+										if ($dir = opendir("uploads\\".$_SESSION['user_year']))
+											{
+												while (false !== ($file = readdir($dir)))
+													{
+														if ($file != "." && $file != "..")
+															{
+																$file_utf8 = iconv('windows-1251', 'UTF-8', $file);
+																if (preg_match("/^".$c_n_ray."_[0-9]{1,5}\-[0-9]{1,5}_".$_GET['attach']."_.*\.(?=".$c_reg_file.")/i", $file))
+																	{
+																		$tmp_do = 0;
+																		if (isset($_GET['delete']) AND $_GET['delete'] == $file_utf8 AND $manage_files == 1 AND $tmp_add_new_file == 0)
+																			{
+																				$tmp_do = 1;
+																				if (@unlink("uploads\\".$_SESSION['user_year']."\\".$file))
+																					{
+																						$page.= file_get_contents("templates/information.html");
+																						$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_OK}", $page);
+																					}
+																					else
+																					{
+																						$page.= file_get_contents("templates/information.html");
+																						$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_ERROR}", $page);
+																					}
+																			}
+
+																		if (isset($_GET['download']) AND $_GET['download'] == $file_utf8 AND $tmp_add_new_file == 0)
+																			{
+																				$tmp_do = 1;
+																				if (ob_get_level()) ob_end_clean();
+																				header('Content-Description: File Transfer');
+																				header('Content-Type: application/octet-stream');
+																				header('Content-Disposition: attachment; filename=' . $file_utf8);
+																				header('Content-Transfer-Encoding: binary');
+																				header('Expires: 0');
+																				header('Cache-Control: must-revalidate');
+																				header('Pragma: public');
+																				header('Content-Length: ' . filesize("uploads\\".$_SESSION['user_year']."\\".$file));
+																				if ($fd = fopen("uploads\\".$_SESSION['user_year']."\\".$file, 'rb'))
+																					{
+																						while (!feof($fd))
+																							{
+																								print fread($fd, 1024);
+																							}
+																						fclose($fd);
+																					}
+																				exit;
+																				die();
+																			}
+																			
+																		if ($tmp_do == 0)
+																			{
+																				$page.= file_get_contents("templates/information.html");
+																				$page = str_replace("{INFORMATION}", "{TMP_MANAGE_FILES}<a href=\"jurnal_out.php?attach=".$_GET['attach']."&download=".$file_utf8."\">".$file_utf8."</a> [ ".date ('d.m.Y H:i:s', @filemtime ("uploads\\".$_SESSION['user_year']."\\".$file))." ]", $page);
+																				if ($manage_files == 1)
+																					{
+																						$page = str_replace("{TMP_MANAGE_FILES}", "<a href=\"jurnal_out.php?attach=".$_GET['attach']."&delete=".$file_utf8."\" onClick=\"if(confirm('{LANG_REMOVE_FILE_CONFIRM}')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\"></a> ", $page);
+																					}
+																					else
+																					{
+																						$page = str_replace("{TMP_MANAGE_FILES}", "", $page);
+																					}
+																			}
+																	}
+															}
+													}
+												closedir($dir);
+											}
+									}
+									else
+									{
+										$page.= file_get_contents("templates/information.html");
+										$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_FILES_NO}", $page);
+									}
+							}
+							else
+							{
+								$page.= file_get_contents("templates/information.html");
+								$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_ID_NOT_FOUND}", $page);
+							}
+					}
+					else
+					{
+						$page.= file_get_contents("templates/information.html");
+						$page = str_replace("{INFORMATION}", "{LANG_ADD_ADMIN_ADD_BD_ERROR}", $page);
+					}
+			}
 
 		if ($adres <> 'true')
 			{
@@ -598,10 +789,12 @@ if (isset($_SESSION['user_id']))
 				if ($privat3 == 1)
 					{
 						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` ; ";
+						if ($_GET['blank'] == "do") $a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out_blank` ; ";
 					}
 					else
 					{
 						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` WHERE `user`=".$_SESSION['user_id']." ; ";
+						if ($_GET['blank'] == "do") $a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `user`=".$_SESSION['user_id']." ; ";
 					}
 					
 				$a = @mysql_query($a_qr);
@@ -683,9 +876,17 @@ if (isset($_SESSION['user_id']))
 										if ($color == 1) {$bgcolor ="";} else {$bgcolor ="bgcolor=\"#D3EDF6\""; $color = 0;}
 
 										$admin_links_do = "";
+										$show_files = 0;
 										//Вилучення останнього
-										if ($row['user'] == $_SESSION['user_id'] AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_EDIT}\" alt=\"{LANG_USERS_ADMIN_EDIT}\" href=\"?edit=".$row['id']."\"><img src=\"templates/images/page_white_edit.png\"></a>";
-										if ($row['user'] == $_SESSION['user_id'] AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_DEL}\" alt=\"{LANG_USERS_ADMIN_DEL}\" href=\"?delete_last=".$row['id']."\"  onClick=\"if(confirm('Ви впевнені, хочете вилучити номер?')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\"></a>";
+										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_EDIT}\" alt=\"{LANG_USERS_ADMIN_EDIT}\" href=\"?edit=".$row['id']."\"><img src=\"templates/images/page_white_edit.png\"></a>";
+										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_DEL}\" alt=\"{LANG_USERS_ADMIN_DEL}\" href=\"?delete_last=".$row['id']."\"  onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\"></a>";
+										//Робота з файлами для власника вихідного номеру
+										if ($row['user'] == $_SESSION['user_id']) $show_files = 1;
+										//Перелік існуючих файлів для всіх користувачів
+										if (file_exists("uploads\\".$_SESSION['user_year']."\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
+										// Показуєм ссилку на управління файлами
+										if ($show_files == 1) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_EDIT_FILES}\" alt=\"{LANG_USERS_ADMIN_EDIT_FILES}\" href=\"?attach=".$row['id']."\"><img src=\"templates/images/attach_2.png\"></a>";
+										
 										if ($admin_links_do == "") $admin_links_do = "&nbsp;";
 
 										$row_data = explode(" ", $row['data']);
