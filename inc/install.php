@@ -45,52 +45,52 @@ if ($error == "")
 			{
 				if (@mysql_select_db($_POST['dbname']))
 					{
-						$tmp_db_exist = 1;
+						die ($page."</head><body>База Даних вже існує, введіть інше імя.<hr><a href=\"index.php\">Повернутись</a></body></html>");
+					}
+				require_once('inc/class.phpmailer.php');
+				include("inc/class.smtp.php");
+				$mail = new PHPMailer(true);
+				$mail->IsSMTP();
+				if ($_POST['smtp_auth'] == "smtp_auth_true") $mail->SMTPAuth = true;
+				if ($_POST['smtp_ssl'] == "ssl_true") $mail->SMTPSecure = "ssl";
+				$mail->Host = $_POST['smtp_server'];
+				$mail->Port = $_POST['smtp_port'];
+				$mail->Username = $_POST['smtp_login'];
+				$mail->Password = $_POST['smtp_pass'];
+				$mail->SetFrom($_POST['email'], $_POST['email_name']);
+				$mail->AddAddress($_POST['email'], $_POST['email_name']);
+				$mail->Subject = "АС Журнал успішно встановлений";
+				$mail->MsgHTML("<html><body>Якщо ви читаєте це повідомлення,<br>то АС Журнал був успішно встановлений.<br><br>Успішної вам праці ;)</body></html>");
+				$mail_send = 0;
+				if ($mail->Send())
+					{
+						$mail_send = 1;
 					}
 					else
 					{
-						$tmp_db_exist = 0;
+						die ($page."</head><body>Не можливо підключитись до SMTP серверу, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>");
 					}
-				if ($tmp_db_exist == 0)
+				if (@mysql_query("CREATE DATABASE `".$_POST['dbname']."` ;"))
 					{
-						if (@mysql_query("CREATE DATABASE `".$_POST['dbname']."` ;")) $tmp_db_exist = 1;
-					}
-				if ($tmp_db_exist == 1)
-					{
+						// Запис настройок
+						$file = $_POST['mysql']."\r\n".$_POST['login']."\r\n".base64_encode($_POST['password'])."\r\n".$_POST['dbname']."\r\n".$_POST['email']."\r\n".$_POST['smtp_auth']."\r\n".$_POST['smtp_ssl']."\r\n".$_POST['smtp_server']."\r\n".$_POST['smtp_port']."\r\n".base64_encode($_POST['smtp_pass'])."\r\n".$_POST['email_name']."\r\n".$_POST['smtp_login']."\r\n";
+						$file_err = 0;
+						$f = fopen('inc/db_connect.txt', 'w') or $file_err = 1;
+						fwrite($f, $file) or $file_err = 1;
+						fclose($f) or $file_err = 1;
+						if ($file_err == 1) die($page."</head><body>Недостатньо прав для створення файлу налаштувань inc\\db_connect.txt.<hr><a href=\"index.php\">Повернутись</a></body></html>");
+						
 						@mysql_select_db($_POST['dbname']);
-						$query = file_get_contents("inc/empty_db.sql");
-						@mysql_query($query) or die(mysql_error());
-						require_once('inc/class.phpmailer.php');
-						include("inc/class.smtp.php");
-						$mail = new PHPMailer(true);
-						$mail->IsSMTP();
-						if ($_POST['smtp_auth'] == "smtp_auth_true") $mail->SMTPAuth = true;
-						if ($_POST['smtp_ssl'] == "ssl_true") $mail->SMTPSecure = "ssl";
-						$mail->Host = $_POST['smtp_server'];
-						$mail->Port = $_POST['smtp_port'];
-						$mail->Username = $_POST['smtp_login'];
-						$mail->Password = $_POST['smtp_pass'];
-						$mail->SetFrom($_POST['email'], $_POST['email_name']);
-						$mail->AddAddress($_POST['email'], $_POST['email_name']);
-						$mail->Subject = "АС Журнал успішно встановлений";
-						$mail->MsgHTML("<html><body>Якщо ви читаєте це повідомлення,<br>то АС Журнал був успішно встановлений.<br><br>Успішної вам праці ;)</body></html>");
-						if ($mail->Send())
+						$query = explode(";",file_get_contents("inc/empty_db.sql"));
+						foreach ($query as $q)
 							{
-								// Запис настройок
-								$file = $_POST['mysql']."\r\n".$_POST['login']."\r\n".base64_encode($_POST['password'])."\r\n".$_POST['dbname']."\r\n".$_POST['email']."\r\n".$_POST['smtp_auth']."\r\n".$_POST['smtp_ssl']."\r\n".$_POST['smtp_server']."\r\n".$_POST['smtp_port']."\r\n".base64_encode($_POST['smtp_pass'])."\r\n".$_POST['email_name']."\r\n".$_POST['smtp_login']."\r\n";
-								$f = fopen('inc/db_connect.txt', 'w');
-								fwrite($f, $file);
-								fclose($f);
-								echo $page."</head><body>Журнал встановлено, перейдіть до <hr><a href=\"config.php?edit\">Глобальні налаштування</a>. Пароль Адміністратора: admin</body></html>";		
+								if (strlen($q) > 25) @mysql_query($q);
 							}
-							else
-							{
-								echo $page."</head><body>Не можливо підключитись до SMTP серверу, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
-							}
+						echo $page."</head><body>Журнал встановлено, перейдіть до <hr><a href=\"config.php?edit\">Глобальні налаштування</a>. Пароль Адміністратора: admin</body></html>";		
 					}
 					else
 					{
-						echo $page."</head><body>Бази Даних не існує і недостатньо прав на її створення, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
+						echo $page."</head><body>Недостатньо прав для створення Бази Даних, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
 					}
 			}
 			else

@@ -539,5 +539,6 @@ $page = str_replace("{LANG_FILE_SIZE}", "Максимальний розмір �
 $page = str_replace("{LANG_CONFIG_ERROR_FILE_SIZE}", "Розміру файлу повинен бути від 0 до 9999 МБ", $page);
 $page = str_replace("{LANG_CONFIG_ERROR_N_RAY}", "Не вказано код району, або введено з помилкою", $page);
 $page = str_replace("{LANG_CONFIG_ERROR_REG_FILE}", "Не вказано типи файлів", $page);
+$page = str_replace("{LANG_CONFIG_ERROR_BACKUP_PLUS}", "Не вказана додаткова директорія для архівів", $page);
 $page = str_replace("{LANG_IN_DEVELOPMENT}", "В Розробці", $page);
 ?>
