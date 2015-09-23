@@ -41,40 +41,61 @@ if ($error == "")
 	{
 		// Підключення до БД
 		@mysql_connect($_POST['mysql'],$_POST['login'],$_POST['password']) OR $DB_ERROR = "true";
-		@mysql_select_db($_POST['dbname']) OR $DB_ERROR = "true";
 		if ($DB_ERROR <> "true")
 			{
-				require_once('inc/class.phpmailer.php');
-				include("inc/class.smtp.php");
-				$mail = new PHPMailer(true);
-				$mail->IsSMTP();
-				if ($_POST['smtp_auth'] == "smtp_auth_true") $mail->SMTPAuth = true;
-				if ($_POST['smtp_ssl'] == "ssl_true") $mail->SMTPSecure = "ssl";
-				$mail->Host = $_POST['smtp_server'];
-				$mail->Port = $_POST['smtp_port'];
-				$mail->Username = $_POST['smtp_login'];
-				$mail->Password = $_POST['smtp_pass'];
-				$mail->SetFrom($_POST['email'], $_POST['email_name']);
-				$mail->AddAddress($_POST['email'], $_POST['email_name']);
-				$mail->Subject = "АС Журнал успішно встановлений";
-				$mail->MsgHTML("<html><body>Якщо ви читаєте це повідомлення,<br>то АС Журнал був успішно встановлений.<br><br>Успішної вам праці ;)</body></html>");
-				if ($mail->Send())
+				if (@mysql_select_db($_POST['dbname']))
 					{
-						// Запис настройок
-						$file = $_POST['mysql']."\r\n".$_POST['login']."\r\n".base64_encode($_POST['password'])."\r\n".$_POST['dbname']."\r\n".$_POST['email']."\r\n".$_POST['smtp_auth']."\r\n".$_POST['smtp_ssl']."\r\n".$_POST['smtp_server']."\r\n".$_POST['smtp_port']."\r\n".base64_encode($_POST['smtp_pass'])."\r\n".$_POST['email_name']."\r\n".$_POST['smtp_login']."\r\n";
-						$f = fopen('inc/db_connect.txt', 'w');
-						fwrite($f, $file);
-						fclose($f);
-						echo $page."<meta http-equiv=\"refresh\" content=\"5;url=index.php\" /></head><body>Журнал настроєний, перенаправлення на головну сторінку...</body></html>";		
+						$tmp_db_exist = 1;
 					}
 					else
 					{
-						echo $page."</head><body>Не можливо підключитись до SMTP серверу, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
+						$tmp_db_exist = 0;
+					}
+				if ($tmp_db_exist == 0)
+					{
+						if (@mysql_query("CREATE DATABASE `".$_POST['dbname']."` ;")) $tmp_db_exist = 1;
+					}
+				if ($tmp_db_exist == 1)
+					{
+						@mysql_select_db($_POST['dbname']);
+						$query = file_get_contents("inc/empty_db.sql");
+						@mysql_query($query) or die(mysql_error());
+						require_once('inc/class.phpmailer.php');
+						include("inc/class.smtp.php");
+						$mail = new PHPMailer(true);
+						$mail->IsSMTP();
+						if ($_POST['smtp_auth'] == "smtp_auth_true") $mail->SMTPAuth = true;
+						if ($_POST['smtp_ssl'] == "ssl_true") $mail->SMTPSecure = "ssl";
+						$mail->Host = $_POST['smtp_server'];
+						$mail->Port = $_POST['smtp_port'];
+						$mail->Username = $_POST['smtp_login'];
+						$mail->Password = $_POST['smtp_pass'];
+						$mail->SetFrom($_POST['email'], $_POST['email_name']);
+						$mail->AddAddress($_POST['email'], $_POST['email_name']);
+						$mail->Subject = "АС Журнал успішно встановлений";
+						$mail->MsgHTML("<html><body>Якщо ви читаєте це повідомлення,<br>то АС Журнал був успішно встановлений.<br><br>Успішної вам праці ;)</body></html>");
+						if ($mail->Send())
+							{
+								// Запис настройок
+								$file = $_POST['mysql']."\r\n".$_POST['login']."\r\n".base64_encode($_POST['password'])."\r\n".$_POST['dbname']."\r\n".$_POST['email']."\r\n".$_POST['smtp_auth']."\r\n".$_POST['smtp_ssl']."\r\n".$_POST['smtp_server']."\r\n".$_POST['smtp_port']."\r\n".base64_encode($_POST['smtp_pass'])."\r\n".$_POST['email_name']."\r\n".$_POST['smtp_login']."\r\n";
+								$f = fopen('inc/db_connect.txt', 'w');
+								fwrite($f, $file);
+								fclose($f);
+								echo $page."</head><body>Журнал встановлено, перейдіть до <hr><a href=\"config.php?edit\">Глобальні налаштування</a>. Пароль Адміністратора: admin</body></html>";		
+							}
+							else
+							{
+								echo $page."</head><body>Не можливо підключитись до SMTP серверу, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
+							}
+					}
+					else
+					{
+						echo $page."</head><body>Бази Даних не існує і недостатньо прав на її створення, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
 					}
 			}
 			else
 			{
-				echo $page."</head><body>Не можливо підключитись до Бази Данних, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
+				echo $page."</head><body>Не можливо підключитись до Сервера Бази Данних, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
 			}
 	}
 	else

@@ -10,7 +10,7 @@ while ($row=mysql_fetch_array($res))
 			{
 				$backup_name = $c_dir."".time()."_".$dbName;
 				$backup = shell_exec("".$c_bin."mysqldump.exe -u\"".$username."\" -p\"".$password."\" --result-file=\"".$backup_name."_auto.sql\" \"".$dbName."\"");
-				$backup = shell_exec("rar a -r \"".$backup_name."_auto.rar\" \"".$c_dir2."*.*\"");
+				$backup = shell_exec("rar a -r \"".$backup_name."_auto.rar\" -x\"uploads\" \"".$c_dir2."*.*\"");
 				$backup = shell_exec("rar a -df -r \"".$backup_name."_auto.rar\" \"".$backup_name."_auto.sql\"");
 				@copy($backup_name."_auto.rar", $c_dirp . time()."_".$dbName.".rar");
 				$query2 = "SELECT * FROM `cron` WHERE `name`='backup_on_email' LIMIT 1 ;";
