@@ -11,10 +11,6 @@ CREATE TABLE IF NOT EXISTS `banned` (
 CREATE TABLE IF NOT EXISTS `config` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
-  `url` varchar(250) NOT NULL,
-  `mysql_bin` varchar(250) NOT NULL,
-  `backup_dir` varchar(250) NOT NULL,
-  `backup_dir2` varchar(250) NOT NULL,
   `backup_plus` varchar(250) NOT NULL,
   `backup_lim` int(11) NOT NULL,
   `backup_time` int(11) NOT NULL,
@@ -26,10 +22,11 @@ CREATE TABLE IF NOT EXISTS `config` (
   `n_ray` varchar(4) NOT NULL,
   `reg_file` varchar(10240) NOT NULL,
   `file_size` int(9) NOT NULL,
+  `ver` int(9) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ;
 
-INSERT INTO `config` VALUES (1, 'Site Name', '', '', '', '', '', 15, 1, 1, 3600, 20, 1, 2015, '2314', 'zip|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10);
+INSERT INTO `config` VALUES (1, 'Site Name', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 3);
 
 CREATE TABLE IF NOT EXISTS `cron` (
   `name` varchar(250) NOT NULL,

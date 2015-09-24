@@ -22,7 +22,6 @@ if (isset($timeout))
 		$page = str_replace("{META_REFRESH}", "", $page);
 	}
 $page = str_replace("{SITENAME}", $c_nam, $page);
-$page = str_replace("{URL}", $c_url, $page);
 $page = str_replace("{MYSQL_BIN}", $c_bin, $page);
 $page = str_replace("{BACKUPDIR}", $c_dir, $page);
 $page = str_replace("{BACKUPDIR2}", $c_dir2, $page);

@@ -6,6 +6,31 @@ $page.= file_get_contents("templates/header.html");
 
 if ($user_p_config == 1)
 	{
+		if (isset($_GET['backup']) AND $_GET['backup'] == "do")
+			{
+				mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup' LIMIT 1 ;");
+				if (isset($_GET['send']) AND $_GET['send'] == "email")
+					{
+						mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup_on_email' LIMIT 1 ;");
+						header('Location: config.php?backup=ok&mail=send');
+					}
+					else
+					{
+						header('Location: config.php?backup=ok');
+					}
+				exit;
+			}
+		if (isset($_GET['backup']) AND $_GET['backup'] == "ok")
+			{
+				$page.= file_get_contents("templates/information.html");
+				$page = str_replace("{INFORMATION}", "{LANG_ARHIV_MADE_OK}", $page);
+			}
+		if (isset($_GET['mail']) AND $_GET['mail'] == "send")
+			{
+				$page.= file_get_contents("templates/information.html");
+				$page = str_replace("{INFORMATION}", "{LANG_ARHIV_SEND_BY_EMAIL}", $page);
+			}
+			
 		if (isset($_GET['edit']))
 			{
 				$adress = "true";
@@ -14,50 +39,28 @@ if ($user_p_config == 1)
 						$edit = "true";
 						
 						$_POST['sitename'] = str_replace($srch, $rpls, $_POST['sitename']);
-						$_POST['url'] = str_replace($srch, $rpls, $_POST['url']);
-						$_POST['mysql_bin'] = str_replace($srch, $rpls, $_POST['mysql_bin']);
-						$_POST['backupdir'] = str_replace($srch, $rpls, $_POST['backupdir']);
 						$_POST['backup_limit'] = str_replace($srch, $rpls, $_POST['backup_limit']);
 						$_POST['anonymous_allow'] = str_replace($srch, $rpls, $_POST['anonymous_allow']);
 						$_POST['n_ray'] = str_replace($srch, $rpls, $_POST['n_ray']);
 						$_POST['reg_file'] = str_replace($srch, $rpls, $_POST['reg_file']);
 						$_POST['file_size'] = str_replace($srch, $rpls, $_POST['file_size']);
 						
+						if ($_POST['backup_plus'] != "")
+							{
+								$_POST['backup_plus'] = str_replace("\\\\", "/", $_POST['backup_plus']);
+								if (!preg_match("/^[a-z]{1}:.*\/$/i", $_POST['backup_plus']) OR !is_dir($_POST['backup_plus']))
+									{
+										$error = "true";
+										$page.= file_get_contents("templates/information.html");
+										$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_BACKUP_PLUS}", $page);
+									}
+							}
+						
 						if ($_POST['sitename'] == "")
 							{
 								$error = "true";
 								$page.= file_get_contents("templates/information.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_SITENAME}", $page);
-							}
-						if ($_POST['url'] == "")
-							{
-								$error = "true";
-								$page.= file_get_contents("templates/information.html");
-								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_URL}", $page);
-							}
-						if ($_POST['mysql_bin'] == "")
-							{
-								$error = "true";
-								$page.= file_get_contents("templates/information.html");
-								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_MYSQL_BIN}", $page);
-							}
-						if ($_POST['backupdir'] == "")
-							{
-								$error = "true";
-								$page.= file_get_contents("templates/information.html");
-								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_BACKUPDIR}", $page);
-							}
-						if ($_POST['backupdir2'] == "")
-							{
-								$error = "true";
-								$page.= file_get_contents("templates/information.html");
-								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_BACKUPDIR2}", $page);
-							}
-						if ($_POST['backup_plus'] == "")
-							{
-								$error = "true";
-								$page.= file_get_contents("templates/information.html");
-								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_BACKUP_PLUS}", $page);
 							}
 						if ($_POST['backup_limit'] < 0 OR $_POST['backup_limit'] > 9999)
 							{
@@ -134,10 +137,6 @@ if ($user_p_config == 1)
 								if ($_POST['login_choose'] == 1) {$login_choose = 1;} else {$login_choose = 0;}
 								$query = "UPDATE `config` SET
 								`name`='".$_POST['sitename']."',
-								`url`='".$_POST['url']."',
-								`mysql_bin`='".$_POST['mysql_bin']."',
-								`backup_dir`='".$_POST['backupdir']."',
-								`backup_dir2`='".$_POST['backupdir2']."',
 								`backup_plus`='".$_POST['backup_plus']."',
 								`backup_lim`='".$_POST['backup_limit']."',
 								`anonymous`='".$anonymous_allow."', 
@@ -149,7 +148,6 @@ if ($user_p_config == 1)
 								`reg_file`='".$_POST['reg_file']."', 
 								`file_size`='".$_POST['file_size']."' 
 								WHERE `id`='1' LIMIT 1;";
-								$temp345345 = $query;
 								$sql = mysql_query($query) or die(mysql_error());
 								$queryes_num++;
 								$query = "UPDATE `cron` SET `time`='".$_POST['cron_backup_timeout']."' WHERE `name`='backup' LIMIT 1;";

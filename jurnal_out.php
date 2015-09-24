@@ -596,6 +596,7 @@ if (isset($_SESSION['user_id']))
 																				if (is_uploaded_file($FILE['tmp_name'][$i]))
 																					{
 																						$file_new_name = $c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_".$FILE['name'][$i];
+																						if (preg_match("/^".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_.*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
 																						$file_name = "uploads\\".$_SESSION['user_year']."\\".$file_new_name;
 																						$file_name = iconv('UTF-8', 'windows-1251', $file_name);
 																						if (!file_exists($file_name))
