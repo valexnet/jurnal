@@ -545,4 +545,9 @@ $page = str_replace("{LANG_USER_DO_BACKUP}", "Створити архів", $pag
 $page = str_replace("{LANG_MAIL_ARHIV_NOT_SEND}", "Архів не відправлено на пошту, перевірте налаштування.", $page);
 $page = str_replace("{LANG_USER_DO_BACKUP_AND_SEND_MAIL}", "Створити архів БД та відправити на пошту.", $page);
 $page = str_replace("{LANG_ARHIV_SEND_BY_EMAIL}", "Архів також відправлений по e-mail.", $page);
+$page = str_replace("{LANG_CLEAN_SERCH_RESULTS}", "Очистити результати", $page);
+$page = str_replace("{LANG_SEARCH_BY_USER}", "Включено пошук по користувачу.", $page);
+$page = str_replace("{LANG_SEARCH_BY_NOM}", "Включено пошук по номенклатурі.", $page);
+$page = str_replace("{LANG_SEARCH_BY_DATA}", "Включено пошук по даті.", $page);
+$page = str_replace("{LANG_SEARCH_BY_HOW}", "Включено пошук по способу відправки.", $page);
 ?>

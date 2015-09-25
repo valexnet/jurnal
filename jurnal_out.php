@@ -42,6 +42,7 @@ if (isset($_SESSION['user_id']))
 					{
 						if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
 							{
+								$error = '';
 								if ($_POST['data'] <> date('Y-m-d')) $error = '{LANG_JURNAL_OUT_FORM_ERROR_DATE}<br />';
 
 								$FORM_TO = str_replace($srch, $rpls, $_POST['to']);
@@ -726,7 +727,43 @@ if (isset($_SESSION['user_id']))
 						$page = str_replace("{INFORMATION}", "{LANG_ADD_ADMIN_ADD_BD_ERROR}", $page);
 					}
 			}
-
+		
+		$search_pre = "";
+		$query_where = "";
+		if (isset($_GET['find']) AND !empty($_GET['find']) AND isset($_GET['do']) AND !empty($_GET['do']))
+			{
+				if ($_GET['blank'] == "do") $search_pre = "blank=do&";
+				// Пошук по користувачу
+				if ($_GET['find'] == "user" AND preg_match("/^[1-9][0-9]*$/" ,$_GET['do']))
+					{
+						$query_where = "`user` = '".$_GET['do']."'";
+						$query_blank_where = "n.user = '".$_GET['do']."'";
+						$where_lang = "{LANG_SEARCH_BY_USER}";
+						$search_pre .= "find=user&do=".$_GET['do']."&";
+					}
+				if ($_GET['find'] == "nom" AND preg_match("/^[1-9][0-9]*$/" ,$_GET['do']))
+					{
+						$query_where = "`nom` = '".$_GET['do']."'";
+						$query_blank_where = "n.nom = '".$_GET['do']."'";
+						$where_lang = "{LANG_SEARCH_BY_NOM}";
+						$search_pre .= "find=nom&do=".$_GET['do']."&";
+					}
+				if ($_GET['find'] == "data" AND preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ,$_GET['do']))
+					{
+						$query_where = "`data` = '".$_GET['do']." 00:00:00'";
+						$query_blank_where = "n.data = '".$_GET['do']." 00:00:00'";
+						$where_lang = "{LANG_SEARCH_BY_DATA}";
+						$search_pre .= "find=nom&do=".$_GET['do']."&";
+					}
+				if ($_GET['find'] == "how" AND preg_match("/^[1-3]{1}$/" ,$_GET['do']))
+					{
+						$query_where = "`how` = '".$_GET['do']."'";
+						$query_blank_where = "n.how = '".$_GET['do']."'";
+						$where_lang = "{LANG_SEARCH_BY_HOW}";
+						$search_pre .= "find=how&do=".$_GET['do']."&";
+					}
+			}
+			
 		if ($adres <> 'true')
 			{
 				if (isset($_GET['list']) AND $_GET['list'] > 0)
@@ -746,24 +783,31 @@ if (isset($_SESSION['user_id']))
 					}
 
 				//Дивимся чи юзер пішов на бланки + звіряєм права.
-				$pre_privat = "";
-				$pre_link = "";
+				$pre_link = $search_pre;
 				
 				if ($privat3 == 1)
 					{
-						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
+						$where = "";
+						if ($query_where != "") $where = " WHERE ".$query_where;
+						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
 						if ($_GET['blank'] == "do")
 							{
-								$query = "SELECT n.* FROM `db_".$_SESSION['user_year']."_out` n, `db_".$_SESSION['user_year']."_out_blank` b WHERE b.num = n.id ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
+								$where = "";
+								if ($query_blank_where != "") $where = " AND ".$query_blank_where;
+								$query = "SELECT n.* FROM `db_".$_SESSION['user_year']."_out` n, `db_".$_SESSION['user_year']."_out_blank` b WHERE b.num = n.id ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
 								$pre_link .= "blank=do";
 							}
 					}
 					else
 					{
-						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `user`='".$_SESSION['user_id']."' ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
+						$where = "";
+						if ($query_where != "") $where = " AND ".$query_where;
+						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `user`='".$_SESSION['user_id']."' ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
 						if ($_GET['blank'] == "do")
 							{
-								$query = "SELECT n.* FROM `db_".$_SESSION['user_year']."_out` n, `db_".$_SESSION['user_year']."_out_blank` b WHERE b.num = n.id AND n.user = '".$_SESSION['user_id']."' ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
+								$where = "";
+								if ($query_blank_where != "") $where = " AND ".$query_blank_where;
+								$query = "SELECT n.* FROM `db_".$_SESSION['user_year']."_out` n, `db_".$_SESSION['user_year']."_out_blank` b WHERE b.num = n.id AND n.user = '".$_SESSION['user_id']."' ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
 								$pre_link .= "blank=do";
 							}
 					}
@@ -789,12 +833,16 @@ if (isset($_SESSION['user_id']))
 				// Шукаємо кількість номерів по ліміту $c_lmt для останньої сторінки
 				if ($privat3 == 1)
 					{
-						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` ; ";
+						$where = "";
+						if ($query_where != "") $where = " WHERE ".$query_where;
+						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` ".$where." ; ";
 						if ($_GET['blank'] == "do") $a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out_blank` ; ";
 					}
 					else
 					{
-						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` WHERE `user`=".$_SESSION['user_id']." ; ";
+						$where = "";
+						if ($query_where != "") $where = " AND ".$query_where;
+						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` WHERE `user`=".$_SESSION['user_id']." ".$where." ; ";
 						if ($_GET['blank'] == "do") $a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `user`=".$_SESSION['user_id']." ; ";
 					}
 					
@@ -832,15 +880,13 @@ if (isset($_SESSION['user_id']))
 				////
 
 				$page = str_replace("{LIST_END}", "", $page);
-
-				$res = mysql_query($query) or $error = true;
+				$error = "false";
+				$res = mysql_query($query) or $error = "true";
 				$queryes_num++;
-				if ($error <> true)
+				if ($error != "true")
 					{
 						if (mysql_num_rows($res) > 0)
 							{
-								$page.= file_get_contents("templates/jurnal_out.html");
-
 								// Імена юзерів в масів
 								$users = array();
 								$query_users = "SELECT `id`,`name` FROM `users` ORDER BY `id` ; ";
@@ -871,6 +917,17 @@ if (isset($_SESSION['user_id']))
 									}
 								////////////////////////
 
+								// Якщо є пошук, показуємо повідомлення і ссилку на знулення.
+								if (isset($where_lang) AND !empty($where_lang))
+									{
+										$disable_serch = "jurnal_out.php";
+										if ($_GET['blank'] == "do") $disable_serch .= "?blank=do";
+										$page.= file_get_contents("templates/information.html");
+										$page = str_replace("{INFORMATION}", $where_lang." / <a href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
+									}
+									
+								$page.= file_get_contents("templates/jurnal_out.html");
+								
 								while ($row=mysql_fetch_array($res))
 									{
 										$color++;
@@ -906,13 +963,15 @@ if (isset($_SESSION['user_id']))
 										if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_NAR}\" alt=\"{LANG_HOW_NAR}\" src=\"templates/images/user_business_boss.png\">";
 										if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_SEND}\" alt=\"{LANG_HOW_SEND}\" src=\"templates/images/email_open.png\">";
 										
+										$need_serch_blank = "";
+										if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
 										$jurnal_out .= "
 										<tr valign=\"top\" align=\"center\">
-											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$row['id']." / ".$nomenclatura[$row['nom']]."</td>
+											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$row['id']." / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
 											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$blank_num."</td>
-											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$how_img."</td>
-											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$row_data[0]."</td>
-											<td ".$bgcolor." valign=\"top\" align=\"left\" >".$users[$row['user']]."</td>
+											<td ".$bgcolor." valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=how&do=".$row['how']."\">".$how_img."</a></td>
+											<td ".$bgcolor." valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".$row_data[0]."</a></td>
+											<td ".$bgcolor." valign=\"top\" align=\"left\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=user&do=".$row['user']."\">".$users[$row['user']]."</a></td>
 											<td ".$bgcolor." valign=\"top\" align=\"left\" >".$row['to']."</td>
 											<td ".$bgcolor." valign=\"top\" align=\"left\" >".$row['subj']."</td>
 											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$admin_links_do."</td>
