@@ -1,13 +1,14 @@
-			<br />
-			<fieldset>
-			<FORM METHOD="POST" NAME="form" enctype="multipart/form-data">
-			<table border="0" cellspacing="2" align="center">
-				<tr valign="middle" align="center">
-					<td align="center">
-						{FILE_PRE_NAME} {LANG_FILE_AUTO_PRE_NAME}<br /><br />
-						<b>{LANG_ADD_FILES}: </b><input name="file[]" type="file" multiple="true" /><INPUT TYPE="submit" />
-					</td>
-				</tr>
-			</table>
-			</FORM>
-			</fieldset>
+<div class="container">
+	<FORM METHOD="POST" NAME="form" class="form-horizontal" enctype="multipart/form-data">
+		<p class="text-center">{FILE_PRE_NAME} {LANG_FILE_AUTO_PRE_NAME}</p>
+		<div class="form-group">
+			<label class="col-sm-4 control-label">{LANG_ADD_FILES}</label>
+			<div class="col-sm-3">
+				<input name="file[]" type="file" multiple="true" class="btn btn-primary btn-sm" />
+			</div>
+			<label class="col-sm-2 control-label" style="margin-top: -6px;">
+				<div class="pull-left"><button type="submit" class="btn btn-success">{LANG_JURNAL_OUT_ADD_FILE}</button></div>
+			</label>
+		</div>
+	</FORM>
+</div>

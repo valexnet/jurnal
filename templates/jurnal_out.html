@@ -1,19 +1,18 @@
-			<br />
-			<fieldset>
-				<table border="1" cellspacing="0" cellpadding="2" width="100%">
-					<tr valign="top" align="center">
-						<td valign="middle" width="6%"><b>{LANG_JURNAL_OUT_NUM}</b></td>
-						<td valign="middle" width="4%"><b>{LANG_JURNAL_OUT_BLANK_NUM}</b></td>
-						<td valign="middle" width="2%"><b>{LANG_JURNAL_OUT_HOW}</b></td>
-						<td valign="middle" width="8%"><b>{LANG_DATA}</b></td>
-						<td valign="middle" width="15%"><b>{LANG_JURNAL_SENDER}</b></td>
-						<td valign="middle" width="20%"><b>{LANG_JURNAL_TO}</b></td>
-						<td valign="middle" width="40%"><b>{LANG_OUT_TEMA}</b></td>
-						<td valign="middle" width="10%"><b>{LANG_USER_ADMIN}</b></td>
-					</tr>
-					{JURNAL_OUT}
-				</table><br />
-				<form method="POST" action="jurnal_out.php">
-					{JURNAL_OUT_STAT}, {LANG_USER_SET_LIMIT_PAGE} <INPUT TYPE="text" NAME="show_num_list" value="{PAGE_LIMIT}" size="2" /> {LANG_USER_SET_LIMIT_PAGE2}
-				</form>
-			</fieldset>
+<div class="container">
+	<table class="table table-hover">
+		<tr valign="top" align="center">
+			<td valign="middle" width="100"><b>{LANG_JURNAL_OUT_NUM}</b></td>
+			<td valign="middle"><b>{LANG_JURNAL_OUT_BLANK_NUM}</b></td>
+			<td valign="middle"><b>{LANG_JURNAL_OUT_HOW}</b></td>
+			<td valign="middle"><b>{LANG_DATA}</b></td>
+			<td valign="middle" align="left"><b>{LANG_JURNAL_SENDER}</b></td>
+			<td valign="middle" align="left"><b>{LANG_JURNAL_TO}</b></td>
+			<td valign="middle" align="left"><b>{LANG_OUT_TEMA}</b></td>
+			<td valign="middle"> </td>
+		</tr>
+		{JURNAL_OUT}
+	</table>
+	<form method="POST" action="jurnal_out.php">
+	<p class="text-center">{JURNAL_OUT_STAT}, {LANG_USER_SET_LIMIT_PAGE} <INPUT TYPE="text" NAME="show_num_list" value="{PAGE_LIMIT}" size="2" /> {LANG_USER_SET_LIMIT_PAGE2}</p>
+	</form>
+</div>

@@ -1,28 +1,14 @@
-			<br />
-			<fieldset>
-				<table border="0" align="center">
-					<tbody>
-						<tr>
-							<td align="left"><font size="1" color="gray">{PAGE_GENERATION_TIME} {PAGE_QUERYES_NUM}<br />
-								{TIMEOUT_SESSION_COUNTER}
-								{LANG_COPYRIGHT}</font>
-							</td>
-							<td width="160" align="right">
-								<a href="index.php?team">{LANG_ADMIN_TEAM}</a>
-							</td>
-							<td width="180" align="right">
-								<a href="http://10.98.97.2/jurnal_ztp.php" target="_blank" >{LANG_REMARK_AND_SUGGESTIONS}</a>
-							</td>
-							<td width="60" align="right">
-								<a href="https://github.com/valexnet/jurnal" target="_blank" >GitHub</a>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</fieldset>
-		</td>
-	</tr>
-</table>
+<div class="container">
+<hr>
+	<div class="pull-left">
+		<p style="font-size: 10px;">{PAGE_GENERATION_TIME} {PAGE_QUERYES_NUM}<br>{TIMEOUT_SESSION_COUNTER} {LANG_COPYRIGHT}</p>
+	</div>
+	<div class="pull-right">
+		<a class="btn btn-success btn-xs" href="index.php?team" role="button">{LANG_ADMIN_TEAM}</a> 
+		<a class="btn btn-danger btn-xs" href="http://10.98.97.2/jurnal_ztp.php" target="_blank" role="button">{LANG_REMARK_AND_SUGGESTIONS}</a> 
+		<a class="btn btn-primary btn-xs" href="https://github.com/valexnet/jurnal" target="_blank" role="button">GitHub</a>
+	</div>
+</div>
 <div id="skm_LockPane" class="LockOff"></div>
 </body>
 </html>

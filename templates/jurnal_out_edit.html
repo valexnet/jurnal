@@ -1,74 +1,79 @@
-			<br />
-			<fieldset>
-			<h2>{LANG_JURNAL_OUT_EDIT_FORM}</h2>
-			<FORM ACTION="jurnal_out.php?edit=do&edit={JURNAL_OUT_NUM_TO_EDIT}" METHOD="POST" NAME="form" enctype="multipart/form-data">
-			<table border="0" cellspacing="2" align="center">
-				<tr valign="middle">
-					<td height="30" align="right"><b>{LANG_DATA}: </b></td>
-					<td align="left">
-						<INPUT TYPE="hidden" NAME="data" value="{D-A-T-A}" />
-						<INPUT TYPE="text" SIZE="20" value="{D-A-T-A}" disabled />&nbsp;&nbsp;{LANG_DATA_MORE}</td>
-				</tr>
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_OUT_ADD_FROM}: </b></td>
-					<td align="left"><INPUT TYPE="text" NAME="user" value="{USER_NAME}" disabled /></td>
-				</tr>
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_OUT_ADD_TO}: </b></td>
-					<td align="left"><INPUT TYPE="text" NAME="to" SIZE="20" value="{FORM_TO}" style="background-color: #fcc;" />&nbsp;&nbsp;{LANG_TO_MORE}</td>
-				</tr>
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_OUT_ADD_TO_N}: </b></td>
-					<td align="left"><INPUT TYPE="text" NAME="to_num" SIZE="20" value="{FORM_TO_N}" />&nbsp;&nbsp;{LANG_TO_N_MORE}</td>
-				</tr>
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_OUT_TEMA}: </b></td>
-					<td align="left"><INPUT TYPE="text" NAME="subj" SIZE="40" value="{FORM_SUBJ}" MAXLENGTH="300" style="background-color: #fcc;" /></td>
-				</tr>
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_NOMENCLATURA}: </b></td>
-					<td align="left">
-						<SELECT NAME="nom" style="background-color: #fcc;" >
-							{NOMENCLATURA}
-						</SELECT>
-					</td>
-				</tr>
-				<!--
-				<tr valign="middle" align="center">
-					<td height="35" align="right"><b>{LANG_ADD_FILES}: </b></td>
-					<td align="left"><input name="file[]" type="file" multiple="true" /></td>
-				</tr>
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_SEND_MONEY}: </b></td>
-					<td align="left"><INPUT TYPE="text" NAME="money" value="{FORM_MONEY}" SIZE="20" /></td>
-				</tr>
-				//-->
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_HOW}: </b></td>
-					<td align="center">
-						<input type="radio" name="how" value="1" {FORM_HOW_1} /> {LANG_HOW_EP} |
-						<input type="radio" name="how" value="2" {FORM_HOW_2} /> {LANG_HOW_NAR} |
-						<input type="radio" name="how" value="3" {FORM_HOW_3} /> {LANG_HOW_SEND}
-					</td>
-				</tr>
-				<tr valign="middle" align="center">
-					<td height="30" align="right"><b>{LANG_REGISTER_BLANK}: </b></td>
-					<td align="left"><INPUT TYPE="checkbox" NAME="blank_n" value="1" {FORM_BLANK_N} disabled /> {LANG_JURNAL_BLANK} {FORM_BLANK_NUM}</td>
-				</tr>
-			</table>
-			<script>
-				<!--
-				function validate()
-					{
-						if (document.form.to.value == "") {alert("{LANG_FORM_NO_TO}"); return false;}
-						if (document.form.subj.value == "") {alert("{LANG_FORM_NO_TEMA}"); return false;}
-						if (document.form.nom.value == "") {alert("{LANG_FORM_NO_NOM}"); return false;}
-						skm_LockScreen();
-						return true;
-					}
-				//-->
-			</script>
-			<INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
-			<INPUT TYPE="submit" VALUE="{LANG_SEND_FORM}" onclick="return validate();" /><br /><br />
-			</FORM>
-			</fieldset>
+<div class="container">
+	<h3><p class="text-center">{LANG_JURNAL_OUT_EDIT_FORM}</p></h3>
+	<FORM class="form-horizontal" ACTION="jurnal_out.php?edit=do&edit={JURNAL_OUT_NUM_TO_EDIT}" METHOD="POST" NAME="form" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="data" class="col-sm-2 control-label">{LANG_DATA}</label>
+			<div class="col-sm-4">
+				<INPUT TYPE="hidden" NAME="data" value="{D-A-T-A}" />
+				<input class="form-control" id="data" type="text" value="{D-A-T-A}" disabled />
+			</div>
+			<label for="user" class="col-sm-2 control-label">{LANG_OUT_ADD_FROM}</label>
+			<div class="col-sm-4">
+				<input class="form-control" id="user" NAME="user" type="text" value="{USER_NAME}" disabled />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="to" class="col-sm-2 control-label">{LANG_OUT_ADD_TO}</label>
+			<div class="col-sm-10">
+				<input id="to" NAME="to" value="{FORM_TO}" type="text" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="to_num" class="col-sm-2 control-label">{LANG_OUT_ADD_TO_N}</label>
+			<div class="col-sm-10">
+				<input id="to_num" NAME="to_num" value="{FORM_TO_N}" type="text" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="subj" class="col-sm-2 control-label">{LANG_OUT_TEMA}</label>
+			<div class="col-sm-10">
+				<input id="subj" NAME="subj" value="{FORM_SUBJ}" type="text" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="subj" class="col-sm-2 control-label">{LANG_NOMENCLATURA}</label>
+			<div class="col-sm-10">
+				<SELECT NAME="nom" class="form-control">
+					{NOMENCLATURA}
+				</SELECT>
+			</div>
+		</div>
+		<div class="form-group">
+			<label for="subj" class="col-sm-2 control-label">{LANG_HOW}</label>
+			<div class="col-sm-10">
+				<p>
+					<input type="radio" name="how" value="1" {FORM_HOW_1} /> {LANG_HOW_EP} |
+					<input type="radio" name="how" value="2" {FORM_HOW_2} /> {LANG_HOW_NAR} |
+					<input type="radio" name="how" value="3" {FORM_HOW_3} /> {LANG_HOW_SEND}
+				</p>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<div class="checkbox">
+					<label>
+						<input type="checkbox" NAME="blank_n" value="1" {FORM_BLANK_N} disabled /> {LANG_REGISTER_BLANK}
+					</label>
+				</div>
+			</div>
+		</div>
+		<script>
+			<!--
+			function validate()
+				{
+					if (document.form.to.value == "") {alert("{LANG_FORM_NO_TO}"); return false;}
+					if (document.form.subj.value == "") {alert("{LANG_FORM_NO_TEMA}"); return false;}
+					if (document.form.nom.value == "") {alert("{LANG_FORM_NO_NOM}"); return false;}
+					skm_LockScreen();
+					return true;
+				}
+			//-->
+		</script>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
+				<button type="submit" class="btn btn-success" onclick="return validate();">{LANG_SEND_FORM}</button>
+			</div>
+		</div>
+	</FORM>
+</div>

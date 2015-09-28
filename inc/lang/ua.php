@@ -413,7 +413,7 @@ $page = str_replace("{LANG_STR_ADMIN_DEL_CONFIRM}", "Ви дійсно бажа�
 $page = str_replace("{LANG_STR_DEL_OK}", "Номенклатуру успішно вилучено", $page);
 $page = str_replace("{LANG_STR_ADMIN_EDIT}", "Редагування номенклатури", $page);
 $page = str_replace("{LANG_STR_EDIT_NOT_EXIST}", "Такої номенклатури не існує", $page);
-$page = str_replace("{LANG_STR_EDIT_OK}", "Номенклатуру відредаговано", $page);
+$page = str_replace("{LANG_STR_EDIT_OK}", "Структуру відредаговано", $page);
 $page = str_replace("{LANG_NDI_STR_ADMIN_EDIT}", "Відредаговано", $page);
 $page = str_replace("{LANG_USERS_ADMIN_ADD_EMPTY_STR}", "Не вказано структуру", $page);
 $page = str_replace("{ALL_STRUCTURA}", "<b>Вся номенклатура</b>", $page);
@@ -550,4 +550,5 @@ $page = str_replace("{LANG_SEARCH_BY_USER}", "Включено пошук по �
 $page = str_replace("{LANG_SEARCH_BY_NOM}", "Включено пошук по номенклатурі.", $page);
 $page = str_replace("{LANG_SEARCH_BY_DATA}", "Включено пошук по даті.", $page);
 $page = str_replace("{LANG_SEARCH_BY_HOW}", "Включено пошук по способу відправки.", $page);
+$page = str_replace("{LANG_TEAM_ADMIN_LIST}", "Список Адміністраторів АС Журнал.", $page);
 ?>

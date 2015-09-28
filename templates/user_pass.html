@@ -1,24 +1,32 @@
-			<br />
-			<fieldset>
-				<b>{LANG_CHANGE_PASSWORD}</b><br /><br />
-				<form action="user.php?change_password" method="post">
-				<table align="center" border="0">
-					<tr>
-						<td align="right">{LANG_USER_PASSWORD}:&nbsp;&nbsp;</td>
-						<td><input type="password" name="user_password" /></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_PASSWORD1}:&nbsp;&nbsp;</td>
-						<td><input type="password" name="user_password1" /></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_PASSWORD2}:&nbsp;&nbsp;</td>
-						<td><input type="password" name="user_password2" /></td>
-					</tr>
-					<tr>
-						<td align="right">&nbsp;</td>
-						<td align="center"><input type="submit" value="{LANG_SEND}" /></td>
-					</tr>
-				</table></form>
-			</fieldset>
-			
+<div class="container">
+	<h3><p class="text-center">{LANG_CHANGE_PASSWORD}</p></h3>
+	<FORM class="form-horizontal" ACTION="user.php?change_password" METHOD="POST" NAME="form" enctype="multipart/form-data">
+		<table class="table">
+			<tr>
+				<td align="right" width="50%">{LANG_USER_PASSWORD}:&nbsp;&nbsp;</td>
+				<td width="50%"><input type="password" name="user_password" /></td>
+			</tr>
+			<tr>
+				<td align="right">{LANG_PASSWORD1}:&nbsp;&nbsp;</td>
+				<td><input type="password" name="user_password1" /></td>
+			</tr>
+			<tr>
+				<td align="right">{LANG_PASSWORD2}:&nbsp;&nbsp;</td>
+				<td><input type="password" name="user_password2" /></td>
+			</tr>
+		</table>
+		<script>
+		<!--
+			function validate()
+				{
+					if (document.form.user_password.value == "") {alert("{LANG_OLD_PASS_ERR}"); return false;}
+					if (document.form.user_password1.value == "") {alert("{LANG_EMPTY_PASS_NOT_ALLOW}"); return false;}
+					if (document.form.user_password2.value == "") {alert("{LANG_EMPTY_PASS_NOT_ALLOW}"); return false;}
+					skm_LockScreen();
+					return true;
+				}
+		//-->
+		</script>
+		<p class="text-center"><button type="submit" class="btn btn-success" onclick="return validate();">{LANG_SEND}</button></p>
+	</form>
+</div>

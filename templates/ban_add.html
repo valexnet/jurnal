@@ -1,15 +1,15 @@
-			<br />
-			<fieldset>
-				<b>{LANG_BAN_ADMIN_ADD}</b><br /><br />
-				<form action="ban.php?user_add&save" method="post">
-				<table align="center" border="0">
-					<tr>
-						<td align="right">{LANG_BAN_IP}:&nbsp;&nbsp;</td>
-						<td><input type="text" name="ban_ip" size="40" value="{BAN_IP}" /></td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td><br /><input type="submit" value="{LANG_SEND}" /></td>
-					</tr>
-				</table></form>
-			</fieldset>
+<div class="container">
+	<h3><p class="text-center">{LANG_BAN_ADMIN_ADD}</p></h3>
+		<form action="ban.php?user_add&save" method="post">
+			<table align="center" border="0">
+				<tr>
+					<td align="right">{LANG_BAN_IP}:&nbsp;&nbsp;</td>
+					<td><input type="text" name="ban_ip" size="40" value="{BAN_IP}" /></td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td><br /><input type="submit" value="{LANG_SEND}" /></td>
+				</tr>
+			</table>
+		</form>
+</div>

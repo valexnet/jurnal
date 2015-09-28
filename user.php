@@ -189,7 +189,7 @@ if (isset($_SESSION['user_id']))
 									}
 							}
 						$page.= file_get_contents("templates/user_login.html");
-						$page = str_replace("{USERS_LIST}", "<SELECT name=\"login\" />".$users_list."</SELECT>", $page);
+						$page = str_replace("{USERS_LIST}", "<SELECT name=\"login\" class=\"form-control\" />".$users_list."</SELECT>", $page);
 					}
 					else
 					{

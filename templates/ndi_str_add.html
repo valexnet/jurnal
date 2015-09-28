@@ -1,18 +1,25 @@
-			<br />
-			<fieldset>
-				<b>{LANG_STR}</b><br /><br />{LANG_STR_ADMIN_ADD}<br /><br />
-				<FORM ACTION="?add&save" METHOD="POST">
-				<table border="0" cellspacing="0" cellpadding="2" width="100%">
-					<tr valign="middle">
-						<td width="100" height="30" align="right"><b>{LANG_STRUCTURA}:&nbsp;&nbsp;&nbsp;</b></td>
-						<td width="500" align="left"><INPUT TYPE="text" NAME="index" SIZE="20" MAXLENGTH="10" value="01">&nbsp;&nbsp;{LANG_NUM_PIDROZDIL_PO_NUM}.</td>
-					</tr>
-					<tr valign="middle" align="center">
-						<td height="30" align="right"><b>{LANG_DEPS_NAME}:&nbsp;&nbsp;&nbsp;</b></td>
-						<td align="left"><INPUT TYPE="text" NAME="name" SIZE="40">&nbsp;&nbsp;{LANG_NUM_NAME_PRIMER}.</td>
-					</tr>
-				</table>
-				<br /><INPUT TYPE="submit" VALUE="{LANG_SEND}" /><br />
-				</FORM>
-				<br />
-			</fieldset>
+<div class="container">
+	<h3><p class="text-center">{LANG_STR}</p></h3>
+	<p class="text-center">{LANG_STR_ADMIN_ADD}</p>
+	<FORM ACTION="?add&save" METHOD="POST" class="form-horizontal" >
+		<div class="form-group">
+			<label for="index" class="col-sm-2 control-label">{LANG_STRUCTURA}</label>
+			<div class="col-sm-6">
+				<input id="index" NAME="index" value="01" type="text" class="form-control" />
+			</div>
+			<label for="index" class="col-sm-4 control-label"><div class="pull-left">{LANG_NUM_PIDROZDIL_PO_NUM}</div></label>
+		</div>
+		<div class="form-group">
+			<label for="name" class="col-sm-2 control-label">{LANG_DEPS_NAME}</label>
+			<div class="col-sm-6">
+				<input id="name" NAME="name" type="text" class="form-control" />
+			</div>
+			<label for="name" class="col-sm-4 control-label"><div class="pull-left">{LANG_NUM_NAME_PRIMER}</div></label>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-success">{LANG_SEND}</button>
+			</div>
+		</div>
+	</form>
+<div>

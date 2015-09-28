@@ -63,7 +63,7 @@ if ($user_p_log == 1)
 							<td align=\"left\">".$row['do']."</td>
 						</tr>";
 			}
-		$page_navy.="<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\">
+		$page_navy.="<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">
 			<tr valign=\"top\" align=\"center\">
 				<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$start_page."\"><img src=\"templates/images/home.JPG\" border=\"0\" alt=\"{LANG_LOG_NAVY_HOME}\" title=\"{LANG_LOG_NAVY_HOME}\"></a></td>";
 				if ($page_num > 0)  $page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$prev_page."\"><img src=\"templates/images/left.JPG\" border=\"0\" alt=\"{LANG_LOG_NAVY_LEFT}\" title=\"{LANG_LOG_NAVY_LEFT}\"></a></td>";

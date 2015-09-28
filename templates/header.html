@@ -1,19 +1,14 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" id="nojs">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 	{META_REFRESH}
 	<title>{LANG_HEADERINFO}</title>
-	<link rel="stylesheet" type="text/css" href="templates/css/common.css" />
-	<link rel="stylesheet" type="text/css" href="templates/css/tags.css" />
-	<link rel="stylesheet" type="text/css" href="templates/css/classes.css" />
-	<link rel="stylesheet" type="text/css" href="templates/css/layout.css" />
-	<!--[if lte IE 7]>
-	<link rel="stylesheet" type="text/css" href="templates/css/common-ie.css"/>
-	<link rel="stylesheet" type="text/css" href="templates/css/tags-ie.css"/>
-	<link rel="stylesheet" type="text/css" href="templates/css/classes-ie.css"/>
-	<link rel="stylesheet" type="text/css" href="templates/css/layout-ie.css"/>
-	<![endif]-->
+	
+	<link href="templates/css/bootstrap.css" rel="stylesheet">
+	
 	<script type="text/javascript">
 	// <![CDATA[
 	function skm_LockScreen(str)
@@ -31,28 +26,15 @@
 </style>
 </head>
 <body>
-<table width="100%" height="100%" align="center">
-	<tr valign="middle">
-		<td align="center">
-			<fieldset>
-				<table align="center" border="0">
-					<tr>
-						<td align="center" width="160"><a href="/"><img src="templates/images/logo.png" border="0" /></a></td>
-						<td align="center" width="450">
-							<h2><b>{LANG_HEADERINFO}</b><br />{SITENAME}</h2>
-							<div align="right">
-								{LANG_VER_NUM} : <b>{VER_NUM}</b> | {IP}<br />{TIME}<br />
-								{LANG_AUTORISED_US} : <b>{USER_NAME}</b><br />
-							</div>
-						</td>
-					</tr>
-				</table>
-			</fieldset>
-			<br />
-			<fieldset>
-				<table align="center" border="0">
-					<tr>
-						<td align="center">{MENU}</td>
-					</tr>
-				</table>
-			</fieldset>
+<div class="container">
+	<p style="text-align: right; margin-top: 15px; align: center;">
+		<a href="/"><img src="templates/images/logo.png" border="0" align="left" style="margin-right: 20px;" /></a>
+		<h2><b>{LANG_HEADERINFO}</b><br>{SITENAME}</h2>
+		{LANG_VER_NUM} : <b>{VER_NUM}</b>. {LANG_AUTORISED_US} : <b>{USER_NAME}</b>
+	</p>
+</div>
+<div class="container">
+	<div class="text-center">
+		<pre>{MENU}</pre>
+	</div>
+</div>

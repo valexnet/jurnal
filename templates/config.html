@@ -1,76 +1,63 @@
-			<br />
-			<fieldset>
-				<b>{LANG_USER_ADMIN_CONFIG}</b><br /><br />
-				<table align="center" cellspacing="2" border="0">
-					<tr>
-						<td align="right">{LANG_SITENAME}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{SITENAME}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_N_RAY}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{N_RAY}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_BACKUP_PLUS}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{BACKUP_PLUS}</b></td>
-					</tr>					
-					<tr>
-						<td align="right">{LANG_BACKUP_LIMIT}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{BACKLIMIT}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_ANONYMOUS_ALLOW}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{ANONYMOUS_ALLOW}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_TIMEOUT_AUHT}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{TIMEOUT_AUHT}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_PAGE_LIMIT}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{PAGE_LIMIT_SERVER}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_LOGIN_CHOOSE}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{LOGIN_CHOOSE_ALLOW}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_YEAR_START}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{YEAR_START}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_REG_FILE}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{REG_FILE}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_FILE_SIZE}:&nbsp;&nbsp;</td>
-						<td align="left"><b>{FILE_SIZE}</b></td>
-					</tr>
-				</table>
-				<br /><a href="config.php?edit">{LANG_CONFIG_EDIT}</a>
-			</fieldset>
-			<br />
-			<fieldset>
-				<b>{LANG_USER_ADMIN_CRON}</b><br /><br />
-				<table align="center" border="1" cellspacing="0" cellpadding="5">
-					<tr>
-						<td align="center"><b>{LANG_CRON_NAME}</b></td>
-						<td align="center"><b>{CRON_TIMEOUT}</b></td>
-						<td align="center"><b>{CRON_LAST}</b></td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_CRON_BACKUP}</td>
-						<td align="center">{CRON_BACKUP_TIMEOUT}</td>
-						<td align="center">{CRON_BACKUP_LAST}</td>
-					</tr>
-					<tr>
-						<td align="right">{LANG_CRON_BACKUP_ON_EMAIL}</td>
-						<td align="center">{CRON_BACKUP_ON_EMAIL_TIMEOUT}</td>
-						<td align="center">{CRON_BACKUP_ON_EMAIL_LAST}</td>
-					</tr>
-				</table>
-			</fieldset>
-			<br />
-			<fieldset>
-				<b><a href="phpinfo.php">phpinfo()</a> / <a href="config.php?backup=do">{LANG_USER_DO_BACKUP}</a> / <a href="config.php?backup=do&send=email">{LANG_USER_DO_BACKUP_AND_SEND_MAIL}</a></b>
-			</fieldset>
+<div class="container">
+	<h3><p class="text-center">{LANG_USER_ADMIN_CONFIG}</p></h3>
+	<p class="text-center">
+		<a class="btn btn-info" href="phpinfo.php" role="button">PhpInfo</a> 
+		<a class="btn btn-success" href="config.php?backup=do" role="button">{LANG_USER_DO_BACKUP}</a> 
+		<a class="btn btn-danger" href="config.php?backup=do&send=email" role="button">{LANG_USER_DO_BACKUP_AND_SEND_MAIL}</a> 
+	</p>
+	<table class="table table-hover">
+		<tr>
+			<td align="right" width="50%">{LANG_ANONYMOUS_ALLOW}:</td>
+			<td align="left" width="50%"><b>{ANONYMOUS_ALLOW}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_SITENAME}:</td>
+			<td align="left"><b>{SITENAME}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_N_RAY}:</td>
+			<td align="left"><b>{N_RAY}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_BACKUP_PLUS}:</td>
+			<td align="left"><b><kbd>{BACKUP_PLUS}</kbd></b></td>
+		</tr>					
+		<tr>
+			<td align="right">{LANG_BACKUP_LIMIT}:</td>
+			<td align="left"><b>{BACKLIMIT}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_TIMEOUT_AUHT}:</td>
+			<td align="left"><b>{TIMEOUT_AUHT}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_PAGE_LIMIT}:</td>
+			<td align="left"><b>{PAGE_LIMIT_SERVER}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_LOGIN_CHOOSE}:</td>
+			<td align="left"><b>{LOGIN_CHOOSE_ALLOW}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_YEAR_START}:</td>
+			<td align="left"><b>{YEAR_START}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_REG_FILE}:</td>
+			<td align="left"><b><kbd>{REG_FILE}</kbd></b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_FILE_SIZE}:</td>
+			<td align="left"><b>{FILE_SIZE}</b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_CRON_BACKUP}:</td>
+			<td align="left"><b><abbr title="{CRON_LAST} {CRON_BACKUP_LAST}">{CRON_BACKUP_TIMEOUT}</abbr></b></td>
+		</tr>
+		<tr>
+			<td align="right">{LANG_CRON_BACKUP_ON_EMAIL}:</td>
+			<td align="left"><b><abbr title="{CRON_LAST} {CRON_BACKUP_ON_EMAIL_LAST}">{CRON_BACKUP_ON_EMAIL_TIMEOUT}</abbr></b></td>
+		</tr>
+	</table>
+	<p class="text-center"><a class="btn btn-warning" href="config.php?edit" role="button">{LANG_CONFIG_EDIT}</a></p>
+</div>
