@@ -1,14 +1,65 @@
 <div class="container">
 <hr>
+	<div class="collapse" id="RemarkAndSuggestions">
+		<div class="well text-center">
+			<h3>{LANG_REMARK_AND_SUGGESTIONS_HELP1}</h3>
+			{LANG_REMARK_AND_SUGGESTIONS_HELP2}<br>
+			{LANG_REMARK_AND_SUGGESTIONS_HELP3} <a href="http://10.98.97.2/jurnal_ztp.php" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a><br>
+			{LANG_REMARK_AND_SUGGESTIONS_HELP4} <a href="mailto:vkhlivnyk@gmail.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a> <kbd>vkhlivnyk@gmail.com</kbd><br>
+		</div>
+	</div>
+	<div class="collapse" id="GitHubHelp">
+		<div class="well text-center">
+			<h3>{LANG_GITHUB_HELP1}</h3>
+			{LANG_GITHUB_HELP2}<br>
+			{LANG_GITHUB_HELP3} <a href="https://github.com/valexnet/jurnal" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a><br>
+			{LANG_GITHUB_HELP4} <a href="https://github.com/valexnet/jurnal/archive/master.zip" target="_blank"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span></a><br>
+		</div>
+	</div>
 	<div class="pull-left">
 		<p style="font-size: 10px;">{PAGE_GENERATION_TIME} {PAGE_QUERYES_NUM}<br>{TIMEOUT_SESSION_COUNTER} {LANG_COPYRIGHT}</p>
 	</div>
 	<div class="pull-right">
 		<a class="btn btn-success btn-xs" href="index.php?team" role="button">{LANG_ADMIN_TEAM}</a> 
-		<a class="btn btn-danger btn-xs" href="http://10.98.97.2/jurnal_ztp.php" target="_blank" role="button">{LANG_REMARK_AND_SUGGESTIONS}</a> 
-		<a class="btn btn-primary btn-xs" href="https://github.com/valexnet/jurnal" target="_blank" role="button">GitHub</a>
+		<a class="btn btn-danger btn-xs" role="button" data-toggle="collapse" href="#RemarkAndSuggestions" aria-expanded="false" aria-controls="RemarkAndSuggestions">{LANG_REMARK_AND_SUGGESTIONS}</a> 
+		<a class="btn btn-primary btn-xs" role="button" data-toggle="collapse" href="#GitHubHelp" aria-expanded="false" aria-controls="GitHubHelp">GitHub</a>
 	</div>
 </div>
+
+<div class="modal fade" id="SessionEnd" tabindex="-1" role="dialog" aria-labelledby="SessionEndLabel">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content bg-warning">
+	  <div class="modal-header bg-warning">
+		<h4 class="modal-title text-center" id="myModalLabel">{LANG_SESSION_END_HEADER}</h4>
+	  </div>
+	  <div class="modal-body bg-warning text-center">
+		{LANG_SESSION_END_BODY}
+	  </div>
+	  <div class="modal-footer bg-warning">
+		<a class="btn btn-success" href="#" onclick="location.reload();">{LANG_SESSION_RELOAD}</a> 
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="modal fade" id="UserExit" tabindex="-1" role="dialog" aria-labelledby="UserExitLabel">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+	  	<button type="button" class="close" data-dismiss="modal" aria-label="{LANG_JURN_OUT_NUM_CLOSE}"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title text-center" id="myModalLabel">{LANG_USER_OUT}</h4>
+	  </div>
+	  <div class="modal-body text-center">
+		{LANG_USER_EXIT_BUTTON_ALARM}
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
+		<a class="btn btn-danger" href="user.php?logout">{LANG_USER_OUT}</a>
+	  </div>
+	</div>
+  </div>
+</div>
+					
 <div id="skm_LockPane" class="LockOff"></div>
 <script src="templates/js/jquery-1.11.3.min.js"></script>
 <script src="templates/js/bootstrap.min.js"></script>

@@ -475,12 +475,6 @@ if (isset($_SESSION['user_id']))
 				$page .= 'Пошук';
 			}
 
-		if (isset($_GET['exp']) && $_GET['exp'] == 'do')
-			{
-				$adres = 'true';
-				$page .= 'Експорт';
-			}
-
 		if (isset($_GET['delete_last']) && $_GET['delete_last'] <> '')
 			{
 				$adres = 'true';
@@ -927,24 +921,21 @@ if (isset($_SESSION['user_id']))
 									}
 									
 								$page.= file_get_contents("templates/jurnal_out.html");
-								
+								$modals = "";
 								while ($row=mysql_fetch_array($res))
 									{
-										$color++;
-										if ($color == 1) {$bgcolor ="";} else {$bgcolor ="bgcolor=\"#D3EDF6\""; $color = 0;}
-
 										$admin_links_do = "";
 										$show_files = 0;
-										//Вилучення останнього
-										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_EDIT}\" alt=\"{LANG_USERS_ADMIN_EDIT}\" href=\"?edit=".$row['id']."\"><img src=\"templates/images/page_white_edit.png\"></a>";
-										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_DEL}\" alt=\"{LANG_USERS_ADMIN_DEL}\" href=\"?delete_last=".$row['id']."\"  onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\"></a>";
 										//Робота з файлами для власника вихідного номеру
 										if ($row['user'] == $_SESSION['user_id']) $show_files = 1;
 										//Перелік існуючих файлів для всіх користувачів
 										if (file_exists("uploads\\".$_SESSION['user_year']."\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
 										// Показуєм ссилку на управління файлами
-										if ($show_files == 1) $admin_links_do .= "<a title=\"{LANG_USERS_ADMIN_EDIT_FILES}\" alt=\"{LANG_USERS_ADMIN_EDIT_FILES}\" href=\"?attach=".$row['id']."\"><img src=\"templates/images/attach_2.png\"></a>";
+										if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success\" role=\"button\">{LANG_USERS_ADMIN_EDIT_FILES}</a>";
 										
+										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning\" role=\"button\">{LANG_USERS_ADMIN_EDIT}</a>";
+										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\">{LANG_USERS_ADMIN_DEL}</a>";
+
 										if ($admin_links_do == "") $admin_links_do = "&nbsp;";
 
 										$row_data = explode(" ", $row['data']);
@@ -967,17 +958,37 @@ if (isset($_SESSION['user_id']))
 										if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
 										$jurnal_out .= "
 										<tr valign=\"top\" align=\"center\">
-											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$row['id']." / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
-											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$blank_num."</td>
-											<td ".$bgcolor." valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=how&do=".$row['how']."\">".$how_img."</a></td>
-											<td ".$bgcolor." valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".$row_data[0]."</a></td>
-											<td ".$bgcolor." valign=\"top\" align=\"left\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=user&do=".$row['user']."\">".$users[$row['user']]."</a></td>
-											<td ".$bgcolor." valign=\"top\" align=\"left\" >".$row['to']."</td>
-											<td ".$bgcolor." valign=\"top\" align=\"left\" >".$row['subj']."</td>
-											<td ".$bgcolor." valign=\"top\" align=\"center\" >".$admin_links_do."</td>
+											<td valign=\"top\" align=\"center\" ><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
+											<td valign=\"top\" align=\"center\" >".$blank_num."</td>
+											<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=how&do=".$row['how']."\">".$how_img."</a></td>
+											<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".$row_data[0]."</a></td>
+											<td valign=\"top\" align=\"left\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=user&do=".$row['user']."\">".$users[$row['user']]."</a></td>
+											<td valign=\"top\" align=\"left\" >".$row['to']."</td>
+											<td valign=\"top\" align=\"left\" >".$row['subj']."</td>
 										</tr>";
+										
+										$modals .= "
+										<div class=\"modal fade\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
+										  <div class=\"modal-dialog\" role=\"document\">
+											<div class=\"modal-content\">
+											  <div class=\"modal-header\">
+												<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
+												<h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".$row['id']." / ".$nomenclatura[$row['nom']]."</h4>
+											  </div>
+											  <div class=\"modal-body text-center\">
+												<kbd>{LANG_IN_DEVELOPMENT}</kbd>
+											  </div>
+											  <div class=\"modal-footer\">
+												<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">{LANG_JURN_OUT_NUM_CLOSE}</button>
+												".$admin_links_do."
+											  </div>
+											</div>
+										  </div>
+										</div>";
+										
 										$is_first = "true";
 									}
+								$page .= $modals;
 								$page = str_replace("{JURNAL_OUT}", $jurnal_out, $page);
 								$page = str_replace("{JURNAL_OUT_STAT}", "{JURNAL_OUT_NUM_ON_PAGE}: ".$list." / ".mysql_num_rows($res)." / ".($b[0] - mysql_num_rows($res) - $list), $page);
 							}

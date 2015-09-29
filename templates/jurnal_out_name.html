@@ -1,7 +1,7 @@
 <div class="container">
 	<h3><p class="text-center">{LANG_YEAR} {USER_YEAR}. {LANG_JURNAL_OUT}</p></h3>
 	<form method="POST" action="jurnal_out.php">
-		<p class="text-center">
+		<div class="col-sm-12 text-center">
 			<a href="jurnal_out.php{JURNAL_OUT_PRE_LINK}"><img src="templates/images/home2.png"></a>
 			<a href="jurnal_out.php{LIST_LEFT}"><img src="templates/images/left.png"></a>
 			<a href="jurnal_out.php{LIST_RIGHT}"><img src="templates/images/right.png"></a>
@@ -9,6 +9,8 @@
 			<a href="jurnal_out.php?add=do"><img src="templates/images/add.png"></a>
 			<a href="jurnal_out.php?src=do"><img src="templates/images/search2.png"></a>
 			{LANG_YEAR}: <select NAME="show_year">{SELECT_YEARS}</select>
-			<INPUT TYPE="submit" VALUE="{LANG_YEAR_CHANGE}" onclick="return validate();" />
-		</p>
+			<button type="submit" class="btn btn-primary btn-xs">{LANG_YEAR_CHANGE}</button>
+		</div>
 	</form>
+</div>
+<div style="padding: 5px;"></div>
