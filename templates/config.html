@@ -5,6 +5,7 @@
 		<a class="btn btn-success" href="config.php?backup=do" role="button">{LANG_USER_DO_BACKUP}</a> 
 		<a class="btn btn-danger" href="config.php?backup=do&send=email" role="button">{LANG_USER_DO_BACKUP_AND_SEND_MAIL}</a> 
 	</p>
+	<div class="table-responsive">
 	<table class="table table-hover">
 		<tr>
 			<td align="right" width="50%">{LANG_ANONYMOUS_ALLOW}:</td>
@@ -59,5 +60,6 @@
 			<td align="left"><b><abbr title="{CRON_LAST} {CRON_BACKUP_ON_EMAIL_LAST}">{CRON_BACKUP_ON_EMAIL_TIMEOUT}</abbr></b></td>
 		</tr>
 	</table>
+	</div>
 	<p class="text-center"><a class="btn btn-warning" href="config.php?edit" role="button">{LANG_CONFIG_EDIT}</a></p>
 </div>
