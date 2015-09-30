@@ -13,6 +13,10 @@ if (isset($_POST['smtp_port']) AND $_POST['smtp_port'] <> "") $post_smtp_port = 
 if (isset($_POST['smtp_pass']) AND $_POST['smtp_pass'] <> "") $post_smtp_pass = 1;
 if (isset($_POST['email_name']) AND $_POST['email_name'] <> "") $post_email_name = 1;
 if (isset($_POST['smtp_login']) AND $_POST['smtp_login'] <> "") $post_smtp_login = 1;
+if (isset($_POST['install_type']))
+	{
+		if ($_POST['install_type'] == "new" OR $_POST['install_type'] == "config" OR $_POST['install_type'] == "backup" ) $post_install_type = 1;
+	}
 if (preg_match("/^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/", $_POST['email']))
 	{
 		$post_email = 1;
@@ -33,6 +37,7 @@ if ($post_smtp_port <> 1 ) $error .= "Не вказано SMTP порт<hr>";
 if ($post_smtp_pass  <> 1 ) $error .= "Не вказано SMTP пароль<hr>";
 if ($post_email_name <> 1 ) $error .= "Не вказано від чийого імені будуть йти листи<hr>";
 if ($post_smtp_login <> 1 ) $error .= "Не вказано SMTP логін<hr>";
+if ($post_install_type <> 1 ) $error .= "Не вказано тип установки<hr>";
 
 // Шаблон сторінки
 $page = "<html><head><meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />";
@@ -45,7 +50,7 @@ if ($error == "")
 			{
 				if (@mysql_select_db($_POST['dbname']))
 					{
-						die ($page."</head><body>База Даних вже існує, введіть інше імя.<hr><a href=\"index.php\">Повернутись</a></body></html>");
+						if ($_POST['install_type'] == "new") die ($page."</head><body>База Даних вже існує, введіть інше імя.<hr><a href=\"index.php\">Повернутись</a></body></html>");
 					}
 				require_once('inc/class.phpmailer.php');
 				include("inc/class.smtp.php");
@@ -70,7 +75,37 @@ if ($error == "")
 					{
 						die ($page."</head><body>Не можливо підключитись до SMTP серверу, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>");
 					}
-				if (@mysql_query("CREATE DATABASE `".$_POST['dbname']."` ;"))
+
+				if ($_POST['install_type'] == "new")
+					{
+						if (@mysql_query("CREATE DATABASE `".$_POST['dbname']."` ;"))
+							{
+								// Запис настройок
+								$file = $_POST['mysql']."\r\n".$_POST['login']."\r\n".base64_encode($_POST['password'])."\r\n".$_POST['dbname']."\r\n".$_POST['email']."\r\n".$_POST['smtp_auth']."\r\n".$_POST['smtp_ssl']."\r\n".$_POST['smtp_server']."\r\n".$_POST['smtp_port']."\r\n".base64_encode($_POST['smtp_pass'])."\r\n".$_POST['email_name']."\r\n".$_POST['smtp_login']."\r\n";
+								$file_err = 0;
+								$f = fopen('inc/db_connect.txt', 'w') or $file_err = 1;
+								fwrite($f, $file) or $file_err = 1;
+								fclose($f) or $file_err = 1;
+								if ($file_err == 1) die($page."</head><body>Недостатньо прав для створення файлу налаштувань inc\\db_connect.txt.<hr><a href=\"index.php\">Повернутись</a></body></html>");
+
+								@mysql_select_db($_POST['dbname']);
+								@mysql_query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+								@mysql_query("SET CHARACTER SET 'utf8'");
+
+								$query = explode(";",file_get_contents("inc/empty_db.sql"));
+								foreach ($query as $q)
+									{
+										if (strlen($q) > 25) @mysql_query($q);
+									}
+								echo $page."</head><body>Новий журнал встановлено, перейдіть до <a href=\"index.php\">Головної сторінки</a>. Пароль Адміністратора: admin</body></html>";
+							}
+							else
+							{
+								echo $page."</head><body>Недостатньо прав для створення Бази Даних, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";
+							}
+					}
+
+				if ($_POST['install_type'] == "config")
 					{
 						// Запис настройок
 						$file = $_POST['mysql']."\r\n".$_POST['login']."\r\n".base64_encode($_POST['password'])."\r\n".$_POST['dbname']."\r\n".$_POST['email']."\r\n".$_POST['smtp_auth']."\r\n".$_POST['smtp_ssl']."\r\n".$_POST['smtp_server']."\r\n".$_POST['smtp_port']."\r\n".base64_encode($_POST['smtp_pass'])."\r\n".$_POST['email_name']."\r\n".$_POST['smtp_login']."\r\n";
@@ -79,31 +114,43 @@ if ($error == "")
 						fwrite($f, $file) or $file_err = 1;
 						fclose($f) or $file_err = 1;
 						if ($file_err == 1) die($page."</head><body>Недостатньо прав для створення файлу налаштувань inc\\db_connect.txt.<hr><a href=\"index.php\">Повернутись</a></body></html>");
-						
+						echo $page."</head><body>Новий файл налаштувань створено, перейдіть до <a href=\"index.php\">Головної сторінки</a>.</body></html>";
+					}
+
+				if ($_POST['install_type'] == "backup")
+					{
+						// Провіряєм чи є файл резервоної копії
+						if ($_FILES['backup_file']['type'] != "text/x-sql" OR $_FILES['backup_file']['size'] < 3000) die("Не вірний тип файлу резервної копії, розпакуйте його, якщо він в архіві.");
+						if ($_FILES['backup_file']['error'] != 0 OR !is_uploaded_file($_FILES['backup_file']['tmp_name'])) die("Не вдалось завантажети файл резервної копії.");
+
+						// Запис настройок
+						$file = $_POST['mysql']."\r\n".$_POST['login']."\r\n".base64_encode($_POST['password'])."\r\n".$_POST['dbname']."\r\n".$_POST['email']."\r\n".$_POST['smtp_auth']."\r\n".$_POST['smtp_ssl']."\r\n".$_POST['smtp_server']."\r\n".$_POST['smtp_port']."\r\n".base64_encode($_POST['smtp_pass'])."\r\n".$_POST['email_name']."\r\n".$_POST['smtp_login']."\r\n";
+						$file_err = 0;
+						$f = fopen('inc/db_connect.txt', 'w') or $file_err = 1;
+						fwrite($f, $file) or $file_err = 1;
+						fclose($f) or $file_err = 1;
+						if ($file_err == 1) die($page."</head><body>Недостатньо прав для створення файлу налаштувань inc\\db_connect.txt.<hr><a href=\"index.php\">Повернутись</a></body></html>");
+
 						@mysql_select_db($_POST['dbname']);
 						@mysql_query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
 						@mysql_query("SET CHARACTER SET 'utf8'");
 
-						$query = explode(";",file_get_contents("inc/empty_db.sql"));
+						$query = explode(";",file_get_contents($_FILES['backup_file']['tmp_name']));
 						foreach ($query as $q)
 							{
-								if (strlen($q) > 25) @mysql_query($q);
+								if (strlen($q) > 10) @mysql_query($q);
 							}
-						echo $page."</head><body>Журнал встановлено, перейдіть до <hr><a href=\"config.php?edit\">Глобальні налаштування</a>. Пароль Адміністратора: admin</body></html>";		
-					}
-					else
-					{
-						echo $page."</head><body>Недостатньо прав для створення Бази Даних, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
+						echo $page."</head><body>Журнал успішно відновлено із резервної копії, файл налаштувань створено, перейдіть до <a href=\"index.php\">Головної сторінки</a>. Пароль Адміністратора: admin<hr></body></html>";
 					}
 			}
 			else
 			{
-				echo $page."</head><body>Не можливо підключитись до Сервера Бази Данних, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";		
+				echo $page."</head><body>Не можливо підключитись до Сервера Бази Данних, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>";
 			}
 	}
 	else
 	{
-		echo $page."</head><body>".$error."<hr><a href=\"index.php\">Повернутись</a></body></html>";		
+		echo $page."</head><body>".$error."<hr><a href=\"index.php\">Повернутись</a></body></html>";
 	}
 DIE();
 ?>

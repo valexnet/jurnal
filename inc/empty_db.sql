@@ -1,6 +1,9 @@
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO"; 
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+SET NAMES 'utf8' COLLATE 'utf8_general_ci';
+SET CHARACTER SET 'utf8';
 
-CREATE TABLE IF NOT EXISTS `banned` (
+DROP TABLE `banned`;
+CREATE TABLE `banned` (
   `id` int(11) NOT NULL auto_increment,
   `time` int(11) NOT NULL,
   `ip` varchar(15) NOT NULL,
@@ -8,7 +11,8 @@ CREATE TABLE IF NOT EXISTS `banned` (
   PRIMARY KEY  (`id`)
 ) ;
 
-CREATE TABLE IF NOT EXISTS `config` (
+DROP TABLE `config`;
+CREATE TABLE `config` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
   `backup_plus` varchar(250) NOT NULL,
@@ -28,7 +32,8 @@ CREATE TABLE IF NOT EXISTS `config` (
 
 INSERT INTO `config` VALUES (1, 'Site Name', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 3);
 
-CREATE TABLE IF NOT EXISTS `cron` (
+DROP TABLE `cron`;
+CREATE TABLE `cron` (
   `name` varchar(250) NOT NULL,
   `time` int(11) NOT NULL,
   `last` int(11) NOT NULL,
@@ -38,7 +43,8 @@ CREATE TABLE IF NOT EXISTS `cron` (
 INSERT INTO `cron` VALUES ('backup', 0, 0);
 INSERT INTO `cron` VALUES ('backup_on_email', 0, 0);
 
-CREATE TABLE IF NOT EXISTS `log` (
+DROP TABLE `log`;
+CREATE TABLE `log` (
   `id` int(11) NOT NULL auto_increment,
   `ip` varchar(15) NOT NULL,
   `time` int(11) NOT NULL,
@@ -47,7 +53,8 @@ CREATE TABLE IF NOT EXISTS `log` (
   PRIMARY KEY  (`id`)
 ) ;
 
-CREATE TABLE IF NOT EXISTS `nomenclatura` (
+DROP TABLE `nomenclatura`;
+CREATE TABLE `nomenclatura` (
   `id` int(11) NOT NULL auto_increment,
   `structura` int(10) NOT NULL,
   `index` varchar(10) NOT NULL,
@@ -59,7 +66,8 @@ CREATE TABLE IF NOT EXISTS `nomenclatura` (
   PRIMARY KEY  (`id`)
 ) ;
 
-CREATE TABLE IF NOT EXISTS `structura` (
+DROP TABLE `structura`;
+CREATE TABLE `structura` (
   `id` int(11) NOT NULL auto_increment,
   `index` varchar(10) NOT NULL,
   `name` varchar(250) NOT NULL,
@@ -70,7 +78,8 @@ CREATE TABLE IF NOT EXISTS `structura` (
   PRIMARY KEY  (`id`)
 ) ;
 
-CREATE TABLE IF NOT EXISTS `users` (
+DROP TABLE `users`;
+CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,
   `login` varchar(250) NOT NULL,
   `pass` varchar(32) NOT NULL,
@@ -102,4 +111,4 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY  (`id`)
 ) AUTO_INCREMENT=2 ;
 
-INSERT INTO `users` VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, 'Administrator', 1442993102, '10.98.97.31', 1, 1, '0', 1, 'ua', 1294922873, 1, 1, 1, 1, 0, 1, 1, '0', '0', '34-27-003', '(047-31) 3-00-93', '(097) 491-73-34', '3,4,5,6,7,8,9,15,11,12,13,', '1,2,3,4,5,6', 0);
+INSERT INTO `users` VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, 'Адміністратор', 1442993102, '10.98.97.31', 1, 1, '0', 1, 'ua', 1294922873, 1, 1, 1, 1, 0, 1, 1, '0', '0', '34-27-003', '(047-31) 3-00-93', '(097) 491-73-34', '3,4,5,6,7,8,9,15,11,12,13,', '1,2,3,4,5,6', 0);

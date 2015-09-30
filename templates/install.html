@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css" media="all">
 body {
-  background: url(templates/images/logo.jpg) 4.2em 4em no-repeat #fff;
+  background: url(templates/images/logo.png) 4.2em 4em no-repeat #fff;
   color: #000;
   border: 1px solid #bbb;
   margin: 3em;
@@ -14,7 +14,7 @@ body {
 <body>
 <h1>АС Журнал: Настройка журналу</h1>
 <p>Введіть дані про MySQL сервер та ел. пошту адміністратора.</p>
-<p><form action="index.php?install=do" method="post">
+<p><form action="index.php?install=do" method="post" enctype="multipart/form-data">
 	<table align="center" border="0">
 		<tr>
 			<td align="right">Сервер MySQL:&nbsp;&nbsp;</td>
@@ -65,10 +65,23 @@ body {
 			<td>Так <input type="radio" name="smtp_ssl" value="ssl_true" /> | <input type="radio" name="smtp_ssl" value="ssl_false" checked /> Ні</td>
 		</tr>
 		<tr>
+			<td colspan="2"><hr></td>
+		</tr>
+		<tr>
+			<td align="right">Тип установки:&nbsp;&nbsp;</td>
+			<td align="left">
+				<input type="radio" name="install_type" value="new" checked /> Нова установка, створення пустої БД та файлу налаштувань.<hr>
+				<input type="radio" name="install_type" value="config" /> Використати вказану БД, створити файл налаштувань.<hr>
+				<input type="radio" name="install_type" value="backup" /> Використати вказану БД, відновити БД із резервної копії та створення файлу налаштувань.<br>
+				<input type="file" name="backup_file" />
+				<hr>
+			</td>
+		</tr>
+		<tr>
 			<td align="right">&nbsp;</td>
 			<td align="center"><input type="submit" value="Поїхали!" /></td>
 		</tr>
-	</table>
+		</table>
 </form></p>
 <p>В разі винекнення питать по настройці, звертайтесь по тел.:</p>
 <ul>

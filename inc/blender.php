@@ -18,17 +18,21 @@ if (isset($_SESSION['user_id']))
 		$page = str_replace("{LINK_BUTTON_IN_OR_OUT}", "window.location = 'user.php';", $page);
 		$page = str_replace("{LANG_BUTTON_IN_OR_OUT}", "{LANG_LOG_USER_ENTER}", $page);
 	}
+	
 $page = str_replace("{MENU}", $menu, $page);
+
 if (isset($timeout))
 	{
 		$page = str_replace("{META_REFRESH}", "<meta http-equiv=\"refresh\" content=\"3;url=".$timeout."\" />", $page);
 		$page = str_replace("{REDIRECT_ANNONCE}", file_get_contents("templates/information_warning.html"), $page);
-		$page = str_replace("{INFORMATION}", "{REDIRECT_ANNONCE}<hr>", $page);
+		$page = str_replace("{INFORMATION}", "{REDIRECT_ANNONCE}", $page);
+		$page = str_replace("{REDIRECT_GIF}", "<td style=\"vertical-align: middle;\"><img src=\"templates/images/globe64.gif\"></td>", $page); 
 	}
 	else
 	{
 		$page = str_replace("{META_REFRESH}", "", $page);
 		$page = str_replace("{REDIRECT_ANNONCE}", "", $page);
+		$page = str_replace("{REDIRECT_GIF}", "", $page); 
 	}
 $page = str_replace("{SITENAME}", $c_nam, $page);
 $page = str_replace("{MYSQL_BIN}", $c_bin, $page);

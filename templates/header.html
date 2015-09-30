@@ -36,17 +36,21 @@
 				</td>
 				<td class="text-left" style="vertical-align: middle;">
 					<p style="font-size: 18px;">
-						<a href="index.php"><strong>{LANG_HEADERINFO}</strong></a> <span class="label label-success">v.{VER_NUM}</span>
+						<a href="index.php"><strong>{LANG_HEADERINFO}</strong> <span class="label label-primary">v.{VER_NUM}</span></a>
 						<br>{SITENAME}
 					</p>
-					<p><a class="btn btn-primary btn-xs" href="user.php">{USER_NAME}</a> <a class="btn btn-{LINK_BUTTON_IN_OR_OUT_TYPE} btn-xs" href="#" onclick="{LINK_BUTTON_IN_OR_OUT}" role="button">{LANG_BUTTON_IN_OR_OUT}</a></p>
-				</td>
-				<td width="160" style="vertical-align: middle;">
-					{MENU}
+					<p>
+						<div class="dropdown">
+							<a class="btn btn-primary btn-sm" href="user.php">{USER_NAME}</a>
+							{MENU}
+							<a class="btn btn-{LINK_BUTTON_IN_OR_OUT_TYPE} btn-sm" href="#" onclick="{LINK_BUTTON_IN_OR_OUT}" role="button">{LANG_BUTTON_IN_OR_OUT}</a>
+						</div>
+					</p>
 				</td>
 			</tr>
 		</table>
 	</div>
 	<hr>
-	{REDIRECT_ANNONCE}
 </div>
+
+{REDIRECT_ANNONCE}
