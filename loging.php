@@ -65,10 +65,10 @@ if ($user_p_log == 1)
 			}
 		$page_navy.="<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">
 			<tr valign=\"top\" align=\"center\">
-				<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$start_page."\"><img src=\"templates/images/home.JPG\" border=\"0\" alt=\"{LANG_LOG_NAVY_HOME}\" title=\"{LANG_LOG_NAVY_HOME}\"></a></td>";
-				if ($page_num > 0)  $page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$prev_page."\"><img src=\"templates/images/left.JPG\" border=\"0\" alt=\"{LANG_LOG_NAVY_LEFT}\" title=\"{LANG_LOG_NAVY_LEFT}\"></a></td>";
-				if ($page_num < $end_page)  $page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$nexpage."\"><img src=\"templates/images/right.JPG\" border=\"0\" alt=\"{LANG_LOG_NAVY_RIGHT}\" title=\"{LANG_LOG_NAVY_RIGHT}\"></a></td>";
-				$page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$end_page."\"><img src=\"templates/images/end.JPG\" border=\"0\" alt=\"{LANG_LOG_NAVY_END}\" title=\"{LANG_LOG_NAVY_END}\"></a></td>
+				<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$start_page."\"><img src=\"templates/images/home2.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_HOME}\" title=\"{LANG_LOG_NAVY_HOME}\"></a></td>";
+				if ($page_num > 0)  $page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$prev_page."\"><img src=\"templates/images/left.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_LEFT}\" title=\"{LANG_LOG_NAVY_LEFT}\"></a></td>";
+				if ($page_num < $end_page)  $page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$nexpage."\"><img src=\"templates/images/right.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_RIGHT}\" title=\"{LANG_LOG_NAVY_RIGHT}\"></a></td>";
+				$page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$end_page."\"><img src=\"templates/images/end.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_END}\" title=\"{LANG_LOG_NAVY_END}\"></a></td>
 			</tr>
 		</table>";
 		$page = str_replace("{LOG_VIEWS}", $template_log, $page);

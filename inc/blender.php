@@ -7,19 +7,28 @@ if (isset($_SESSION['user_id']))
 		$page = str_replace("{TIMEOUT_SESSION_COUNTER}", $session_counter, $page);
 		if ($c_tmt > 3600) { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "declOfNum(hours, [\"година\", \"години\", \"годин\"]),", $page); } else { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "", $page); }
 		if ($c_tmt == 0) { $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "", $page); } else { $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page); }
+		$page = str_replace("{LINK_BUTTON_IN_OR_OUT_TYPE}", "danger", $page);
+		$page = str_replace("{LINK_BUTTON_IN_OR_OUT}", "$('#UserExit').modal('show');", $page);
+		$page = str_replace("{LANG_BUTTON_IN_OR_OUT}", "{LANG_USER_OUT}", $page);
 	}
 	else
 	{
 		$page = str_replace("{TIMEOUT_SESSION_COUNTER}", "", $page);
+		$page = str_replace("{LINK_BUTTON_IN_OR_OUT_TYPE}", "success", $page);
+		$page = str_replace("{LINK_BUTTON_IN_OR_OUT}", "window.location = 'user.php';", $page);
+		$page = str_replace("{LANG_BUTTON_IN_OR_OUT}", "{LANG_LOG_USER_ENTER}", $page);
 	}
 $page = str_replace("{MENU}", $menu, $page);
 if (isset($timeout))
 	{
 		$page = str_replace("{META_REFRESH}", "<meta http-equiv=\"refresh\" content=\"3;url=".$timeout."\" />", $page);
+		$page = str_replace("{REDIRECT_ANNONCE}", file_get_contents("templates/information_warning.html"), $page);
+		$page = str_replace("{INFORMATION}", "{REDIRECT_ANNONCE}<hr>", $page);
 	}
 	else
 	{
 		$page = str_replace("{META_REFRESH}", "", $page);
+		$page = str_replace("{REDIRECT_ANNONCE}", "", $page);
 	}
 $page = str_replace("{SITENAME}", $c_nam, $page);
 $page = str_replace("{MYSQL_BIN}", $c_bin, $page);
@@ -81,17 +90,12 @@ if ($user_p_ip == 1) {$page = str_replace("{USER_P_IP}", "{LANG_ALLOW}", $page);
 if ($user_p_mod == 1) {$page = str_replace("{USER_P_MOD}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{USER_P_MOD}", "{LANG_DISALLOW}", $page);}
 if ($c_ano == 1) {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_DISALLOW}", $page);}
 if ($c_lch == 1) {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_DISALLOW}", $page);}
-include ("lang/".$c_lng.".php");
+if (!file_exists("inc/lang/".$c_lng.".php")) die("Language file [inc/lang/".$c_lng.".php] not exist");
+include_once ("lang/".$c_lng.".php");
+foreach ($lang as $key => $value) {$page = str_replace("{".$key."}", $value, $page);}
 $page = str_replace("{MAX_FILE_SIZE_MB}", (($max_file_size / 1024) / 1024 )." MB", $page);
-$start_time = $_SERVER['REQUEST_TIME'];
-$start_array = explode(" ",$start_time);
-$start_time = $start_array[1] + $start_array[0];
-$end_time = microtime();
-$end_array = explode(" ",$end_time);
-$end_time = $end_array[1] + $end_array[0];
-$time = $end_time - $start_time;
 if ($queryes_num < 1) $queryes_num = 0;
-$page = str_replace("{PAGE_GENERATION_TIME}", "Generated for ".round($time,3)." sec.", $page);
+$page = str_replace("{PAGE_GENERATION_TIME}", "Page gen. ".sprintf("%.4f",(microtime(TRUE) - $start_php_time))."s. ", $page);
 $page = str_replace("{PAGE_QUERYES_NUM}", " include ".$queryes_num." MySQL query'es", $page);
 echo $page;
 ?>

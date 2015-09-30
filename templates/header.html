@@ -27,6 +27,26 @@
 </head>
 <body>
 
-<div class="container" style="margin-top: 10px;">
-	<pre><div class="col-sm-7"><a href="/"><img src="templates/images/logo.png" border="0" align="left" style="margin-right: 20px;" /></a><h3><b>{LANG_HEADERINFO}</b> v<b>{VER_NUM}</b><br>{SITENAME}</h3>{LANG_AUTORISED_US} : <b>{USER_NAME}</b></div><div class="col-sm-5" style="margin-top: 35px;">{MENU}</div></pre>
+<div class="container text-center" style="margin-top: 10px;">
+	<div class="panel panel-default">
+		<table class="table">
+			<tr>
+				<td width="150">
+					<a href="index.php"><img src="templates/images/logo.png"></a>
+				</td>
+				<td class="text-left" style="vertical-align: middle;">
+					<p style="font-size: 18px;">
+						<a href="index.php"><strong>{LANG_HEADERINFO}</strong></a> <span class="label label-success">v.{VER_NUM}</span>
+						<br>{SITENAME}
+					</p>
+					<p><a class="btn btn-primary btn-xs" href="user.php">{USER_NAME}</a> <a class="btn btn-{LINK_BUTTON_IN_OR_OUT_TYPE} btn-xs" href="#" onclick="{LINK_BUTTON_IN_OR_OUT}" role="button">{LANG_BUTTON_IN_OR_OUT}</a></p>
+				</td>
+				<td width="160" style="vertical-align: middle;">
+					{MENU}
+				</td>
+			</tr>
+		</table>
+	</div>
+	<hr>
+	{REDIRECT_ANNONCE}
 </div>

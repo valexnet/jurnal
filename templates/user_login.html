@@ -4,18 +4,18 @@
 		<div class="form-group">
 			<label class="col-sm-4 control-label"><img src="templates/images/login.png" border="0"></label>
 			<div class="col-sm-8">
-				<div class="form-group">
-					<label class="col-sm-2 control-label"><img src="templates/images/user.png" border="0" /> {LANG_LOGIN}</label>
-					<div class="col-sm-10">
-						{USERS_LIST}
-					</div>
+				<div class="input-group col-sm-6" style="padding: 10px;">
+					<span class="input-group-addon" id="basic-addon1"><i class="glyphicon glyphicon-user"></i></span>
+					{USERS_LIST}
+				</div>
+				<div class="input-group col-sm-6" style="padding: 10px;">
+					<span class="input-group-addon" id="basic-addon2"><i class="glyphicon glyphicon-lock"></i></span>
+					<input type="password" name="pass" class="form-control" />
 				</div>
 				<div class="form-group">
-					<label class="col-sm-2 control-label"><img src="templates/images/key.png" border="0" /> {LANG_PASSWORD}</label>
-					<div class="col-sm-6">
-						<input type="password" name="pass" class="form-control" />
+					<div class="col-sm-offset-2 col-sm-10">
+						<label class="control-label"><a href="#" onclick="alert('{LANG_SEND_TO_ADMIN}')">{LANG_I_LOST_PASSWORD}</a></label>
 					</div>
-					<label class="col-sm-4 control-label"><a href="#" onclick="alert('{LANG_SEND_TO_ADMIN}')">{LANG_I_LOST_PASSWORD}</a></label>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">

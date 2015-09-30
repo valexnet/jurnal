@@ -81,6 +81,9 @@ if ($error == "")
 						if ($file_err == 1) die($page."</head><body>Недостатньо прав для створення файлу налаштувань inc\\db_connect.txt.<hr><a href=\"index.php\">Повернутись</a></body></html>");
 						
 						@mysql_select_db($_POST['dbname']);
+						@mysql_query("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
+						@mysql_query("SET CHARACTER SET 'utf8'");
+
 						$query = explode(";",file_get_contents("inc/empty_db.sql"));
 						foreach ($query as $q)
 							{

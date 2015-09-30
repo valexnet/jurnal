@@ -91,7 +91,7 @@ if (isset($_SESSION['user_id']))
 										'".time()."',
 										'".$_SERVER['REMOTE_ADDR']."',
 										'".$_POST['nom']."',
-										'".date('Y-m-d')."',
+										'".date('Y-m-d H:i:s')."',
 										'".$FORM_TO."',
 										'".$FORM_TO_SUBJ."',
 										'".$FORM_TO_NUM."',
@@ -744,8 +744,8 @@ if (isset($_SESSION['user_id']))
 					}
 				if ($_GET['find'] == "data" AND preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ,$_GET['do']))
 					{
-						$query_where = "`data` = '".$_GET['do']." 00:00:00'";
-						$query_blank_where = "n.data = '".$_GET['do']." 00:00:00'";
+						$query_where = "`data` LIKE '".$_GET['do']." %'";
+						$query_blank_where = "n.data LIKE '".$_GET['do']." %'";
 						$where_lang = "{LANG_SEARCH_BY_DATA}";
 						$search_pre .= "find=nom&do=".$_GET['do']."&";
 					}
@@ -950,12 +950,18 @@ if (isset($_SESSION['user_id']))
 												$blank_num = $row_blank['id'];
 											}
 										
-										$how_img = "<img title=\"{LANG_HOW_EP}\" alt=\"{LANG_HOW_EP}\" src=\"templates/images/book_addresses.png\">";
-										if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_NAR}\" alt=\"{LANG_HOW_NAR}\" src=\"templates/images/user_business_boss.png\">";
-										if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_SEND}\" alt=\"{LANG_HOW_SEND}\" src=\"templates/images/email_open.png\">";
+										$how_img = "<img title=\"{LANG_HOW_1}\" alt=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
+										if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_2}\" alt=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
+										if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_3}\" alt=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
 										
 										$need_serch_blank = "";
 										if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
+										
+										if ($row['to_num'] == "") $row['to_num'] = "-";
+										
+										$num_is_edited = "";
+										if ($row['edit'] == 1) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong></p></td></tr>";
+										
 										$jurnal_out .= "
 										<tr valign=\"top\" align=\"center\">
 											<td valign=\"top\" align=\"center\" ><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
@@ -976,7 +982,37 @@ if (isset($_SESSION['user_id']))
 												<h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".$row['id']." / ".$nomenclatura[$row['nom']]."</h4>
 											  </div>
 											  <div class=\"modal-body text-center\">
-												<kbd>{LANG_IN_DEVELOPMENT}</kbd>
+												<table class=\"table table-hover\">
+													".$num_is_edited."
+													<tr>
+														<td align=\"right\">{LANG_OUT_ADD_FROM}</td>
+														<td align=\"left\"><strong>".$users[$row['user']]."</strong></td>
+													</tr>
+													<tr>
+														<td align=\"right\">{LANG_LOG_TIME}</td>
+														<td align=\"left\"><strong>".$row_data[0]."</strong> ".$row_data[1]."</td>
+													</tr>
+													<tr>
+														<td align=\"right\">{RETURN_BLANK_N}</td>
+														<td align=\"left\"><strong>".$blank_num."</strong></td>
+													</tr>
+													<tr>
+														<td align=\"right\">{LANG_JURNAL_TO}</td>
+														<td align=\"left\"><strong>".$row['to']."</strong></td>
+													</tr>
+													<tr>
+														<td align=\"right\">{LANG_OUT_TEMA}</td>
+														<td align=\"left\"><strong>".$row['subj']."</strong></td>
+													</tr>
+													<tr>
+														<td align=\"right\">{LANG_OUT_ADD_TO_N}</td>
+														<td align=\"left\"><strong>".$row['to_num']."</strong></td>
+													</tr>
+													<tr>
+														<td align=\"right\">{LANG_HOW}</td>
+														<td align=\"left\"><strong>{LANG_HOW_".$row['how']."}</strong></td>
+													</tr>
+												</table>
 											  </div>
 											  <div class=\"modal-footer\">
 												<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">{LANG_JURN_OUT_NUM_CLOSE}</button>
