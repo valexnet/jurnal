@@ -17,7 +17,7 @@ if (isset($_SESSION['user_id']))
 				unset($_SESSION['user_year']);
 				session_unset();
 				session_destroy();
-				$page.= file_get_contents("templates/information.html");
+				$page.= file_get_contents("templates/information_success.html");
 				$page = str_replace("{INFORMATION}", "{LANG_LOGOUT}", $page);
 				$timeout = "index.php";
 			}
@@ -48,7 +48,7 @@ if (isset($_SESSION['user_id']))
 												unset($_SESSION['user_pass']);
 												session_unset();
 												session_destroy();
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_success.html");
 												$page = str_replace("{INFORMATION}", "{LANG_PASS_CHENGED}", $page);
 												$timeout = "user.php";
 											}
@@ -56,25 +56,25 @@ if (isset($_SESSION['user_id']))
 											{
 												$loging_do = "{LANG_LOG_USERS_CHANGEPASS_ERROR_OLD_PASS}";
 												include ('inc/loging.php');
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_danger.html");
 												$page = str_replace("{INFORMATION}", "{LANG_OLD_PASS_ERR}", $page);
 											}
 									}
 									else
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_PASS_NOT_MIRROR}", $page);
 									}
 							}
 							else
 							{
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_EMPTY_PASS_NOT_ALLOW}", $page);
 							}
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						if ($user_p_user <> 1) $page = str_replace("{INFORMATION}", "{LANG_USER_P_USER_0}", $page);
 						$page = str_replace("{INFORMATION}", "{LANG_EMPTY_PASS}", $page);
 					}
@@ -113,14 +113,14 @@ if (isset($_SESSION['user_id']))
 											{
 												$loging_do = "{LANG_LOG_USER_ENTER_OTHER_IP} ".$user_login;
 												include ('inc/loging.php');
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_danger.html");
 												$page = str_replace("{INFORMATION}", "{LANG_LOGIN_ERR_IP}", $page);
 											}
 									}
 									
 								if ($c_ano == 0 && $row['p_config'] == 0)
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_LOGIN_ERR_SITE_OFFLINE}", $page);
 										$enter = "false";
 									}
@@ -134,7 +134,7 @@ if (isset($_SESSION['user_id']))
 										$_SESSION['user_year'] = date('Y');
 										$loging_do = "{LANG_LOG_USER_ENTER}";
 										include ('inc/loging.php');
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_LOGIN_OK}", $page);
 										$timeout = "index.php";
 										$query = "UPDATE `users` SET `time`='".time()."' WHERE `id`='".$row['id']."' LIMIT 1;";
@@ -144,13 +144,13 @@ if (isset($_SESSION['user_id']))
 							}
 							else
 							{
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_LOGIN_ERR_WORK}", $page);
 							}
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_LOGIN_ERR}", $page);
 						if (isset($_SESSION['user_login_error_num'])) {} else $_SESSION['user_login_error_num'] = 0;
 						$_SESSION['user_login_error_num'] = $_SESSION['user_login_error_num'] + 1;
@@ -167,7 +167,7 @@ if (isset($_SESSION['user_id']))
 			{
 				if ($_SESSION['user_login_error_num'] >= 4)
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_LOGIN_ERR_4_TIMES}", $page);
 					}
 					

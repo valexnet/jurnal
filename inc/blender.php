@@ -7,7 +7,7 @@ if (isset($_SESSION['user_id']))
 		$page = str_replace("{TIMEOUT_SESSION_COUNTER}", $session_counter, $page);
 		if ($c_tmt > 3600) { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "declOfNum(hours, [\"година\", \"години\", \"годин\"]),", $page); } else { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "", $page); }
 		if ($c_tmt == 0) { $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "", $page); } else { $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page); }
-		$page = str_replace("{LINK_BUTTON_IN_OR_OUT_TYPE}", "danger", $page);
+		$page = str_replace("{LINK_BUTTON_IN_OR_OUT_TYPE}", "warning", $page);
 		$page = str_replace("{LINK_BUTTON_IN_OR_OUT}", "$('#UserExit').modal('show');", $page);
 		$page = str_replace("{LANG_BUTTON_IN_OR_OUT}", "{LANG_USER_OUT}", $page);
 	}

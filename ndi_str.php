@@ -24,19 +24,19 @@ if ($user_p_mod == 1)
 										$query = "INSERT INTO `structura` (`id`, `index`, `name`, `user`, `time`, `do`, `work`) VALUES (NULL , '".$index."', '".$name."', '".$_SESSION['user_id']."', '".time()."', '{LANG_NDI_STR_ADMIN_ADD}', '1');";
 										$res = mysql_query($query) or die(mysql_error());
 										$queryes_num++;
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_STR_ADD_OK}", $page);
 										$timeout = "ndi_str.php";
 									}
 									else
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_STR_ADD_EXIST}", $page);
 									}
 							}
 							else
 							{
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_STR_ADD_NAME_OR_INDEX_EMPTY}", $page);
 							}
 					}
@@ -65,19 +65,19 @@ if ($user_p_mod == 1)
 										$query = "UPDATE `structura` SET `index`='".$index."', `name`='".$name."', `user`='".$_SESSION['user_id']."', `time`='".time()."', `do`='{LANG_NDI_STR_ADMIN_EDIT}' WHERE `id`='".$id."' LIMIT 1;";
 										$res = mysql_query($query) or die(mysql_error());
 										$queryes_num++;
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_STR_EDIT_OK}", $page);
 										$timeout = "ndi_str.php";
 									}
 									else
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_STR_EDIT_NOT_EXIST}", $page);
 									}
 							}
 							else
 							{
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_STR_ADD_NAME_OR_INDEX_EMPTY}", $page);
 							}
 					}
@@ -99,7 +99,7 @@ if ($user_p_mod == 1)
 							}
 							else
 							{
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_STR_DEL_NOT_EXIST}", $page);
 							}
 					}
@@ -118,14 +118,14 @@ if ($user_p_mod == 1)
 						$query = "UPDATE `structura` SET `work`='0', `user`='".$_SESSION['user_id']."', `time`='".time()."', `do`='{LANG_NDI_STR_ADMIN_DELETE}' WHERE `id`='".$del."' LIMIT 1;";
 						$res = mysql_query($query) or die(mysql_error());
 						$queryes_num++;
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_success.html");
 						$page = str_replace("{INFORMATION}", "{LANG_STR_DEL_OK}", $page);
 						$loging_do = "{LANG_LOG_STR_DEL} ".$del;
 						include ('inc/loging.php');
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_STR_DEL_NOT_EXIST}", $page);
 					}
 			}
@@ -186,7 +186,7 @@ if ($user_p_mod == 1)
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_STR_EMPTY}<br /><a href=\"?add\">{LANG_STR_ADMIN_ADD}</a>", $page);
 					}
 			}
@@ -196,7 +196,7 @@ if ($user_p_mod == 1)
 		$loging_do = "{LANG_LOG_NDI_403}";
 		include ('inc/loging.php');
 		header('HTTP/1.1 403 Forbidden');
-		$page.= file_get_contents("templates/information.html");
+		$page.= file_get_contents("templates/information_danger.html");
 		$page = str_replace("{INFORMATION}", "{LANG_403}", $page);
 		$timeout = "index.php";
 	}

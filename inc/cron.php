@@ -8,6 +8,10 @@ while ($row=mysql_fetch_array($res))
 	{
 		if (time() >= $row['time'] + $row['last'] && $row['time'] <> 0)
 			{
+$return = "SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO'; 
+SET NAMES 'utf8' COLLATE 'utf8_general_ci';
+SET CHARACTER SET 'utf8';
+";
 				// Берем перелік всіх таблиць
 				$tables = array();
 				$result = mysql_query('SHOW TABLES');

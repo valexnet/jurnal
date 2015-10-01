@@ -51,7 +51,7 @@ if ($user_p_config == 1)
 								if (!preg_match("/^[a-z]{1}:.*\/$/i", $_POST['backup_plus']) OR !is_dir($_POST['backup_plus']))
 									{
 										$error = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_BACKUP_PLUS}", $page);
 									}
 							}
@@ -59,19 +59,19 @@ if ($user_p_config == 1)
 						if ($_POST['sitename'] == "")
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_SITENAME}", $page);
 							}
 						if ($_POST['backup_limit'] < 0 OR $_POST['backup_limit'] > 9999)
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_BACKUP_LIMIT}", $page);
 							}
 						if ($_POST['anonymous_allow'] <> "" AND $_POST['anonymous_allow'] <> 1)
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_ANONYMOUS_ALLOW}", $page);
 							}
 						if ($_POST['timeout_auht'] < 300)
@@ -79,56 +79,56 @@ if ($user_p_config == 1)
 								if ($_POST['timeout_auht'] <> 0)
 									{
 										$error = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_TIMEOUT_AUHT}", $page);
 									}
 							}
 						if ($_POST['page_limit'] <> "" AND $_POST['page_limit'] < 1)
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_PAGE_LIMIT}", $page);
 							}
 						if ($_POST['cron_backup_timeout'] < 0)
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_CRON_BACKUP_TIMEOUT}", $page);
 							}							
 						if ($_POST['cron_backup_on_email_timeout'] < 0)
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_CRON_BACKUP_ON_EMAIL_TIMEOUT}", $page);
 							}
 						if ($_POST['login_choose'] <> 0 AND $_POST['login_choose'] <> 1)
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_LOGIN_CHOOSE}", $page);
 							}
 						if ($_POST['year_start'] < 0 OR $_POST['year_start'] > 9999 OR $_POST['year_start'][3] == "")
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_YEAR_START}", $page);
 							}
 						if ($_POST['file_size'] < 0 OR $_POST['file_size'] > 9999)
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_FILE_SIZE}", $page);
 							}
 						if ($_POST['n_ray'] == "" OR $_POST['n_ray'][4] != "")
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_N_RAY}", $page);
 							}
 						if ($_POST['reg_file'] == "")
 							{
 								$error = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_REG_FILE}", $page);
 							}
 						if ($error <> "true")
@@ -158,7 +158,7 @@ if ($user_p_config == 1)
 								$queryes_num++;
 								$loging_do = "{LANG_LOG_CONFIG_EDIT}";
 								include ('inc/loging.php');
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_success.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_SAVED}", $page);
 								$timeout = "config.php";
 							}
@@ -201,7 +201,7 @@ if ($user_p_config == 1)
 		$loging_do = "{LANG_LOG_CONFIG_403}";
 		include ('inc/loging.php');
 		header('HTTP/1.1 403 Forbidden');
-		$page.= file_get_contents("templates/information.html");
+		$page.= file_get_contents("templates/information_danger.html");
 		$page = str_replace("{INFORMATION}", "{LANG_403}", $page);
 		$timeout = "index.php";
 	}

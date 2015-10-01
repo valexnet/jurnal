@@ -1,79 +1,122 @@
 <div class="container">
 	<h3><p class="text-center">{LANG_JURNAL_OUT_EDIT_FORM}</p></h3>
-	<FORM class="form-horizontal" ACTION="jurnal_out.php?edit=do&edit={JURNAL_OUT_NUM_TO_EDIT}" METHOD="POST" NAME="form" enctype="multipart/form-data">
+	
+	<FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_out.php?edit=do&edit={JURNAL_OUT_NUM_TO_EDIT}" METHOD="POST" enctype="multipart/form-data">
+		
 		<div class="form-group">
-			<label for="data" class="col-sm-2 control-label">{LANG_DATA}</label>
-			<div class="col-sm-4">
-				<INPUT TYPE="hidden" NAME="data" value="{D-A-T-A}" />
-				<input class="form-control" id="data" type="text" value="{D-A-T-A}" disabled />
-			</div>
-			<label for="user" class="col-sm-2 control-label">{LANG_OUT_ADD_FROM}</label>
-			<div class="col-sm-4">
-				<input class="form-control" id="user" NAME="user" type="text" value="{USER_NAME}" disabled />
+			<label class="control-label col-sm-2" for="LANG_DATA">{LANG_DATA}:</label>
+			<div class="col-sm-10">
+				<INPUT TYPE="hidden" NAME="data" value="{D-A-T-A}">
+				<input type="text" class="form-control" id="LANG_DATA" value="{D-A-T-A}" disabled>
 			</div>
 		</div>
+		
 		<div class="form-group">
-			<label for="to" class="col-sm-2 control-label">{LANG_OUT_ADD_TO}</label>
+			<label class="control-label col-sm-2" for="user">{LANG_OUT_ADD_FROM}:</label>
 			<div class="col-sm-10">
-				<input id="to" NAME="to" value="{FORM_TO}" type="text" class="form-control" />
+				<input type="text" NAME="user" class="form-control" id="user" value="{USER_NAME}" disabled>
 			</div>
 		</div>
+		
 		<div class="form-group">
-			<label for="to_num" class="col-sm-2 control-label">{LANG_OUT_ADD_TO_N}</label>
-			<div class="col-sm-10">
-				<input id="to_num" NAME="to_num" value="{FORM_TO_N}" type="text" class="form-control" />
+			<label class="control-label col-sm-2" for="to">{LANG_OUT_ADD_TO}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="to" class="form-control" id="to" value="{FORM_TO}" placeholder="{LANG_TO_MORE}" data-error="{LANG_FORM_NO_TO}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
 			</div>
 		</div>
+		
 		<div class="form-group">
-			<label for="subj" class="col-sm-2 control-label">{LANG_OUT_TEMA}</label>
+			<label class="control-label col-sm-2" for="to_num">{LANG_OUT_ADD_TO_N}:</label>
 			<div class="col-sm-10">
-				<input id="subj" NAME="subj" value="{FORM_SUBJ}" type="text" class="form-control" />
+				<input type="text" NAME="to_num" class="form-control" id="to_num" value="{FORM_TO_N}" placeholder="{LANG_TO_N_MORE}">
 			</div>
 		</div>
+
 		<div class="form-group">
-			<label for="subj" class="col-sm-2 control-label">{LANG_NOMENCLATURA}</label>
-			<div class="col-sm-10">
-				<SELECT NAME="nom" class="form-control">
+			<label class="control-label col-sm-2" for="subj">{LANG_OUT_TEMA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="subj" class="form-control" id="subj" value="{FORM_SUBJ}" placeholder="{LANG_SUBJ_PLACEHOLDER}" data-error="{LANG_FORM_NO_TEMA}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="nom">{LANG_NOMENCLATURA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<SELECT NAME="nom" class="form-control" id="nom" data-error="{LANG_FORM_NO_NOM}" required >
 					{NOMENCLATURA}
 				</SELECT>
+				<div class="help-block with-errors"></div>
 			</div>
 		</div>
-		<div class="form-group">
-			<label for="subj" class="col-sm-2 control-label">{LANG_HOW}</label>
-			<div class="col-sm-10">
-				<p>
-					<input type="radio" name="how" value="1" {FORM_HOW_1} /> {LANG_HOW_1} |
-					<input type="radio" name="how" value="2" {FORM_HOW_2} /> {LANG_HOW_2} |
-					<input type="radio" name="how" value="3" {FORM_HOW_3} /> {LANG_HOW_3}
-				</p>
-			</div>
-		</div>
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<div class="checkbox">
-					<label>
-						<input type="checkbox" NAME="blank_n" value="1" {FORM_BLANK_N} disabled /> {LANG_REGISTER_BLANK}
-					</label>
-				</div>
-			</div>
-		</div>
+		
 		<script>
 			<!--
-			function validate()
+			function show_and_hide_money(a)
 				{
-					if (document.form.to.value == "") {alert("{LANG_FORM_NO_TO}"); return false;}
-					if (document.form.subj.value == "") {alert("{LANG_FORM_NO_TEMA}"); return false;}
-					if (document.form.nom.value == "") {alert("{LANG_FORM_NO_NOM}"); return false;}
-					skm_LockScreen();
-					return true;
+					if (a == 3)
+						{
+							$('#input-money').show();
+							$('#zero-money').hide();
+						}
+						else
+						{
+							if (document.getElementById('money').value != '0')
+								{
+									$('#zero-money').show();
+									document.getElementById('money').value = '0'; 
+								}
+							$('#input-money').hide();
+						} 
 				}
 			//-->
 		</script>
+		
 		<div class="form-group">
 			<div class="col-sm-offset-2 col-sm-10">
-				<INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
-				<button type="submit" class="btn btn-success" onclick="return validate();">{LANG_SEND_FORM}</button>
+				<label class="btn btn-success">
+						<input onchange = "show_and_hide_money(1);" type="radio" name="how" value="1" id="option1" autocomplete="off" {FORM_HOW_1} > {LANG_HOW_1}
+				</label>
+				<label class="btn btn-info">
+						<input onchange = "show_and_hide_money(2);" type="radio" name="how" value="2" id="option2" autocomplete="off" {FORM_HOW_2} > {LANG_HOW_2}
+				</label>
+				<label class="btn btn-danger">
+						<input onchange = "show_and_hide_money(3);" type="radio" name="how" value="3" id="option3" autocomplete="off" {FORM_HOW_3} > {LANG_HOW_3}
+				</label>
 			</div>
 		</div>
+		
+		<div class="form-group" style="display: none;" id="input-money" >
+			<label class="control-label col-sm-2" for="money">{LANG_SEND_MONEY}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="money" class="form-control" id="money" value="{FORM_MONEY}" >
+			</div>
+		</div>
+		
+		<div class="form-group" style="display: none;" id="zero-money" >
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-info btn-lg btn-block" disabled >{LANG_MONEY_IS_ZERO_NOW}</button>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<label class="btn btn-default">
+					<input type="checkbox" NAME="blank_n" value="1" id="option4" autocomplete="off" {FORM_BLANK_N} disabled /> {LANG_REGISTER_BLANK}
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">        
+			<div class="col-sm-offset-2 col-sm-10">
+				<INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
+				<button type="submit" class="btn btn-success">{LANG_SEND_FORM}</button> <button type="reset" class="btn btn-info">{LANG_FORM_RESET}</button> 
+			</div>
+		</div>
+
 	</FORM>
 </div>
+

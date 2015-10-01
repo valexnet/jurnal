@@ -51,9 +51,11 @@ if (isset($_SESSION['user_id']))
 
 								if ($_POST['form_id'] == $_SESSION['form_id']) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_FORM_ID}<br />';
 								if ($_POST['nom'] == '' OR !preg_match('/^[0-9]+$/', $_POST['nom'])) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_NOM}<br />';
+								if ($FORM_TO == '') $error .= '{LANG_FORM_NO_TO}<br />';
+								if ($FORM_TO_SUBJ == '') $error .= '{LANG_FORM_NO_TEMA}<br />';
 
 								// Рубаєм бабоси ;)
-								if (!isset($_POST['money'])) $_POST['money'] = 0;
+								if (!isset($_POST['money']) OR $_POST['money'] == '') $_POST['money'] = 0;
 								$_POST['money'] = str_replace(",", ".", $_POST['money']);
 								$money_tmp = explode(".", $_POST['money']);
 								if (isset($money_tmp[1]))
@@ -156,23 +158,17 @@ if (isset($_SESSION['user_id']))
 												$print_regular = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer."</b>";
 											}
 
-										$page.= file_get_contents("templates/information.html");
-										$page = str_replace("{INFORMATION}", "{RETURN_N}: <h1>".$print_nomer."</h1>", $page);
+										$page.= file_get_contents("templates/information_success.html");
+										$page = str_replace("{INFORMATION}", "{RETURN_N}: <kbd>".$print_nomer."</kbd>", $page);
 
 										if ($blank_n == 1)
 											{
 												$page.= file_get_contents("templates/information.html");
-												$page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <h1><b>".$blank."</b></h1>", $page);
+												$page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <kbd>".$blank."</kbd>", $page);
 											}
 											
 										$page.= file_get_contents("templates/information.html");
-										$page = str_replace("{INFORMATION}", "{RETURN_REGULAR_N}: <h1>".$print_regular."</h1>", $page);
-/*
-										if (isset($_POST['file[]'])
-											{
-												// робота з файлами
-											}
-*/
+										$page = str_replace("{INFORMATION}", "{RETURN_REGULAR_N}: <kbd>".$print_regular."</kbd>", $page);
 									}
 									else
 									{
@@ -184,7 +180,7 @@ if (isset($_SESSION['user_id']))
 										$_SESSION['form_money'] = $FORM_MONEY;
 										$_SESSION['form_how'] = $_POST['how'];
 										$_SESSION['form_blank_n'] = $blank_n;
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", $error, $page);
 										$page.= file_get_contents("templates/information.html");
 										$page = str_replace("{INFORMATION}", "<a href=\"jurnal_out.php?add=do\">{LANG_RETURN_AND_GO}</a>", $page);
@@ -278,7 +274,7 @@ if (isset($_SESSION['user_id']))
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_PRIVAT6_NO}", $page);
 					}
 			}
@@ -324,7 +320,6 @@ if (isset($_SESSION['user_id']))
 											{
 												if ($_GET['edit'] <> $row['id']) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_FIRST}<br />";
 												if ($_SESSION['user_id'] <> $row['user']) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR}<br />";
-												//die($_SESSION['user_id']."-".$row['user']);
 											}
 									}
 									
@@ -345,12 +340,12 @@ if (isset($_SESSION['user_id']))
 										WHERE `id`='".$_GET['edit']."' ;";
 										mysql_query($query) or die(mysql_error());
 										$queryes_num++;
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_OUT_EDIT_OK}", $page);
 									}
 									else
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", $error, $page);
 										$page.= file_get_contents("templates/information.html");
 										$page = str_replace("{INFORMATION}", "<a href=\"jurnal_out.php?edit=".$_GET['edit']."\">{LANG_RETURN_AND_GO}</a>", $page);
@@ -373,6 +368,8 @@ if (isset($_SESSION['user_id']))
 												$page = str_replace("{FORM_TO_N}", $row['to_num'], $page);
 												$page = str_replace("{FORM_SUBJ}", $row['subj'], $page);
 												$page = str_replace("{FORM_TO}", $row['to'], $page);
+												$page = str_replace("{FORM_MONEY}", $row['money'], $page);
+												if ($row['money'] != 0) $page = str_replace("style=\"display: none;\" id=\"input-money\"", "id=\"input-money\"", $page);
 												if ($row['how'] == 1) {$page = str_replace("{FORM_HOW_1}", "checked", $page);} else {$page = str_replace("{FORM_HOW_1}", "", $page);}
 												if ($row['how'] == 2) {$page = str_replace("{FORM_HOW_2}", "checked", $page);} else {$page = str_replace("{FORM_HOW_2}", "", $page);}
 												if ($row['how'] == 3) {$page = str_replace("{FORM_HOW_3}", "checked", $page);} else {$page = str_replace("{FORM_HOW_3}", "", $page);}
@@ -455,14 +452,14 @@ if (isset($_SESSION['user_id']))
 									}
 									else
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_USER_OUT_NUM_NOT_EXIST}", $page);
 									}
 							}
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_PRIVAT6_NO}", $page);
 					}
 			}
@@ -516,19 +513,20 @@ if (isset($_SESSION['user_id']))
 
 										$loging_do = "{LANG_LOG_JURNAL_OUT_DELETE_LAST} ".$row['id'];
 										include ('inc/loging.php');
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_DELETE_LAST}", $page);
+										$timeout = "jurnal_out.php";
 									}
 									else
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", $ERROR, $page);
 									}
 							}
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_EMPTY}", $page);
 					}
 
@@ -598,31 +596,31 @@ if (isset($_SESSION['user_id']))
 																							{
 																								if (@move_uploaded_file($FILE['tmp_name'][$i], $file_name))
 																									{
-																										$page.= file_get_contents("templates/information.html");
+																										$page.= file_get_contents("templates/information_success.html");
 																										$page = str_replace("{INFORMATION}", "<font color=\"green\">{LANG_FILE_SAVE_OK} ".$file_new_name."</font>", $page);
 																									}
 																									else
 																									{
-																										$page.= file_get_contents("templates/information.html");
+																										$page.= file_get_contents("templates/information_danger.html");
 																										$page = str_replace("{INFORMATION}", "<font color=\"green\">{LANG_FILE_SAVE_ERROR} ".$file_new_name."</font>", $page);
 																									}
 																							}
 																							else
 																							{
-																								$page.= file_get_contents("templates/information.html");
+																								$page.= file_get_contents("templates/information_danger.html");
 																								$page = str_replace("{INFORMATION}", $file_new_name." <font color=\"red\">{LANG_FILE_ALREADY_EXIST}</font>", $page);
 																							}
 																					}
 																			}
 																			else
 																			{
-																				$page.= file_get_contents("templates/information.html");
+																				$page.= file_get_contents("templates/information_danger.html");
 																				$page = str_replace("{INFORMATION}", "<font color=\"red\">{LANG_FILE_SIZE_NOT_ALLOWED}</font> <b>".(($FILE['size'][$i] / 1024) / 1024 )." MB</b>", $page);
 																			}
 																	}
 																	else
 																	{
-																		$page.= file_get_contents("templates/information.html");
+																		$page.= file_get_contents("templates/information_danger.html");
 																		$page = str_replace("{INFORMATION}", "<b>".$ext."</b> <font color=\"red\">{LANG_FILE_EXT_NOT_ALLOWED}</font>", $page);
 																	}
 															}
@@ -650,12 +648,12 @@ if (isset($_SESSION['user_id']))
 																				$tmp_do = 1;
 																				if (@unlink("uploads\\".$_SESSION['user_year']."\\".$file))
 																					{
-																						$page.= file_get_contents("templates/information.html");
+																						$page.= file_get_contents("templates/information_success.html");
 																						$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_OK}", $page);
 																					}
 																					else
 																					{
-																						$page.= file_get_contents("templates/information.html");
+																						$page.= file_get_contents("templates/information_danger.html");
 																						$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_ERROR}", $page);
 																					}
 																			}
@@ -705,19 +703,19 @@ if (isset($_SESSION['user_id']))
 									}
 									else
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_FILES_NO}", $page);
 									}
 							}
 							else
 							{
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_ID_NOT_FOUND}", $page);
 							}
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_ADD_ADMIN_ADD_BD_ERROR}", $page);
 					}
 			}
@@ -917,7 +915,7 @@ if (isset($_SESSION['user_id']))
 										$disable_serch = "jurnal_out.php";
 										if ($_GET['blank'] == "do") $disable_serch .= "?blank=do";
 										$page.= file_get_contents("templates/information.html");
-										$page = str_replace("{INFORMATION}", $where_lang." / <a href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
+										$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
 									}
 									
 								$page.= file_get_contents("templates/jurnal_out.html");
@@ -964,7 +962,7 @@ if (isset($_SESSION['user_id']))
 										
 										$jurnal_out .= "
 										<tr valign=\"top\" align=\"center\">
-											<td valign=\"top\" align=\"center\" ><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
+											<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a></abbr> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
 											<td valign=\"top\" align=\"center\" >".$blank_num."</td>
 											<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=how&do=".$row['how']."\">".$how_img."</a></td>
 											<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".$row_data[0]."</a></td>
@@ -1012,6 +1010,10 @@ if (isset($_SESSION['user_id']))
 														<td align=\"right\">{LANG_HOW}</td>
 														<td align=\"left\"><strong>{LANG_HOW_".$row['how']."}</strong></td>
 													</tr>
+													<tr>
+														<td align=\"right\">{LANG_SEND_MONEY}</td>
+														<td align=\"left\"><strong>".$row['money']."</strong></td>
+													</tr>
 												</table>
 											  </div>
 											  <div class=\"modal-footer\">
@@ -1030,13 +1032,13 @@ if (isset($_SESSION['user_id']))
 							}
 							else
 							{
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_EMPTY}", $page);
 							}
 					}
 					else
 					{
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_YEAR_NOT_EXIST}", $page);
 					}
 			}
@@ -1046,7 +1048,7 @@ if (isset($_SESSION['user_id']))
 		$loging_do = "{LANG_LOG_JURNAL_OUT_403}";
 		include ('inc/loging.php');
 		header('HTTP/1.1 403 Forbidden');
-		$page.= file_get_contents("templates/information.html");
+		$page.= file_get_contents("templates/information_danger.html");
 		$page = str_replace("{INFORMATION}", "{LANG_403}", $page);
 		$timeout = "index.php";
 	}

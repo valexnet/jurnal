@@ -15,25 +15,25 @@ if ($user_p_users == 1)
 						if ($_POST['user_password1'] == "" OR $_POST['user_password2'] == "")
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_EMPTY_PASS_NOT_ALLOW}", $page);
 							}
 						if ($_POST['user_password1'] <> $_POST['user_password2'])
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_PASS_NOT_MIRROR}", $page);
 							}
 						if ($_POST['user_login'] == "")
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_LOGIN}", $page);
 							}
 						if ($_POST['user_name'] == "")
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_NAME}", $page);
 							}
 						if ($_POST['user_lang'] == "") 
@@ -101,7 +101,7 @@ if ($user_p_users == 1)
 						if ($_POST['user_str'] == "" )
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_STR}", $page);
 							}
 						
@@ -114,7 +114,7 @@ if ($user_p_users == 1)
 								if ($numberall <> 0)
 									{
 										$error_save = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_DOUBLE_LOGIN}", $page);
 									}
 									else
@@ -165,14 +165,14 @@ if ($user_p_users == 1)
 										$queryes_num++;
 										if ($error_save == "true")
 											{
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_danger.html");
 												$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_BD_ERROR}", $page);
 											}
 											else
 											{
 												$loging_do = "{LANG_LOG_USERS_ADD} ".$user_login;
 												include ('inc/loging.php');
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_success.html");
 												$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_OK}", $page);
 											}
 									}
@@ -219,7 +219,7 @@ if ($user_p_users == 1)
 						if ($numberall == 0)
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_EDIT_NO_ID}", $page);
 							}
 							else
@@ -230,20 +230,20 @@ if ($user_p_users == 1)
 										if ($_POST['user_password1'] <> $_POST['user_password2'])
 											{
 												$error_save = "true";
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_danger.html");
 												$page = str_replace("{INFORMATION}", "{LANG_PASS_NOT_MIRROR}", $page);
 											}
 									}
 								if ($_POST['user_login'] == "")
 									{
 										$error_save = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_LOGIN}", $page);
 									}
 								if ($_POST['user_name'] == "")
 									{
 										$error_save = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_NAME}", $page);
 									}
 								if ($_POST['user_lang'] == "")
@@ -311,7 +311,7 @@ if ($user_p_users == 1)
 								if ($_POST['user_str'] == "")
 									{
 										$error_save = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_STR}", $page);
 									}
 								$query = "SELECT `login` FROM `users` WHERE `login`='".$_POST['user_login']."' AND `id`<>'".$user_edit."';";
@@ -321,7 +321,7 @@ if ($user_p_users == 1)
 								if ($numberall > 0)
 									{
 										$error_save = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_DOUBLE_LOGIN}", $page);
 									}
 								$query = "SELECT `name` FROM `users` WHERE `name`='".$_POST['user_name']."' AND `id`<>'".$user_edit."';";
@@ -331,7 +331,7 @@ if ($user_p_users == 1)
 								if ($numberall > 0)
 									{
 										$error_save = "true";
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_EDIT_DOUBLE_NAME}", $page);
 									}
 								if ($error_save <> "true")
@@ -434,14 +434,14 @@ if ($user_p_users == 1)
 										$queryes_num++;
 										if ($error_save == "true")
 											{
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_danger.html");
 												$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_EDIT_BD_ERROR}", $page);
 											}
 											else
 											{
 												$loging_do = "{LANG_LOG_USERS_EDIT} ".$user_login;
 												include ('inc/loging.php');
-												$page.= file_get_contents("templates/information.html");
+												$page.= file_get_contents("templates/information_success.html");
 												$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_EDIT_OK}", $page);
 											}
 									}
@@ -456,7 +456,7 @@ if ($user_p_users == 1)
 						if ($numberall == 0)
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_EDIT_NO_ID}", $page);
 							}
 							else
@@ -561,7 +561,7 @@ if ($user_p_users == 1)
 						$query = "UPDATE `users` SET `del`='1' WHERE `id`='".$user_id."' LIMIT 1;";
 						@mysql_query($query);
 						$queryes_num++;
-						$page.= file_get_contents("templates/information.html");
+						$page.= file_get_contents("templates/information_success.html");
 						$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_DELETED}", $page);
 					}
 			}
@@ -643,7 +643,7 @@ if ($user_p_users == 1)
 		$loging_do = "{LANG_LOG_USERS_403}";
 		include ('inc/loging.php');
 		header('HTTP/1.1 403 Forbidden');
-		$page.= file_get_contents("templates/information.html");
+		$page.= file_get_contents("templates/information_danger.html");
 		$page = str_replace("{INFORMATION}", "{LANG_403}", $page);
 		$timeout = "index.php";
 	}

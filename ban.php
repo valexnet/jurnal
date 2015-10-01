@@ -14,7 +14,7 @@ if ($user_p_ip == 1)
 						if ($_POST['ban_ip'] == "")
 							{
 								$error_save = "true";
-								$page.= file_get_contents("templates/information.html");
+								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_BAN_ADMIN_ADD_EMPTY_IP}", $page);
 							}
 						if ($error_save <> "true")
@@ -25,16 +25,15 @@ if ($user_p_ip == 1)
 								$queryes_num++;
 								if ($error_save == "true")
 									{
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", "{LANG_BAN_ADMIN_ADD_BD_ERROR}", $page);
 									}
 									else
 									{
 										$loging_do = "{LANG_LOG_BAN_ADD} ".$_POST['ban_ip'];
 										include ('inc/loging.php');
-										$page.= file_get_contents("templates/information.html");
+										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_BAN_ADMIN_ADD_OK}", $page);
-										$timeout = "ban.php";
 									}
 							}
 					}
@@ -96,7 +95,7 @@ if ($user_p_ip == 1)
 		$loging_do = "{LANG_LOG_BAN_403}";
 		include ('inc/loging.php');
 		header('HTTP/1.1 403 Forbidden');
-		$page.= file_get_contents("templates/information.html");
+		$page.= file_get_contents("templates/information_danger.html");
 		$page = str_replace("{INFORMATION}", "{LANG_403}", $page);
 		$timeout = "index.php";
 	}
