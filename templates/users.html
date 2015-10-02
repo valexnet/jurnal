@@ -1,23 +1,25 @@
-<div class="container">
+<div class="container" data-spy="affix" data-offset-top="170" style="background-color: #FFF;">
 	<h3><p class="text-center">{LANG_USER_P_USERS}</p></h3>
 	<p class="text-center"><a href="users.php?user_add">{LANG_USERS_ADMIN_ADD}</a></p>
-	<div class="table-responsive">
-	<table class="table table-hover">
-		<tr valign="top" align="center">
-			<td valign="middle" align="center" width="2%" height="30"><b>{LANG_USER_ID}</b></td>
-			<td valign="middle" width="15%"><b>{LANG_USER_NAME}</b></td>
-			<td valign="middle" width="15%"><b>{LANG_LOGIN}</b></td>
-			<td valign="middle" width="15%"><b>{LANG_STRUCTURA}</b></td>
-			<td valign="middle" width="15%"><b>{LANG_USER_TIME_ACTIVITY}</b></td>
-			<td valign="middle" width="15%"><b>{LANG_USER_IP}</b></td>
-			<td valign="middle" width="15%"><b>{LANG_USER_ACCESS}</b></td>
-			<td valign="middle" width="15%"><b>{LANG_USER_ADMIN}</b></td>
-		</tr>
-		{USERS_VIEWS}
-	</table>
-	</div>
 	<div class="form-group">
 		<div class="col-sm-2">{USER_STATS}</div>
 		<div class="col-sm-10">{USERS_P_AA}</div>
+	</div>
+</div>
+<div class="container">
+	<div class="table-responsive">
+		<table class="table table-hover">
+			<tr valign="top" align="center">
+				<td valign="middle" align="center" width="2%" height="30"><b>{LANG_USER_ID}</b></td>
+				<td valign="middle" width="15%"><b>{LANG_USER_NAME}</b></td>
+				<td valign="middle" width="15%"><b>{LANG_LOGIN}</b></td>
+				<td valign="middle" width="15%"><b>{LANG_STRUCTURA}</b></td>
+				<td valign="middle" width="15%"><b>{LANG_USER_TIME_ACTIVITY}</b></td>
+				<td valign="middle" width="15%"><b>{LANG_USER_IP}</b></td>
+				<td valign="middle" width="15%"><b>{LANG_USER_ACCESS}</b></td>
+				<td valign="middle" width="15%"><b>{LANG_USER_ADMIN}</b></td>
+			</tr>
+			{USERS_VIEWS}
+		</table>
 	</div>
 </div>

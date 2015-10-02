@@ -309,17 +309,21 @@ if (isset($_SESSION['user_id']))
 
 								if ($_POST['how'] <> 3 AND $_POST['how'] <> 2) $_POST['how'] = 1;
 				
-								$query = "SELECT * FROM `db_".date('Y')."_out` ORDER BY `id` DESC LIMIT 1 ; ";
+								$query = "SELECT * FROM `db_".date('Y')."_out` WHERE `id`='".$_GET['edit']."' LIMIT 1 ; ";
 								$res = mysql_query($query) or die(mysql_error());
 								$queryes_num++;
 								if (mysql_num_rows($res) > 0)
 									{
 										while ($row=@mysql_fetch_array($res))
 											{
-												if ($_GET['edit'] <> $row['id'] AND $user_p_mod <> 1) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_FIRST}<br />";
+												if ($_GET['edit'] <> $row['id'] AND $user_p_mod <> 1) $error .= "{LANG_USER_OUT_NUM_NOT_EXIST}<br />";
 												if ($_SESSION['user_id'] <> $row['user'] AND $user_p_mod <> 1) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR}<br />";
 												if ($_POST['data'] <> $row['data'] AND $user_p_mod <> 1) $error = '{LANG_JURNAL_OUT_FORM_EDIT_DATE_NOT_PREG}<br />';
 											}
+									}
+									else
+									{
+										$error .= "{LANG_USER_OUT_NUM_NOT_EXIST}<br />";
 									}
 									
 								if ($error == '')
@@ -361,6 +365,11 @@ if (isset($_SESSION['user_id']))
 									{
 										while ($row=mysql_fetch_array($res))
 											{
+												if ($row['user'] != $_SESSION['user_id'] AND $user_p_mod <> 1)
+													{
+														$page.= file_get_contents("templates/information_danger.html");
+														$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR}", $page);
+													}
 												$page.= file_get_contents("templates/jurnal_out_edit.html");
 												$page = str_replace("{JURNAL_OUT_NUM_TO_EDIT}", $row['id'], $page);
 												$page = str_replace("{FORM_DATA}", $row['data'], $page);
@@ -481,7 +490,7 @@ if (isset($_SESSION['user_id']))
 						while ($row=@mysql_fetch_array($res))
 							{
 								if ($_GET['delete_last'] <> $row['id']) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_FIRST}<br />";
-								if ($row['user'] <> $_SESSION['user_id']) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_AUTHOR}<br />";
+								if ($row['user'] <> $_SESSION['user_id'] AND $user_p_mod <> 1) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_AUTHOR}<br />";
 								if ($_SESSION['user_year'] <> date('Y')) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_YEAR}<br />";
 								
 								if ($ERROR == "")
@@ -935,12 +944,13 @@ if (isset($_SESSION['user_id']))
 										if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
 										
 										$user_edit_num = 0;
-										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
+										if ($row['user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
 										if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
 										
 										$user_del_num = 0;
 										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
-										if ($user_del_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
+										if ($user_p_mod == 1 AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
+										if ($user_del_num == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
 
 										if ($admin_links_do == "") $admin_links_do = "&nbsp;";
 

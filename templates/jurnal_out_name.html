@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" data-spy="affix" data-offset-top="170" style="background-color: #FFF;">
 	<h3><p class="text-center">{LANG_YEAR} {USER_YEAR}. {LANG_JURNAL_OUT}</p></h3>
 	<form method="POST" action="jurnal_out.php">
 		<div class="col-sm-12 text-center">
@@ -12,5 +12,7 @@
 			<button type="submit" class="btn btn-primary btn-xs">{LANG_YEAR_CHANGE}</button>
 		</div>
 	</form>
+	<form method="POST" action="jurnal_out.php">
+		<p class="text-center">{JURNAL_OUT_STAT}, {LANG_USER_SET_LIMIT_PAGE} <INPUT TYPE="text" NAME="show_num_list" value="{PAGE_LIMIT}" size="2" /> {LANG_USER_SET_LIMIT_PAGE2}</p>
+	</form>
 </div>
-<div style="padding: 5px;"></div>

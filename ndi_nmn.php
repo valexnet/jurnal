@@ -193,7 +193,7 @@ if ($user_p_mod == 1)
 				$numberall = mysql_num_rows($res);
 				if ($numberall > 0)
 					{
-						$page.= file_get_contents("templates/ndi_nmn.html");
+						$page .= file_get_contents("templates/ndi_nmn.html");
 						while ($row=mysql_fetch_array($res))
 							{
 								if ($old_admin_id <> $row['user'])

@@ -3,6 +3,7 @@
 // Українська мова
 $lang = array (
 
+'LANG_SAVE_CHANGES' => "Зберегти зміни",
 'LANG_JURNAL_OUT_FORM_EDIT_DATE_NOT_PREG' => "У вас недостатньо прав для зміни Дати",
 'LANG_MODERATOR' => "Модератор",
 'LANG_ERROR_LANG_FILE_NOT_EXIST' => "Мовний файл відсутній",
@@ -525,8 +526,7 @@ $lang = array (
 'LANG_JURNAL_BLANK_REGISTERED' => "Бланк уже зареєстрований, ",
 'LANG_OUT_EDIT_OK' => "Зміни збережені.",
 'LANG_LOG_JURNAL_OUT_EDIT_ERROR' => "Помилка при збережені змін вихідного номеру",
-'LANG_JURNAL_OUT_EDIT_LAST_NOT_FIRST' => "Вихідний номер не останній, дозволяється редагувати або вилучати тільки останній номер.",
-'LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR' => "Ви не автор вихідного номеру, змінювати або вилучати вихідні номера можуть тульки їх автори.",
+'LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR' => "Ви не автор вихідного номеру, змінювати або вилучати вихідні номера можуть тільки їх автори або модератори.",
 'LANG_AUTORISED_US' => "Авторизований",
 'LANG_GUEST' => "Гість",
 'LANG_JURNAL_OUT_HOW' => "Сп.",
