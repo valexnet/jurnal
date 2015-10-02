@@ -36,10 +36,18 @@ if ($user_p_users == 1)
 								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_NAME}", $page);
 							}
-						if ($_POST['user_lang'] == "") 
+						if ($_POST['user_lang'] == "")
 							{
-								//—юда добавить перев≥рку на на€вн≥сть мовного файлу.
 								$_POST['user_lang'] = "ua";
+							}
+							else
+							{
+								if (!file_exists("inc/lang/".$_POST['user_lang'].".php"))
+									{
+										$error_save = "true";
+										$page.= file_get_contents("templates/information_danger.html");
+										$page = str_replace("{INFORMATION}", "{LANG_ERROR_LANG_FILE_NOT_EXIST}", $page);
+									}
 							}
 						if ($_POST['user_ip'] == "") $_POST['user_ip'] = 0;
 						if ($_POST['user_mail1'] == "") $_POST['user_mail1'] = 0;
@@ -248,8 +256,16 @@ if ($user_p_users == 1)
 									}
 								if ($_POST['user_lang'] == "")
 									{
-										//—юда добавить перев≥рку на на€вн≥сть мовного файлу.
 										$_POST['user_lang'] = "ua";
+									}
+									else
+									{
+										if (!file_exists("inc/lang/".$_POST['user_lang'].".php"))
+											{
+												$error_save = "true";
+												$page.= file_get_contents("templates/information_danger.html");
+												$page = str_replace("{INFORMATION}", "{LANG_ERROR_LANG_FILE_NOT_EXIST}", $page);
+											}
 									}
 								if ($_POST['user_ip'] == "") $_POST['user_ip'] = 0;
 								if ($_POST['user_mail1'] == "") $_POST['user_mail1'] = 0;

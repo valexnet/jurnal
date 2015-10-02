@@ -3,6 +3,11 @@
 // Українська мова
 $lang = array (
 
+'LANG_JURNAL_OUT_FORM_EDIT_DATE_NOT_PREG' => "У вас недостатньо прав для зміни Дати",
+'LANG_MODERATOR' => "Модератор",
+'LANG_ERROR_LANG_FILE_NOT_EXIST' => "Мовний файл відсутній",
+'LANG_JUNAL_VER_TOOLTIP' => "Ваша версія АС Журнал",
+'LANG_IE_IS_OLD' => "Ваш Internet Explorer застарів",
 'LANG_NUM_INFO_PLUS' => "Натисніть для прегляду",
 'LANG_FORM_RESET' => "Відмінити правки",
 'LANG_MONEY_IS_ZERO_NOW' => "Вартість відправки була знулена...",
@@ -535,7 +540,7 @@ $lang = array (
 'LANG_FILE_EXT_NOT_ALLOWED' => "Такий тип файлів не дозволений",
 'LANG_FILE_SIZE_NOT_ALLOWED' => "Перевищено ліміт ({MAX_FILE_SIZE_MB}) розміру файлу",
 'LANG_FILE_ALREADY_EXIST' => "Такий файл вже існує, перейменуйте новий, або вилучіть існуючий.",
-'LANG_OUT_EDIT_OK' => "Файл успішно збережено.",
+'LANG_FILE_EDIT_OK' => "Файл успішно збережено.",
 'LANG_JURNAL_OUT_ADD_FILE' => "Додати новий файл",
 'LANG_FILE_SAVE_OK' => "Файл успішно збережений.",
 'LANG_FILE_SAVE_ERROR' => "Не вдалось зберегти файл.",

@@ -94,6 +94,18 @@ if ($user_p_ip == 1) {$page = str_replace("{USER_P_IP}", "{LANG_ALLOW}", $page);
 if ($user_p_mod == 1) {$page = str_replace("{USER_P_MOD}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{USER_P_MOD}", "{LANG_DISALLOW}", $page);}
 if ($c_ano == 1) {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_DISALLOW}", $page);}
 if ($c_lch == 1) {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_DISALLOW}", $page);}
+
+// Шукаємо старі версії ІЕ
+$browser_alarm = "";
+preg_match("/(MSIE)(?:\/| )([0-9.]+)/", $_SERVER['HTTP_USER_AGENT'], $browser_info);
+list(,$browser_name,$browser_version) = $browser_info;
+if ($browser_name == 'MSIE' AND $browser_version < 9)
+	{
+		$browser_alarm = file_get_contents("templates/information_warning.html");
+		$browser_alarm = str_replace("{INFORMATION}", "{LANG_IE_IS_OLD}", $browser_alarm);
+	}
+$page = str_replace("{ALARM_IE_IS_OLD}", $browser_alarm, $page);
+// Підключаємо мову
 if (!file_exists("inc/lang/".$c_lng.".php")) die("Language file [inc/lang/".$c_lng.".php] not exist");
 include_once ("lang/".$c_lng.".php");
 foreach ($lang as $key => $value) {$page = str_replace("{".$key."}", $value, $page);}

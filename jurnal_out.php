@@ -286,8 +286,6 @@ if (isset($_SESSION['user_id']))
 					{
 						if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
 							{
-								if ($_POST['data'] <> date('Y-m-d')) $error = '{LANG_JURNAL_OUT_FORM_ERROR_DATE}<br />';
-
 								$FORM_TO = str_replace($srch, $rpls, $_POST['to']);
 								$FORM_TO_NUM = str_replace($srch, $rpls, $_POST['to_num']);
 								$FORM_TO_SUBJ = str_replace($srch, $rpls, $_POST['subj']);
@@ -318,8 +316,9 @@ if (isset($_SESSION['user_id']))
 									{
 										while ($row=@mysql_fetch_array($res))
 											{
-												if ($_GET['edit'] <> $row['id']) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_FIRST}<br />";
-												if ($_SESSION['user_id'] <> $row['user']) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR}<br />";
+												if ($_GET['edit'] <> $row['id'] AND $user_p_mod <> 1) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_FIRST}<br />";
+												if ($_SESSION['user_id'] <> $row['user'] AND $user_p_mod <> 1) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR}<br />";
+												if ($_POST['data'] <> $row['data'] AND $user_p_mod <> 1) $error = '{LANG_JURNAL_OUT_FORM_EDIT_DATE_NOT_PREG}<br />';
 											}
 									}
 									
@@ -329,14 +328,14 @@ if (isset($_SESSION['user_id']))
 										`time`='".time()."',
 										`ip`='".$_SERVER['REMOTE_ADDR']."',
 										`nom`='".$_POST['nom']."',
-										`data`='".date('Y-m-d')."',
+										`data`='".$_POST['data']."',
 										`to`='".$FORM_TO."',
 										`subj`='".$FORM_TO_SUBJ."',
 										`to_num`='".$FORM_TO_NUM."',
-										`user`='".$_SESSION['user_id']."',
 										`money`='".$FORM_MONEY."',
 										`how`='".$_POST['how']."',
-										`edit`='1'
+										`edit`='1',
+										`fav`='".$_SESSION['user_id']."'
 										WHERE `id`='".$_GET['edit']."' ;";
 										mysql_query($query) or die(mysql_error());
 										$queryes_num++;
@@ -364,6 +363,7 @@ if (isset($_SESSION['user_id']))
 											{
 												$page.= file_get_contents("templates/jurnal_out_edit.html");
 												$page = str_replace("{JURNAL_OUT_NUM_TO_EDIT}", $row['id'], $page);
+												$page = str_replace("{FORM_DATA}", $row['data'], $page);
 												$page = str_replace("{FORM_TO}", $row['to'], $page);
 												$page = str_replace("{FORM_TO_N}", $row['to_num'], $page);
 												$page = str_replace("{FORM_SUBJ}", $row['subj'], $page);
@@ -399,7 +399,7 @@ if (isset($_SESSION['user_id']))
 													{
 														while ($row5=mysql_fetch_array($res5))
 															{
-																if (in_array($row5['structura'], $usr_str_array))
+																if (in_array($row5['structura'], $usr_str_array) OR $user_p_mod == 1)
 																	{
 																		if ($old_nom_id != $row5['structura'])
 																			{
@@ -463,8 +463,6 @@ if (isset($_SESSION['user_id']))
 						$page = str_replace("{INFORMATION}", "{LANG_PRIVAT6_NO}", $page);
 					}
 			}
-
-			
 			
 		if (isset($_GET['src']) && $_GET['src'] == 'do')
 			{
@@ -567,6 +565,11 @@ if (isset($_SESSION['user_id']))
 									}
 								if ($privat3 == 1)
 									{
+										$view_files = 1;
+									}
+								if ($user_p_mod == 1)
+									{
+										$manage_files = 1;
 										$view_files = 1;
 									}
 								
@@ -745,7 +748,7 @@ if (isset($_SESSION['user_id']))
 						$query_where = "`data` LIKE '".$_GET['do']." %'";
 						$query_blank_where = "n.data LIKE '".$_GET['do']." %'";
 						$where_lang = "{LANG_SEARCH_BY_DATA}";
-						$search_pre .= "find=nom&do=".$_GET['do']."&";
+						$search_pre .= "find=data&do=".$_GET['do']."&";
 					}
 				if ($_GET['find'] == "how" AND preg_match("/^[1-3]{1}$/" ,$_GET['do']))
 					{
@@ -924,15 +927,20 @@ if (isset($_SESSION['user_id']))
 									{
 										$admin_links_do = "";
 										$show_files = 0;
-										//Робота з файлами для власника вихідного номеру
-										if ($row['user'] == $_SESSION['user_id']) $show_files = 1;
+										//Робота з файлами для власника вихідного номеру та модератора
+										if ($row['user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
 										//Перелік існуючих файлів для всіх користувачів
 										if (file_exists("uploads\\".$_SESSION['user_year']."\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
 										// Показуєм ссилку на управління файлами
-										if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success\" role=\"button\">{LANG_USERS_ADMIN_EDIT_FILES}</a>";
+										if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
 										
-										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning\" role=\"button\">{LANG_USERS_ADMIN_EDIT}</a>";
-										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\">{LANG_USERS_ADMIN_DEL}</a>";
+										$user_edit_num = 0;
+										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
+										if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
+										
+										$user_del_num = 0;
+										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
+										if ($user_del_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
 
 										if ($admin_links_do == "") $admin_links_do = "&nbsp;";
 
@@ -958,7 +966,7 @@ if (isset($_SESSION['user_id']))
 										if ($row['to_num'] == "") $row['to_num'] = "-";
 										
 										$num_is_edited = "";
-										if ($row['edit'] == 1) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong></p></td></tr>";
+										if ($row['edit'] == 1) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['fav']]."</strong><br>{LANG_LOG_TIME} <strong>".date('Y-m-d H:i:s', $row['time'])."</strong></p></td></tr>";
 										
 										$jurnal_out .= "
 										<tr valign=\"top\" align=\"center\">
@@ -1017,7 +1025,7 @@ if (isset($_SESSION['user_id']))
 												</table>
 											  </div>
 											  <div class=\"modal-footer\">
-												<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">{LANG_JURN_OUT_NUM_CLOSE}</button>
+												<a href=\"#\" role=\"button\" class=\"btn btn-default btn-lg\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_JURN_OUT_NUM_CLOSE}\"></span></a>
 												".$admin_links_do."
 											  </div>
 											</div>
