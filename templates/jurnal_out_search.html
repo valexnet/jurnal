@@ -1,0 +1,122 @@
+<div class="container">
+	<h3><p class="text-center">{LANG_JURNAL_OUT_SEARCH_FORM}</p></h3>
+
+	<FORM role="form" data-toggle="validator" ACTION="jurnal_out.php" NAME="form" id="form" class="form-horizontal" METHOD="GET" enctype="multipart/form-data">
+		<div class="form-group date">
+			<label class="control-label col-sm-2" for="do">{LANG_JURNAL_OUT_FIND_ID}:</label>
+			<div class="col-sm-2 has-feedback">
+				<INPUT TYPE="hidden" NAME="find" value="id">
+				<input type="text" class="form-control" NAME="do" id="do" value="" data-error="{LANG_FORM_NO_ID}" required> 
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+			<div class="col-sm-8">
+				<button type="submit" class="btn btn-success">{LANG_START_SEARCH_ID}</button>
+			</div>
+		</div>
+	</form>
+	<hr>
+	<FORM role="form" data-toggle="validator" ACTION="jurnal_out.php" NAME="form" id="form" class="form-horizontal" METHOD="GET" enctype="multipart/form-data">
+		<INPUT TYPE="hidden" NAME="search" value="do">
+
+		<div class="form-group date">
+			<label class="control-label col-sm-2" for="data_start">{LANG_DATA_START}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" class="form-control" NAME="data_start" id="data_start" value="{FORM_DATA_START}" data-error="{LANG_FORM_NO_DATA_START}" required>
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="data_end">{LANG_DATA_END}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" class="form-control" NAME="data_end" id="data_end" value="{FORM_DATA_END}" data-error="{LANG_FORM_NO_DATA_END}" required>
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="user">{LANG_OUT_ADD_FROM}:</label>
+			<div class="col-sm-10 has-feedback">
+				<SELECT NAME="user" class="form-control" id="user">
+					<option value="0">{LANG_ALL_USERS}</option>
+					{USERS}
+				</SELECT>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="to">{LANG_OUT_ADD_TO}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="to" class="form-control" id="to">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="to_num">{LANG_OUT_ADD_TO_N}:</label>
+			<div class="col-sm-10">
+				<input type="text" NAME="to_num" class="form-control" id="to_num">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="subj">{LANG_OUT_TEMA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="subj" class="form-control" id="subj">
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="nom">{LANG_NOMENCLATURA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<SELECT NAME="nom" class="form-control" id="nom">
+					<option value="0">{LANG_ALL_NOMENCLATURA}</option>
+					{NOMENCLATURA}
+				</SELECT>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<label class="btn btn-default">
+						<input type="radio" name="how" value="0" autocomplete="off" checked > {LANG_HOW_0}
+				</label>
+				<label class="btn btn-success">
+						<input type="radio" name="how" value="1" autocomplete="off"> {LANG_HOW_1}
+				</label>
+				<label class="btn btn-info">
+						<input type="radio" name="how" value="2" autocomplete="off"> {LANG_HOW_2}
+				</label>
+				<label class="btn btn-danger">
+						<input type="radio" name="how" value="3" autocomplete="off"> {LANG_HOW_3}
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2">{LANG_IS_REGISTER_BLANK}:</label>
+			<div class="col-sm-10">
+				<label class="btn btn-default">
+						<input type="checkbox" name="blank" value="do" autocomplete="off"> {LANG_BLANK_N_1}
+				</label>
+			</div>
+		</div>
+		
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<label class="btn btn-default">
+						<input type="checkbox" name="export" value="1" autocomplete="off" disabled> {LANG_EXPORT_TO_FILE}
+				</label>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<button type="submit" class="btn btn-success">{LANG_START_SEARCH}</button>
+			</div>
+		</div>
+
+	</FORM>
+</div>

@@ -476,7 +476,62 @@ if (isset($_SESSION['user_id']))
 		if (isset($_GET['src']) && $_GET['src'] == 'do')
 			{
 				$adres = 'true';
-				$page .= 'Пошук';
+				$page.= file_get_contents("templates/jurnal_out_search.html");
+				
+				$page = str_replace("{FORM_DATA_START}", $_SESSION['user_year']."-01-01", $page);
+				$page = str_replace("{FORM_DATA_END}", $_SESSION['user_year']."-12-31", $page);
+				
+				$query_users = "SELECT `id`,`name` FROM `users` ORDER BY `name` ; ";
+				$res_users = mysql_query($query_users) or die(mysql_error());
+				$queryes_num++;
+				while ($row_users=mysql_fetch_array($res_users))
+					{
+						$users .= "<OPTION value = \"".$row_users['id']."\">".$row_users['name']."</OPTION>";
+					}
+				$page = str_replace("{USERS}", $users, $page);
+				
+				$query = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
+				$res = mysql_query($query) or die(mysql_error());
+				$queryes_num++;
+				if (mysql_num_rows($res) > 0)
+					{
+						while ($row=mysql_fetch_array($res))
+							{
+								if ($old_nom_id != $row['structura'])
+									{
+										$query3 = "SELECT `index` FROM `structura` WHERE `id`='".$row['structura']."' AND `work`='1' LIMIT 1 ;";
+										$res3 = mysql_query($query3) or die(mysql_error());
+										$queryes_num++;
+										if (mysql_num_rows($res3) > 0)
+											{
+												while ($row3=mysql_fetch_array($res3))
+													{
+														$structura = $row3['index'];
+														$old_nom_id = $row['structura'];
+														$old_nom_index = $structura;
+													}
+											}
+											else
+											{
+												$structura = "{LANG_SRT_DELETED}";
+											}
+									}
+									else
+									{
+										$structura = $old_nom_index;
+									}
+								$ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row['name'],70,'<br>',false)),0,1));
+								if($ndi_nom_name_tmp!=$row['name']) $ndi_nom_name_tmp .= "...";
+								$nom_tmp .= "<OPTION value = \"".$row['id']."\" >(".$structura."-".$row['index'].") ".$ndi_nom_name_tmp."</OPTION>";
+							}
+						if ($nom_tmp == "") $nom_tmp = "<OPTION value = \"\">{LANG_NDI_NOM_EMPTY}</OPTION>";
+					}
+					else
+					{
+						$nom_tmp .= "<OPTION value = \"\">{LANG_NDI_NOM_EMPTY}</OPTION>";
+					}
+				$page = str_replace("{NOMENCLATURA}", $nom_tmp, $page);
+
 			}
 
 		if (isset($_GET['delete_last']) && $_GET['delete_last'] <> '')
@@ -737,7 +792,13 @@ if (isset($_SESSION['user_id']))
 		if (isset($_GET['find']) AND !empty($_GET['find']) AND isset($_GET['do']) AND !empty($_GET['do']))
 			{
 				if ($_GET['blank'] == "do") $search_pre = "blank=do&";
-				// Пошук по користувачу
+				if ($_GET['find'] == "id" AND preg_match("/^[1-9][0-9]*$/" ,$_GET['do']))
+					{
+						$query_where = "`id` = '".$_GET['do']."'";
+						$query_blank_where = "n.id = '".$_GET['do']."'";
+						$where_lang = "{LANG_JURNAL_OUT_FIND_ID}";
+						$search_pre .= "find=id&do=".$_GET['do']."&";
+					}
 				if ($_GET['find'] == "user" AND preg_match("/^[1-9][0-9]*$/" ,$_GET['do']))
 					{
 						$query_where = "`user` = '".$_GET['do']."'";
@@ -767,9 +828,86 @@ if (isset($_SESSION['user_id']))
 						$search_pre .= "find=how&do=".$_GET['do']."&";
 					}
 			}
+		
+		if (isset($_GET['search']) AND $_GET['search'] == "do")
+			{
+				$error = "";
+				if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ,$_GET['data_start'])) $error .= "{LANG_FORM_NO_DATA_START}<br>";
+				if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ,$_GET['data_end'])) $error .= "{LANG_FORM_NO_DATA_END}<br>";
+				if (!preg_match("/^[0-9]{1,}$/" ,$_GET['user'])) $error .= "{LANG_SEARCH_NO_USER}<br>";
+				if (!preg_match("/^[0-9]{1,}$/" ,$_GET['nom'])) $error .= "{LANG_SEARCH_NO_NOM}<br>";
+				if (!preg_match("/^[0-3]$/" ,$_GET['how'])) $error .= "{LANG_SEARCH_NO_HOW}<br>";
+				
+				$_GET['to'] = str_replace($srch, $rpls, $_GET['to']);
+				$_GET['to_num'] = str_replace($srch, $rpls, $_GET['to_num']);
+				$_GET['subj'] = str_replace($srch, $rpls, $_GET['subj']);
+				if ($_GET['blank'] != "do") $_GET['blank'] = "0";
+				if ($_GET['nom'] == "") $_GET['nom'] = "0";
+				
+				if ($error == "")
+					{
+						$where_lang = "Розширений пошук:<br><small>Початок вибірки:</small> ".$_GET['data_start']." <small>Кінець вибірки:</small> ".$_GET['data_end']."<br>";
+						if ($_GET['user'] != "0") $where_lang .= "<small>Користувач:</small> {GET_NAME_USER_".$_GET['user']."}<br>";
+						if ($_GET['nom'] != "0") $where_lang .= "<small>Номенклатура:</small> {GET_NAME_NOM_".$_GET['nom']."}<br>";
+						if ($_GET['how'] != "0") $where_lang .= "<small>Спосіб відправки:</small> {LANG_HOW_".$_GET['how']."}<br>";
+						if ($_GET['blank'] == "do") $where_lang .= "{LANG_IS_REGISTER_BLANK}<br>";
+						if ($_GET['to'] != "") $where_lang .= "<small>Кому:</small> ".$_GET['to']."<br>";
+						if ($_GET['to_num'] != "") $where_lang .= "<small>Відповідь на №:</small> ".$_GET['to_num']."<br>";
+						if ($_GET['subj'] != "") $where_lang .= "<small>Тема:</small> ".$_GET['subj']."<br>";
+						
+						$search_pre .= "search=do&data_start=".$_GET['data_start']."&data_end=".$_GET['data_end']."&user=".$_GET['user']."&to=".$_GET['to']."&to_num=".$_GET['to_num']."&subj=".$_GET['subj']."&nom=".$_GET['nom']."&how=".$_GET['how']."&blank=".$_GET['blank']."&";
+						
+						$query_where .= "`data` >= '".$_GET['data_start']." 00:00:00' AND `data` <= '".$_GET['data_end']." 23:59:59'";
+						$query_blank_where .= "n.data >= '".$_GET['data_start']." 00:00:00' AND n.data <= '".$_GET['data_end']." 23:59:59'";
+						
+						if ($_GET['user'] != "0")
+							{
+								$query_where .= " AND `user`='".$_GET['user']."'";
+								$query_blank_where .= " AND n.user = '".$_GET['user']."'";
+							}
+						if ($_GET['nom'] != "0")
+							{
+								$query_where .= " AND `nom`='".$_GET['nom']."'";
+								$query_blank_where .= " AND n.nom = '".$_GET['nom']."'";
+							}
+						if ($_GET['how'] != "0")
+							{
+								$query_where .= " AND `how`='".$_GET['how']."'";
+								$query_blank_where .= " AND n.how = '".$_GET['how']."'";
+							}
+						if ($_GET['to'] != "")
+							{
+								$_GET['to'] = str_replace("*", "%", $_GET['to']);
+								$query_where .= " AND `to` LIKE '".$_GET['to']."'";
+								$query_blank_where .= " AND n.to LIKE '".$_GET['to']."'";
+							}
+						if ($_GET['to_num'] != "")
+							{
+								$_GET['to_num'] = str_replace("*", "%", $_GET['to_num']);
+								$query_where .= " AND `to_num` LIKE '".$_GET['to_num']."'";
+								$query_blank_where .= " AND n.to_num LIKE '".$_GET['to_num']."'";
+							}
+						if ($_GET['subj'] != "")
+							{
+								$_GET['subj'] = str_replace("*", "%", $_GET['subj']);
+								$query_where .= " AND `subj` LIKE '".$_GET['subj']."'";
+								$query_blank_where .= " AND n.subj LIKE '".$_GET['subj']."'";
+							}
+					}
+					else
+					{
+						$adres = "true";
+						$page.= file_get_contents("templates/information_danger.html");
+						$page = str_replace("{INFORMATION}", "{LANG_SEARCH_ERROR}", $page);
+						$page.= file_get_contents("templates/information.html");
+						$page = str_replace("{INFORMATION}", $error, $page);
+					}
+			}
 			
 		if ($adres <> 'true')
 			{
+				$page = str_replace("{JURNAL_OUT_TOP_STAT}", file_get_contents("templates/jurnal_out_top_stat.html"), $page);
+				$page = str_replace("{JURNAL_OUT_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
 				if (isset($_GET['list']) AND $_GET['list'] > 0)
 					{
 						if ($_GET['list'] > 0 AND $_GET['list'] < 99999999999)
@@ -889,166 +1027,166 @@ if (isset($_SESSION['user_id']))
 				$queryes_num++;
 				if ($error != "true")
 					{
-						if (mysql_num_rows($res) > 0)
+						// Імена юзерів в масів
+						$users = array();
+						$query_users = "SELECT `id`,`name` FROM `users` ORDER BY `id` ; ";
+						$res_users = mysql_query($query_users) or die(mysql_error());
+						$queryes_num++;
+						while ($row_users=mysql_fetch_array($res_users))
 							{
-								// Імена юзерів в масів
-								$users = array();
-								$query_users = "SELECT `id`,`name` FROM `users` ORDER BY `id` ; ";
-								$res_users = mysql_query($query_users) or die(mysql_error());
-								$queryes_num++;
-								while ($row_users=mysql_fetch_array($res_users))
-									{
-										$users[$row_users['id']] = $row_users['name'];
-									}
-								////////////////////////
-
-								// Назва номенклатури в масів
-								$structura = array();
-								$query_structura = "SELECT `id`,`index` FROM `structura` ORDER BY `id` ; ";
-								$res_structura = mysql_query($query_structura) or die(mysql_error());
-								$queryes_num++;
-								while ($row_structura=mysql_fetch_array($res_structura))
-									{
-										$structura[$row_structura['id']] = $row_structura['index'];
-									}
-								$nomenclatura = array();
-								$query_nomenclatura = "SELECT `id`,`structura`,`index` FROM `nomenclatura` ORDER BY `id` ; ";
-								$res_nomenclatura = mysql_query($query_nomenclatura) or die(mysql_error());
-								$queryes_num++;
-								while ($row_nomenclatura=mysql_fetch_array($res_nomenclatura))
-									{
-										$nomenclatura[$row_nomenclatura['id']] = $structura[$row_nomenclatura['structura']]."-".$row_nomenclatura['index'];
-									}
-								////////////////////////
-
-								// Якщо є пошук, показуємо повідомлення і ссилку на знулення.
-								if (isset($where_lang) AND !empty($where_lang))
-									{
-										$disable_serch = "jurnal_out.php";
-										if ($_GET['blank'] == "do") $disable_serch .= "?blank=do";
-										$page.= file_get_contents("templates/information.html");
-										$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
-									}
-									
-								$page.= file_get_contents("templates/jurnal_out.html");
-								$modals = "";
-								while ($row=mysql_fetch_array($res))
-									{
-										$admin_links_do = "";
-										$show_files = 0;
-										//Робота з файлами для власника вихідного номеру та модератора
-										if ($row['user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
-										//Перелік існуючих файлів для всіх користувачів
-										if (file_exists("uploads\\".$_SESSION['user_year']."\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
-										// Показуєм ссилку на управління файлами
-										if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
-										
-										$user_edit_num = 0;
-										if ($row['user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
-										if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
-										
-										$user_del_num = 0;
-										if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
-										if ($user_p_mod == 1 AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
-										if ($user_del_num == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
-
-										if ($admin_links_do == "") $admin_links_do = "&nbsp;";
-
-										$row_data = explode(" ", $row['data']);
-
-										$blank_num = "-";
-
-										$query_blank = "SELECT `id` FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `num`='".$row['id']."' LIMIT 1 ; ";
-										$res_blank = mysql_query($query_blank) or die(mysql_error());
-										$queryes_num++;
-										while ($row_blank=mysql_fetch_array($res_blank))
-											{
-												$blank_num = $row_blank['id'];
-											}
-										
-										$how_img = "<img title=\"{LANG_HOW_1}\" alt=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
-										if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_2}\" alt=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
-										if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_3}\" alt=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
-										
-										$need_serch_blank = "";
-										if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
-										
-										if ($row['to_num'] == "") $row['to_num'] = "-";
-										
-										$num_is_edited = "";
-										if ($row['edit'] == 1) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['fav']]."</strong><br>{LANG_LOG_TIME} <strong>".date('Y-m-d H:i:s', $row['time'])."</strong></p></td></tr>";
-										
-										$jurnal_out .= "
-										<tr valign=\"top\" align=\"center\">
-											<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a></abbr> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
-											<td valign=\"top\" align=\"center\" >".$blank_num."</td>
-											<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=how&do=".$row['how']."\">".$how_img."</a></td>
-											<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".$row_data[0]."</a></td>
-											<td valign=\"top\" align=\"left\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=user&do=".$row['user']."\">".$users[$row['user']]."</a></td>
-											<td valign=\"top\" align=\"left\" >".$row['to']."</td>
-											<td valign=\"top\" align=\"left\" >".$row['subj']."</td>
-										</tr>";
-										
-										$modals .= "
-										<div class=\"modal fade\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
-										  <div class=\"modal-dialog\" role=\"document\">
-											<div class=\"modal-content\">
-											  <div class=\"modal-header\">
-												<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
-												<h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".$row['id']." / ".$nomenclatura[$row['nom']]."</h4>
-											  </div>
-											  <div class=\"modal-body text-center\">
-												<table class=\"table table-hover\">
-													".$num_is_edited."
-													<tr>
-														<td align=\"right\">{LANG_OUT_ADD_FROM}</td>
-														<td align=\"left\"><strong>".$users[$row['user']]."</strong></td>
-													</tr>
-													<tr>
-														<td align=\"right\">{LANG_LOG_TIME}</td>
-														<td align=\"left\"><strong>".$row_data[0]."</strong> ".$row_data[1]."</td>
-													</tr>
-													<tr>
-														<td align=\"right\">{RETURN_BLANK_N}</td>
-														<td align=\"left\"><strong>".$blank_num."</strong></td>
-													</tr>
-													<tr>
-														<td align=\"right\">{LANG_JURNAL_TO}</td>
-														<td align=\"left\"><strong>".$row['to']."</strong></td>
-													</tr>
-													<tr>
-														<td align=\"right\">{LANG_OUT_TEMA}</td>
-														<td align=\"left\"><strong>".$row['subj']."</strong></td>
-													</tr>
-													<tr>
-														<td align=\"right\">{LANG_OUT_ADD_TO_N}</td>
-														<td align=\"left\"><strong>".$row['to_num']."</strong></td>
-													</tr>
-													<tr>
-														<td align=\"right\">{LANG_HOW}</td>
-														<td align=\"left\"><strong>{LANG_HOW_".$row['how']."}</strong></td>
-													</tr>
-													<tr>
-														<td align=\"right\">{LANG_SEND_MONEY}</td>
-														<td align=\"left\"><strong>".$row['money']."</strong></td>
-													</tr>
-												</table>
-											  </div>
-											  <div class=\"modal-footer\">
-												<a href=\"#\" role=\"button\" class=\"btn btn-default btn-lg\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_JURN_OUT_NUM_CLOSE}\"></span></a>
-												".$admin_links_do."
-											  </div>
-											</div>
-										  </div>
-										</div>";
-										
-										$is_first = "true";
-									}
-								$page .= $modals;
-								$page = str_replace("{JURNAL_OUT}", $jurnal_out, $page);
-								$page = str_replace("{JURNAL_OUT_STAT}", "{JURNAL_OUT_NUM_ON_PAGE}: ".$list." / ".mysql_num_rows($res)." / ".($b[0] - mysql_num_rows($res) - $list), $page);
+								$users[$row_users['id']] = $row_users['name'];
+								if ($where_lang != "") $where_lang = str_replace("{GET_NAME_USER_".$row_users['id']."}", $row_users['name'], $where_lang);
 							}
-							else
+						////////////////////////
+
+						// Назва номенклатури в масів
+						$structura = array();
+						$query_structura = "SELECT `id`,`index` FROM `structura` ORDER BY `id` ; ";
+						$res_structura = mysql_query($query_structura) or die(mysql_error());
+						$queryes_num++;
+						while ($row_structura=mysql_fetch_array($res_structura))
+							{
+								$structura[$row_structura['id']] = $row_structura['index'];
+							}
+						$nomenclatura = array();
+						$query_nomenclatura = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` ORDER BY `id` ; ";
+						$res_nomenclatura = mysql_query($query_nomenclatura) or die(mysql_error());
+						$queryes_num++;
+						while ($row_nomenclatura=mysql_fetch_array($res_nomenclatura))
+							{
+								$nomenclatura[$row_nomenclatura['id']] = $structura[$row_nomenclatura['structura']]."-".$row_nomenclatura['index'];
+								if ($where_lang != "") $where_lang = str_replace("{GET_NAME_NOM_".$row_nomenclatura['id']."}", $structura[$row_nomenclatura['structura']]."-".$row_nomenclatura['index']." ".$row_nomenclatura['name'], $where_lang);
+							}
+						////////////////////////
+
+						// Якщо є пошук, показуємо повідомлення і ссилку на знулення.
+						if (isset($where_lang) AND !empty($where_lang))
+							{
+								$disable_serch = "jurnal_out.php";
+								if ($_GET['blank'] == "do") $disable_serch .= "?blank=do";
+								$page.= file_get_contents("templates/information.html");
+								$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
+							}
+							
+						$page.= file_get_contents("templates/jurnal_out.html");
+						$modals = "";
+						while ($row=mysql_fetch_array($res))
+							{
+								$admin_links_do = "";
+								$show_files = 0;
+								//Робота з файлами для власника вихідного номеру та модератора
+								if ($row['user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
+								//Перелік існуючих файлів для всіх користувачів
+								if (file_exists("uploads\\".$_SESSION['user_year']."\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
+								// Показуєм ссилку на управління файлами
+								if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
+								
+								$user_edit_num = 0;
+								if ($row['user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
+								if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
+								
+								$user_del_num = 0;
+								if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
+								if ($user_p_mod == 1 AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
+								if ($user_del_num == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
+
+								if ($admin_links_do == "") $admin_links_do = "&nbsp;";
+
+								$row_data = explode(" ", $row['data']);
+
+								$blank_num = "-";
+
+								$query_blank = "SELECT `id` FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `num`='".$row['id']."' LIMIT 1 ; ";
+								$res_blank = mysql_query($query_blank) or die(mysql_error());
+								$queryes_num++;
+								while ($row_blank=mysql_fetch_array($res_blank))
+									{
+										$blank_num = $row_blank['id'];
+									}
+								
+								$how_img = "<img title=\"{LANG_HOW_1}\" alt=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
+								if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_2}\" alt=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
+								if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_3}\" alt=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
+								
+								$need_serch_blank = "";
+								if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
+								
+								if ($row['to_num'] == "") $row['to_num'] = "-";
+								
+								$num_is_edited = "";
+								if ($row['edit'] == 1) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['fav']]."</strong><br>{LANG_LOG_TIME} <strong>".date('Y-m-d H:i:s', $row['time'])."</strong></p></td></tr>";
+								
+								$jurnal_out .= "
+								<tr valign=\"top\" align=\"center\">
+									<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a></abbr> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
+									<td valign=\"top\" align=\"center\" >".$blank_num."</td>
+									<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=how&do=".$row['how']."\">".$how_img."</a></td>
+									<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".$row_data[0]."</a></td>
+									<td valign=\"top\" align=\"left\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=user&do=".$row['user']."\">".$users[$row['user']]."</a></td>
+									<td valign=\"top\" align=\"left\" >".$row['to']."</td>
+									<td valign=\"top\" align=\"left\" >".$row['subj']."</td>
+								</tr>";
+								
+								$modals .= "
+								<div class=\"modal fade\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
+								  <div class=\"modal-dialog\" role=\"document\">
+									<div class=\"modal-content\">
+									  <div class=\"modal-header\">
+										<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
+										<h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".$row['id']." / ".$nomenclatura[$row['nom']]."</h4>
+									  </div>
+									  <div class=\"modal-body text-center\">
+										<table class=\"table table-hover\">
+											".$num_is_edited."
+											<tr>
+												<td align=\"right\">{LANG_OUT_ADD_FROM}</td>
+												<td align=\"left\"><strong>".$users[$row['user']]."</strong></td>
+											</tr>
+											<tr>
+												<td align=\"right\">{LANG_LOG_TIME}</td>
+												<td align=\"left\"><strong>".$row_data[0]."</strong> ".$row_data[1]."</td>
+											</tr>
+											<tr>
+												<td align=\"right\">{RETURN_BLANK_N}</td>
+												<td align=\"left\"><strong>".$blank_num."</strong></td>
+											</tr>
+											<tr>
+												<td align=\"right\">{LANG_JURNAL_TO}</td>
+												<td align=\"left\"><strong>".$row['to']."</strong></td>
+											</tr>
+											<tr>
+												<td align=\"right\">{LANG_OUT_TEMA}</td>
+												<td align=\"left\"><strong>".$row['subj']."</strong></td>
+											</tr>
+											<tr>
+												<td align=\"right\">{LANG_OUT_ADD_TO_N}</td>
+												<td align=\"left\"><strong>".$row['to_num']."</strong></td>
+											</tr>
+											<tr>
+												<td align=\"right\">{LANG_HOW}</td>
+												<td align=\"left\"><strong>{LANG_HOW_".$row['how']."}</strong></td>
+											</tr>
+											<tr>
+												<td align=\"right\">{LANG_SEND_MONEY}</td>
+												<td align=\"left\"><strong>".$row['money']."</strong></td>
+											</tr>
+										</table>
+									  </div>
+									  <div class=\"modal-footer\">
+										<a href=\"#\" role=\"button\" class=\"btn btn-default btn-lg\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_JURN_OUT_NUM_CLOSE}\"></span></a>
+										".$admin_links_do."
+									  </div>
+									</div>
+								  </div>
+								</div>";
+								
+								$is_first = "true";
+							}
+						$page .= $modals;
+						$page = str_replace("{JURNAL_OUT}", $jurnal_out, $page);
+						$page = str_replace("{JURNAL_OUT_STAT}", "{JURNAL_OUT_NUM_ON_PAGE}: ".$list." / ".mysql_num_rows($res)." / ".($b[0] - mysql_num_rows($res) - $list), $page);
+						
+						if (mysql_num_rows($res) == 0)
 							{
 								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_EMPTY}", $page);
@@ -1060,6 +1198,8 @@ if (isset($_SESSION['user_id']))
 						$page = str_replace("{INFORMATION}", "{LANG_YEAR_NOT_EXIST}", $page);
 					}
 			}
+		$page = str_replace("{JURNAL_OUT_TOP_STAT}", "", $page);
+		$page = str_replace("{JURNAL_OUT_AFFIX}", "", $page);
 	}
 	else
 	{
