@@ -108,10 +108,31 @@ $page = str_replace("{ALARM_IE_IS_OLD}", $browser_alarm, $page);
 // Підключаємо мову
 if (!file_exists("inc/lang/".$c_lng.".php")) die("Language file [inc/lang/".$c_lng.".php] not exist");
 include_once ("lang/".$c_lng.".php");
-foreach ($lang as $key => $value) {$page = str_replace("{".$key."}", $value, $page);}
+foreach ($lang as $key => $value)
+	{
+		if (isset($_GET['export']) AND $_GET['export'] == "do")
+			{
+				$export = str_replace("{".$key."}", $value, $export);
+			}
+			else
+			{
+				$page = str_replace("{".$key."}", $value, $page);
+			}
+	}
 $page = str_replace("{MAX_FILE_SIZE_MB}", (($max_file_size / 1024) / 1024 )." MB", $page);
 if ($queryes_num < 1) $queryes_num = 0;
 $page = str_replace("{PAGE_GENERATION_TIME}", "Page gen. ".sprintf("%.4f",(microtime(TRUE) - $start_php_time))."s. ", $page);
 $page = str_replace("{PAGE_QUERYES_NUM}", " include ".$queryes_num." MySQL query'es", $page);
-echo $page;
+
+if (isset($_GET['export']) AND $_GET['export'] == "do")
+	{
+		$export = str_replace($srch_csv, $rpls_csv, $export);
+		header("Content-Type: ".$export_type.";");
+		header("Content-Disposition: attachment; filename=".$export_name."");
+		echo(iconv('UTF-8', 'windows-1251', $export));
+	}
+	else
+	{
+		echo $page;
+	}
 ?>

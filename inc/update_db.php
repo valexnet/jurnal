@@ -1,1 +1,1 @@
-<?// Update to 4if ($c_ver_db == 3)	{		$query = "UPDATE `config` SET `ver` = '4' WHERE `id` = 1 LIMIT 1 ;";		$res = mysql_query($query) or die(mysql_error());		$c_ver_db = 4;	}unlink('inc/update_db.php') or die("Can't delete update_db.php");?>
+<?// Update to 4if ($c_ver_db == 3)	{		$query = "UPDATE `config` SET `ver` = '4' WHERE `id` = '1' LIMIT 1 ;";		$res = mysql_query($query) or die(mysql_error());		$c_ver_db = 4;	}unlink('inc/update_db.php') or die("Can't delete update_db.php");?>

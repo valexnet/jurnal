@@ -846,14 +846,14 @@ if (isset($_SESSION['user_id']))
 				
 				if ($error == "")
 					{
-						$where_lang = "Розширений пошук:<br><small>Початок вибірки:</small> ".$_GET['data_start']." <small>Кінець вибірки:</small> ".$_GET['data_end']."<br>";
-						if ($_GET['user'] != "0") $where_lang .= "<small>Користувач:</small> {GET_NAME_USER_".$_GET['user']."}<br>";
-						if ($_GET['nom'] != "0") $where_lang .= "<small>Номенклатура:</small> {GET_NAME_NOM_".$_GET['nom']."}<br>";
-						if ($_GET['how'] != "0") $where_lang .= "<small>Спосіб відправки:</small> {LANG_HOW_".$_GET['how']."}<br>";
+						$where_lang = "{LANG_EXTRA_SEARCH}:<br><small>{LANG_DATA_START}:</small> ".$_GET['data_start']." <small>{LANG_DATA_END}:</small> ".$_GET['data_end']."<br>";
+						if ($_GET['user'] != "0") $where_lang .= "<small>{LANG_LOG_USER}:</small> {GET_NAME_USER_".$_GET['user']."}<br>";
+						if ($_GET['nom'] != "0") $where_lang .= "<small>{LANG_NOMENCLATURA}:</small> {GET_NAME_NOM_".$_GET['nom']."}<br>";
+						if ($_GET['how'] != "0") $where_lang .= "<small>{LANG_HOW}:</small> {LANG_HOW_".$_GET['how']."}<br>";
 						if ($_GET['blank'] == "do") $where_lang .= "{LANG_IS_REGISTER_BLANK}<br>";
-						if ($_GET['to'] != "") $where_lang .= "<small>Кому:</small> ".$_GET['to']."<br>";
-						if ($_GET['to_num'] != "") $where_lang .= "<small>Відповідь на №:</small> ".$_GET['to_num']."<br>";
-						if ($_GET['subj'] != "") $where_lang .= "<small>Тема:</small> ".$_GET['subj']."<br>";
+						if ($_GET['to'] != "") $where_lang .= "<small>{LANG_OUT_ADD_TO}:</small> ".$_GET['to']."<br>";
+						if ($_GET['to_num'] != "") $where_lang .= "<small>{LANG_OUT_ADD_TO_N}:</small> ".$_GET['to_num']."<br>";
+						if ($_GET['subj'] != "") $where_lang .= "<small>{LANG_OUT_TEMA}:</small> ".$_GET['subj']."<br>";
 						
 						$search_pre .= "search=do&data_start=".$_GET['data_start']."&data_end=".$_GET['data_end']."&user=".$_GET['user']."&to=".$_GET['to']."&to_num=".$_GET['to_num']."&subj=".$_GET['subj']."&nom=".$_GET['nom']."&how=".$_GET['how']."&blank=".$_GET['blank']."&";
 						
@@ -922,6 +922,14 @@ if (isset($_SESSION['user_id']))
 					else
 					{
 						$list = 0;
+					}
+					
+				if (isset($_GET['export']) AND $_GET['export'] == "do")
+					{
+						$list = 0;
+						$c_lmt = 999999;
+						$export_type = "text/csv";
+						$export_name = "jurnal.csv";
 					}
 
 				//Дивимся чи юзер пішов на бланки + звіряєм права.
@@ -1023,6 +1031,7 @@ if (isset($_SESSION['user_id']))
 
 				$page = str_replace("{LIST_END}", "", $page);
 				$error = "false";
+				if (isset($_GET['export']) AND $_GET['export'] == "do") $query = str_replace(" DESC ", " ", $query);
 				$res = mysql_query($query) or $error = "true";
 				$queryes_num++;
 				if ($error != "true")
@@ -1070,6 +1079,15 @@ if (isset($_SESSION['user_id']))
 							
 						$page.= file_get_contents("templates/jurnal_out.html");
 						$modals = "";
+						
+						if (isset($_GET['export']) AND $_GET['export'] == "do")
+							{
+								$export = "\"".$c_nam."\";\n\n";
+								$export .= "\"{LANG_HEADERINFO}\";\n";
+								$export .= "\"{LANG_SEARCH_RESULTS} :\";\n";
+								$export .=  "\"{LANG_INDEX_DOC}\";\"{LANG_JURNAL_OUT_BLANK_NUM} №\";\"{LANG_OUT_ADD_TO_N}\";\"{LANG_LOG_TIME}\";\"{LANG_OUT_TEMA}\";\"{LANG_OUT_ADD_FROM}\";\"{LANG_OUT_ADD_TO}\";\"{LANG_HOW}\";\"{LANG_SEND_MONEY}\";\n";
+							}
+						
 						while ($row=mysql_fetch_array($res))
 							{
 								$admin_links_do = "";
@@ -1179,8 +1197,8 @@ if (isset($_SESSION['user_id']))
 									</div>
 								  </div>
 								</div>";
-								
 								$is_first = "true";
+								if (isset($_GET['export']) AND $_GET['export'] == "do") $export .=  "\"".$row['id']." \\ ".$nomenclatura[$row['nom']]."\";\"".$blank_num."\";\"".$row['to_num']."\";\"".$row['data']."\";\"".$row['subj']."\";\"".$users[$row['user']]."\";\"".$row['to']."\";\"{LANG_HOW_".$row['how']."}\";\"".$row['money']."\";\n";
 							}
 						$page .= $modals;
 						$page = str_replace("{JURNAL_OUT}", $jurnal_out, $page);

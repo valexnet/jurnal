@@ -3,10 +3,13 @@
 // Українська мова
 $lang = array (
 
+'LANG_INDEX_DOC' => "Індекс документа",
+'LANG_SEARCH_RESULTS' => "Результати пошуку",
+'LANG_EXTRA_SEARCH' => "Розширений пошук",
 'LANG_START_SEARCH_ID' => "Шукати номер",
 'LANG_FORM_NO_ID' => "Не вказаний номер",
 'LANG_JURNAL_OUT_FIND_ID' => "Швидкий пошук по номеру",
-'LANG_EXPORT_TO_FILE' => "Результати отримати файлом ( В РОЗРОБЦІ )",
+'LANG_EXPORT_TO_FILE' => "Результати отримати файлом",
 'LANG_SEARCH_ERROR' => "Трапились помилки при пошуку",
 'LANG_SEARCH_NO_HOW' => "Не вказаний спосіб відправки",
 'LANG_SEARCH_NO_BLANK_N' => "Не вказано тип реєстрації бланку",
