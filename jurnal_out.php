@@ -18,13 +18,18 @@ if (isset($_SESSION['user_id']))
 		$queryes_num++;
 		if (mysql_num_rows($res) == 0)
 			{
+				if (@opendir("uploads/".date('Y')."/OUT"))
+					{
+						@closedir("uploads/".date('Y')."/OUT");
+					}
+					else
+					{
+						mkdir("uploads/".date('Y')."/OUT", null, true) or die("Can't create new folder - uploads/".date('Y')."/OUT");
+					}
 				$query = file_get_contents("inc/db_out.txt");
 				$query = str_replace("{YEAR}", date('Y'), $query);
 				mysql_query($query) or die(mysql_error());
-				// Робим папку для файлів
-				@mkdir("uploads\\".date('Y'));
 			}
-
 		$query = "SHOW TABLES LIKE \"DB_".date('Y')."_OUT_BLANK\";";
 		$res = mysql_query($query) or die(mysql_error());
 		$queryes_num++;
@@ -657,7 +662,7 @@ if (isset($_SESSION['user_id']))
 																					{
 																						$file_new_name = $c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_".$FILE['name'][$i];
 																						if (preg_match("/^".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_.*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
-																						$file_name = "uploads\\".$_SESSION['user_year']."\\".$file_new_name;
+																						$file_name = "uploads\\".$_SESSION['user_year']."\\OUT\\".$file_new_name;
 																						$file_name = iconv('UTF-8', 'windows-1251', $file_name);
 																						if (!file_exists($file_name))
 																							{
@@ -700,7 +705,7 @@ if (isset($_SESSION['user_id']))
 									
 								if ($view_files == 1)
 									{
-										if ($dir = opendir("uploads\\".$_SESSION['user_year']))
+										if ($dir = opendir("uploads\\".$_SESSION['user_year']."\\OUT"))
 											{
 												while (false !== ($file = readdir($dir)))
 													{
@@ -713,7 +718,7 @@ if (isset($_SESSION['user_id']))
 																		if (isset($_GET['delete']) AND $_GET['delete'] == $file_utf8 AND $manage_files == 1 AND $tmp_add_new_file == 0)
 																			{
 																				$tmp_do = 1;
-																				if (@unlink("uploads\\".$_SESSION['user_year']."\\".$file))
+																				if (@unlink("uploads\\".$_SESSION['user_year']."\\OUT\\".$file))
 																					{
 																						$page.= file_get_contents("templates/information_success.html");
 																						$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_OK}", $page);
@@ -736,8 +741,8 @@ if (isset($_SESSION['user_id']))
 																				header('Expires: 0');
 																				header('Cache-Control: must-revalidate');
 																				header('Pragma: public');
-																				header('Content-Length: ' . filesize("uploads\\".$_SESSION['user_year']."\\".$file));
-																				if ($fd = fopen("uploads\\".$_SESSION['user_year']."\\".$file, 'rb'))
+																				header('Content-Length: ' . filesize("uploads\\".$_SESSION['user_year']."\\OUT\\".$file));
+																				if ($fd = fopen("uploads\\".$_SESSION['user_year']."\\OUT\\".$file, 'rb'))
 																					{
 																						while (!feof($fd))
 																							{
@@ -752,7 +757,7 @@ if (isset($_SESSION['user_id']))
 																		if ($tmp_do == 0)
 																			{
 																				$page.= file_get_contents("templates/information.html");
-																				$page = str_replace("{INFORMATION}", "{TMP_MANAGE_FILES}<a href=\"jurnal_out.php?attach=".$_GET['attach']."&download=".$file_utf8."\">".$file_utf8."</a> [ ".date ('d.m.Y H:i:s', @filemtime ("uploads\\".$_SESSION['user_year']."\\".$file))." ]", $page);
+																				$page = str_replace("{INFORMATION}", "{TMP_MANAGE_FILES}<a href=\"jurnal_out.php?attach=".$_GET['attach']."&download=".$file_utf8."\">".$file_utf8."</a> [ ".date ('d.m.Y H:i:s', @filemtime ("uploads\\".$_SESSION['user_year']."\\OUT\\".$file))." ]", $page);
 																				if ($manage_files == 1)
 																					{
 																						$page = str_replace("{TMP_MANAGE_FILES}", "<a href=\"jurnal_out.php?attach=".$_GET['attach']."&delete=".$file_utf8."\" onClick=\"if(confirm('{LANG_REMOVE_FILE_CONFIRM}')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\"></a> ", $page);
@@ -929,7 +934,7 @@ if (isset($_SESSION['user_id']))
 						$list = 0;
 						$c_lmt = 999999;
 						$export_type = "text/csv";
-						$export_name = "jurnal.csv";
+						$export_name = "jurnal_out.csv";
 					}
 
 				//Дивимся чи юзер пішов на бланки + звіряєм права.
@@ -1095,7 +1100,7 @@ if (isset($_SESSION['user_id']))
 								//Робота з файлами для власника вихідного номеру та модератора
 								if ($row['user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
 								//Перелік існуючих файлів для всіх користувачів
-								if (file_exists("uploads\\".$_SESSION['user_year']."\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
+								if (file_exists("uploads\\".$_SESSION['user_year']."\\OUT\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
 								// Показуєм ссилку на управління файлами
 								if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
 								

@@ -1,0 +1,22 @@
+CREATE TABLE `DB_{YEAR}_IN` (
+`id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `add_user` int(11) NOT NULL,
+  `add_time` datetime NOT NULL,
+  `add_ip` varchar(15) NOT NULL,
+  `do_user` int(11) NOT NULL,
+  `do_view` datetime default NULL,
+  `do_view_ip` varchar(15) NOT NULL default '0',
+  `do_made` datetime default NULL,
+  `do_made_ip` varchar(15) NOT NULL default '0',
+  `get_data` datetime NOT NULL,
+  `org_name` varchar(250) NOT NULL,
+  `org_index` varchar(250) NOT NULL,
+  `org_data` datetime NOT NULL,
+  `org_subj` varchar(250) NOT NULL,
+  `make_visa` varchar(250) NOT NULL,
+  `make_data` datetime NOT NULL,
+  `out_year` int(4) NOT NULL default '0',
+  `out_index` varchar(250) NOT NULL default '0',
+  `edit` datetime default NULL,
+  `moder` int(1) NOT NULL default '0'
+) ;

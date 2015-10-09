@@ -1,0 +1,102 @@
+<div class="container">
+	<h3><p class="text-center">{LANG_JURNAL_IN_ADD_FORM}</p></h3>
+
+	<FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_in.php?do=add" METHOD="POST" enctype="multipart/form-data">
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="add_time">{LANG_ADD_TIME}:</label>
+			<div class="col-sm-10">
+				<input type="text" class="form-control" id="add_time" NAME="add_time" value="{D-A-T-A}" disabled>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="add_user">{LANG_ADD_USER}:</label>
+			<div class="col-sm-10">
+				<input type="text" NAME="add_user" class="form-control" id="add_user" value="{USER_NAME}" disabled>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="get_data">{LANG_GET_DATA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="get_data" class="form-control" id="get_data" value="{FORM_GET_DATA}" placeholder="{LANG_GET_DATA_MORE}" data-error="{LANG_FORM_NO_GET_DATA}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="org_name">{LANG_ORG_NAME}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="org_name" class="form-control" id="org_name" value="{FORM_ORG_NAME}" placeholder="{LANG_ORG_NAME_MORE}" data-error="{LANG_FORM_NO_ORG_NAME}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="org_index">{LANG_ORG_INDEX}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="org_index" class="form-control" id="org_index" value="{FORM_ORG_INDEX}" placeholder="{LANG_ORG_INDEX_MORE}" data-error="{LANG_FORM_NO_ORG_INDEX}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="org_data">{LANG_ORG_DATA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="org_data" class="form-control" id="org_data" value="{FORM_ORG_DATA}" placeholder="{LANG_ORG_DATA_MORE}" data-error="{LANG_FORM_NO_ORG_DATA}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="org_subj">{LANG_ORG_SUBJ}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="org_subj" class="form-control" id="org_subj" value="{FORM_ORG_SUBJ}" placeholder="{LANG_ORG_SUBJ_MORE}" data-error="{LANG_FORM_NO_ORG_SUBJ}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_visa">{LANG_MAKE_VISA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="make_visa" class="form-control" id="make_visa" value="{FORM_MAKE_VISA}" placeholder="{LANG_MAKE_VISA_MORE}" data-error="{LANG_FORM_NO_MAKE_VISA}" required >
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="do_user">{LANG_DO_USER}:</label>
+			<div class="col-sm-10 has-feedback">
+				<SELECT NAME="do_user" class="form-control" id="do_user" data-error="{LANG_FORM_NO_DO_USER}" required >
+					<option>{LANG_DO_USER}</option>
+					{FORM_DO_USER}
+				</SELECT>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_data">{LANG_MAKE_DATA}:</label>
+			<div class="col-sm-10 has-feedback">
+				<input type="text" NAME="make_data" class="form-control" id="make_data" value="{FORM_MAKE_DATA}" placeholder="{LANG_MAKE_DATA_MORE}">
+				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+				<div class="help-block with-errors"></div>
+			</div>
+		</div>
+
+		<div class="form-group">
+			<div class="col-sm-offset-2 col-sm-10">
+				<INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
+				<button type="submit" class="btn btn-success">{LANG_ADD_NEW}</button>
+			</div>
+		</div>
+
+	</FORM>
+</div>
