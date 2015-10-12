@@ -66,7 +66,7 @@ if (isset($_SESSION['user_id']))
 								if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
 								if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
 								if ($_POST['make_visa'] == "") $error .= "{LANG_FORM_NO_MAKE_VISA}<br>";
-								
+
 								if ($error == "")
 									{
 										$query = "INSERT INTO `db_".date('Y')."_in` (
@@ -81,7 +81,7 @@ if (isset($_SESSION['user_id']))
 										`org_data`,
 										`org_subj`,
 										`make_visa`,
-										`make_data` 
+										`make_data`
 										) VALUES (
 										NULL ,
 										'".$_SESSION['user_id']."',
@@ -94,7 +94,7 @@ if (isset($_SESSION['user_id']))
 										'".data_trans("ua", "mysql", $_POST['org_data'])."',
 										'".$_POST['org_subj']."',
 										'".$_POST['make_visa']."',
-										".$mysql_make_data." 
+										".$mysql_make_data."
 										) ;";
 										mysql_query($query) or die(mysql_error());
 										$queryes_num++;
@@ -108,7 +108,7 @@ if (isset($_SESSION['user_id']))
 										$_SESSION['error_in_add_make_data'] = '';
 										$_SESSION['error_in_add_do_user'] = '';
 										$_SESSION['form_id'] = $_POST['form_id'];
-										
+
 										$query = "SELECT `id` FROM `db_".date('Y')."_in` ORDER BY `id` DESC LIMIT 1 ;";
 										$res = mysql_query($query) or die(mysql_error());
 										$queryes_num++;
@@ -122,7 +122,7 @@ if (isset($_SESSION['user_id']))
 									{
 										$page.= file_get_contents("templates/information_danger.html");
 										$page = str_replace("{INFORMATION}", $error, $page);
-										
+
 										$_SESSION['error_in_add'] = 1;
 										$_SESSION['error_in_add_get_data'] = $_POST['get_data'];
 										$_SESSION['error_in_add_org_name'] = $_POST['org_name'];
@@ -174,6 +174,171 @@ if (isset($_SESSION['user_id']))
 				$page.= file_get_contents("templates/information.html");
 				$page = str_replace("{INFORMATION}", "У РОЗРОБЦІ", $page);
 			}
+			
+		if (isset($_GET['attach']) && preg_match('/^[1-9][0-9]*$/', $_GET['attach']))
+			{
+				$adres = 'true';
+				$query = "SELECT * FROM `db_".$_SESSION['user_year']."_in` WHERE `id`='".$_GET['attach']."' LIMIT 1 ; ";
+				$res = mysql_query($query) or die(mysql_error());
+				$queryes_num++;
+				if (mysql_num_rows($res) == 1)
+					{
+						$manage_files = 0;
+						$view_files = 0;
+						$row = mysql_fetch_assoc($res);
+						$page.= file_get_contents("templates/information.html");
+						$page = str_replace("{INFORMATION}", "{LANG_FILE_ABOUT_NUM} <strong>".$row['id']."</strong>", $page);
+						if ($row['add_user'] == $_SESSION['user_id'] OR $user_p_mod == 1)
+							{
+								$manage_files = 1;
+								$view_files = 1;
+							}
+						if ($privat1 == 1 OR $row['do_user'] == $_SESSION['user_id'])
+							{
+								$view_files = 1;
+							}
+						$tmp_add_new_file = 0;
+						if ($manage_files == 1)
+							{
+								if (isset($_FILES) AND !empty($_FILES))
+									{
+										foreach ($_FILES as $FILE)
+											{
+												for ($i = 0; ; $i++)
+													{
+														if (empty($FILE['name'][$i])) break;
+														$tmp_add_new_file = 1;
+														$ext = end(explode(".", strtolower($FILE['name'][$i])));
+														if (in_array($ext, $c_reg_file_array))
+															{
+																if ($max_file_size > $FILE['size'][$i])
+																	{
+																		if (is_uploaded_file($FILE['tmp_name'][$i]))
+																			{
+																				$file_new_name = $c_n_ray."_".$row['id']."_".$FILE['name'][$i];
+																				if (preg_match("/^".$c_n_ray."_".$row['id']."_.*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
+																				$file_name = "uploads\\".$_SESSION['user_year']."\\IN\\".$file_new_name;
+																				$file_name = iconv('UTF-8', 'windows-1251', $file_name);
+																				if (!file_exists($file_name))
+																					{
+																						if (@move_uploaded_file($FILE['tmp_name'][$i], $file_name))
+																							{
+																								$page.= file_get_contents("templates/information_success.html");
+																								$page = str_replace("{INFORMATION}", "<font color=\"green\">{LANG_FILE_SAVE_OK} ".$file_new_name."</font>", $page);
+																							}
+																							else
+																							{
+																								$page.= file_get_contents("templates/information_danger.html");
+																								$page = str_replace("{INFORMATION}", "<font color=\"green\">{LANG_FILE_SAVE_ERROR} ".$file_new_name."</font>", $page);
+																							}
+																					}
+																					else
+																					{
+																						$page.= file_get_contents("templates/information_danger.html");
+																						$page = str_replace("{INFORMATION}", $file_new_name." <font color=\"red\">{LANG_FILE_ALREADY_EXIST}</font>", $page);
+																					}
+																			}
+																	}
+																	else
+																	{
+																		$page.= file_get_contents("templates/information_danger.html");
+																		$page = str_replace("{INFORMATION}", "<font color=\"red\">{LANG_FILE_SIZE_NOT_ALLOWED}</font> <b>".(($FILE['size'][$i] / 1024) / 1024 )." MB</b>", $page);
+																	}
+															}
+															else
+															{
+																$page.= file_get_contents("templates/information_danger.html");
+																$page = str_replace("{INFORMATION}", "<b>".$ext."</b> <font color=\"red\">{LANG_FILE_EXT_NOT_ALLOWED}</font>", $page);
+															}
+													}
+											}
+									}
+								$page.= file_get_contents("templates/jurnal_out_add_file.html");
+								$page = str_replace("{FILE_PRE_NAME}", "<b>".$c_n_ray."_".$row['id']."_</b>", $page);
+							}
+						if ($view_files == 1)
+							{
+								if ($dir = opendir("uploads\\".$_SESSION['user_year']."\\IN"))
+									{
+										while (false !== ($file = readdir($dir)))
+											{
+												if ($file != "." && $file != "..")
+													{
+														$file_utf8 = iconv('windows-1251', 'UTF-8', $file);
+														if (preg_match("/^".$c_n_ray."_".$row['id']."_.*\.(?=".$c_reg_file.")/i", $file))
+															{
+																$tmp_do = 0;
+																if (isset($_GET['delete']) AND $_GET['delete'] == $file_utf8 AND $manage_files == 1 AND $tmp_add_new_file == 0)
+																	{
+																		$tmp_do = 1;
+																		if (@unlink("uploads\\".$_SESSION['user_year']."\\IN\\".$file))
+																			{
+																				$page.= file_get_contents("templates/information_success.html");
+																				$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_OK}", $page);
+																			}
+																			else
+																			{
+																				$page.= file_get_contents("templates/information_danger.html");
+																				$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_ERROR}", $page);
+																			}
+																	}
+
+																if (isset($_GET['download']) AND $_GET['download'] == $file_utf8 AND $tmp_add_new_file == 0)
+																	{
+																		$tmp_do = 1;
+																		if (ob_get_level()) ob_end_clean();
+																		header('Content-Description: File Transfer');
+																		header('Content-Type: application/octet-stream');
+																		header('Content-Disposition: attachment; filename=' . $file_utf8);
+																		header('Content-Transfer-Encoding: binary');
+																		header('Expires: 0');
+																		header('Cache-Control: must-revalidate');
+																		header('Pragma: public');
+																		header('Content-Length: ' . filesize("uploads\\".$_SESSION['user_year']."\\IN\\".$file));
+																		if ($fd = fopen("uploads\\".$_SESSION['user_year']."\\IN\\".$file, 'rb'))
+																			{
+																				while (!feof($fd))
+																					{
+																						print fread($fd, 1024);
+																					}
+																				fclose($fd);
+																			}
+																		exit;
+																		die();
+																	}
+																	
+																if ($tmp_do == 0)
+																	{
+																		$page.= file_get_contents("templates/information.html");
+																		$page = str_replace("{INFORMATION}", "{TMP_MANAGE_FILES}<a href=\"jurnal_in.php?attach=".$_GET['attach']."&download=".$file_utf8."\">".$file_utf8."</a> [ ".date ('d.m.Y H:i:s', @filemtime ("uploads\\".$_SESSION['user_year']."\\IN\\".$file))." ]", $page);
+																		if ($manage_files == 1)
+																			{
+																				$page = str_replace("{TMP_MANAGE_FILES}", "<a href=\"jurnal_in.php?attach=".$_GET['attach']."&delete=".$file_utf8."\" onClick=\"if(confirm('{LANG_REMOVE_FILE_CONFIRM}')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\"></a> ", $page);
+																			}
+																			else
+																			{
+																				$page = str_replace("{TMP_MANAGE_FILES}", "", $page);
+																			}
+																	}
+															}
+													}
+											}
+										closedir($dir);
+									}
+							}
+							else
+							{
+								$page.= file_get_contents("templates/information_danger.html");
+								$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_FILES_NO}", $page);
+							}	
+					}
+					else
+					{
+						$page.= file_get_contents("templates/information_danger.html");
+						$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_ID_NOT_FOUND}", $page);
+					}
+
+			}
 
 		if (isset($_GET['delete_last']) && $_GET['delete_last'] <> '')
 			{
@@ -188,7 +353,7 @@ if (isset($_SESSION['user_id']))
 								if ($_GET['delete_last'] <> $row['id']) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_FIRST}<br />";
 								if ($row['user'] <> $_SESSION['user_id'] AND $user_p_mod <> 1) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_AUTHOR}<br />";
 								if ($_SESSION['user_year'] <> date('Y')) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_YEAR}<br />";
-								
+
 								if ($ERROR == "")
 									{
 										$query = "DELETE FROM `db_".date('Y')."_in` WHERE `id`='".$row['id']."' LIMIT 1 ; ";
@@ -215,15 +380,13 @@ if (isset($_SESSION['user_id']))
 						$page.= file_get_contents("templates/information_danger.html");
 						$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_EMPTY}", $page);
 					}
-
 			}
-			
 
 		if ($adres <> 'true')
 			{
 				$page = str_replace("{JURNAL_IN_TOP_STAT}", file_get_contents("templates/jurnal_in_top_stat.html"), $page);
 				$page = str_replace("{JURNAL_IN_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
-				
+
 				if (isset($_GET['page_num']) AND preg_match('/^[1-9][0-9]*$/', $_GET['page_num']))
 					{
 						$active = $_GET['page_num'];
@@ -232,7 +395,7 @@ if (isset($_SESSION['user_id']))
 					{
 						$active = 1;
 					}
-				
+
 				$limit_pre = (($active - 1) * $_SESSION['user_page_limit']);
 				$sql_limit = "LIMIT ".$limit_pre.", ".$_SESSION['user_page_limit'];
 
@@ -244,7 +407,7 @@ if (isset($_SESSION['user_id']))
 					{
 						$query_where = "WHERE `add_user`='".$_SESSION['user_id']."' OR `do_user`='".$_SESSION['user_id']."'";
 					}
-				
+
 				$query_order_by = "ORDER BY `id` DESC ";
 				$html_navy = get_navy("DB_".$_SESSION['user_year']."_IN", $query_where, $query_order_by, $active, $_SESSION['user_page_limit'], "jurnal_in.php?page_num=");
 				$page = str_replace("{NAVY}", $html_navy, $page);
@@ -277,17 +440,19 @@ if (isset($_SESSION['user_id']))
 
 								$num_is_edited = "";
 								if (!empty($row['edit'])) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['moder']]."</strong><br>{LANG_LOG_TIME} <strong>".data_trans("mysql", "ua", $row['edit'])."</strong></p></td></tr>";
-								
+
 								$admin_links_do = "";
 								$user_del_num = 0;
 								if ($row['user'] == $_SESSION['user_id'] AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_p_mod == 1 AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_del_num == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
+								$show_files = 0;
+								if ($row['add_user'] == $_SESSION['user_id'] OR $row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
+								if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
 
-																
 								$jurnal_in .= "
 								<tr valign=\"top\" align=\"center\" id=\"TRn".$row['id']."\" onclick=\"cTR('TRn".$row['id']."')\">
-									<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a></abbr></td>
+									<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><strong><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</strong></a></abbr></td>
 									<td valign=\"top\" align=\"center\" >".data_trans("mysql", "ua", $row['get_data'])."</td>
 									<td valign=\"top\" align=\"left\" >".$row['org_name']."</td>
 									<td valign=\"top\" align=\"left\" >".$row['org_index']."</td>
@@ -297,7 +462,7 @@ if (isset($_SESSION['user_id']))
 									<td valign=\"top\" align=\"left\" >".$row['make_visa']."</td>
 									<td valign=\"top\" align=\"center\" >".data_trans("mysql", "ua", $row['make_data'])."</td>
 								</tr>";
-								
+
 								$modals .= "
 								<div class=\"modal fade\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
 								  <div class=\"modal-dialog\" role=\"document\">
