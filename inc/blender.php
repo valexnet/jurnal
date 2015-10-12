@@ -63,7 +63,7 @@ $page = str_replace("{USER_IP}", $user_ip, $page);
 $page = str_replace("{USER_YEAR}", $user_year, $page);
 $page = str_replace("{USERS_ONLINE}", $online_numberall, $page);
 $page = str_replace("{BACKUP_PLUS}", $c_dirp, $page);
-$page = str_replace("{D-A-T-A}", date('Y-m-d'), $page);
+$page = str_replace("{D-A-T-A}", date('d.m.Y'), $page);
 $page = str_replace("{TIME_MD5}", md5(time()), $page);
 
 $page = str_replace("{LIST_LEFT}", "", $page);

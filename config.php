@@ -194,7 +194,15 @@ if ($user_p_config == 1)
 		$page = str_replace("{CRON_BACKUP_LAST}", date('Y.m.d H:i:s', $backup_last), $page);
 		$page = str_replace("{CRON_BACKUP_ON_EMAIL_TIMEOUT}", $backup_on_email_timeout, $page);
 		$page = str_replace("{CRON_BACKUP_ON_EMAIL_LAST}", date('Y.m.d H:i:s', $backup_on_email_last), $page);
-
+		
+		if(extension_loaded('zip'))
+			{
+				$page = str_replace("{ZIP_EXTENSION}", "<font color=\"green\">{LANG_ENABLE}</font>", $page);
+			}
+			else
+			{
+				$page = str_replace("{ZIP_EXTENSION}", "<font color=\"red\">{LANG_DISABLE}</font>", $page);
+			}
 	}
 	else
 	{

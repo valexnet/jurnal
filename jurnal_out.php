@@ -48,8 +48,6 @@ if (isset($_SESSION['user_id']))
 						if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
 							{
 								$error = '';
-								if ($_POST['data'] <> date('Y-m-d')) $error = '{LANG_JURNAL_OUT_FORM_ERROR_DATE}<br />';
-
 								$FORM_TO = str_replace($srch, $rpls, $_POST['to']);
 								$FORM_TO_NUM = str_replace($srch, $rpls, $_POST['to_num']);
 								$FORM_TO_SUBJ = str_replace($srch, $rpls, $_POST['subj']);
@@ -323,7 +321,7 @@ if (isset($_SESSION['user_id']))
 											{
 												if ($_GET['edit'] <> $row['id'] AND $user_p_mod <> 1) $error .= "{LANG_USER_OUT_NUM_NOT_EXIST}<br />";
 												if ($_SESSION['user_id'] <> $row['user'] AND $user_p_mod <> 1) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR}<br />";
-												if ($_POST['data'] <> $row['data'] AND $user_p_mod <> 1) $error = '{LANG_JURNAL_OUT_FORM_EDIT_DATE_NOT_PREG}<br />';
+												if (data_trans("ua", "mysql", $_POST['data']) <> $row['data'] AND $user_p_mod <> 1) $error = '{LANG_JURNAL_OUT_FORM_EDIT_DATE_NOT_PREG}<br />';
 											}
 									}
 									else
@@ -337,7 +335,7 @@ if (isset($_SESSION['user_id']))
 										`time`='".time()."',
 										`ip`='".$_SERVER['REMOTE_ADDR']."',
 										`nom`='".$_POST['nom']."',
-										`data`='".$_POST['data']."',
+										`data`='".data_trans("ua", "mysql", $_POST['data'])."',
 										`to`='".$FORM_TO."',
 										`subj`='".$FORM_TO_SUBJ."',
 										`to_num`='".$FORM_TO_NUM."',
@@ -377,7 +375,7 @@ if (isset($_SESSION['user_id']))
 													}
 												$page.= file_get_contents("templates/jurnal_out_edit.html");
 												$page = str_replace("{JURNAL_OUT_NUM_TO_EDIT}", $row['id'], $page);
-												$page = str_replace("{FORM_DATA}", $row['data'], $page);
+												$page = str_replace("{FORM_DATA}", data_trans("mysql", "ua", $row['data']), $page);
 												$page = str_replace("{FORM_TO}", $row['to'], $page);
 												$page = str_replace("{FORM_TO_N}", $row['to_num'], $page);
 												$page = str_replace("{FORM_SUBJ}", $row['subj'], $page);
@@ -1144,7 +1142,7 @@ if (isset($_SESSION['user_id']))
 									<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a></abbr> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
 									<td valign=\"top\" align=\"center\" >".$blank_num."</td>
 									<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=how&do=".$row['how']."\">".$how_img."</a></td>
-									<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".$row_data[0]."</a></td>
+									<td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".data_trans("mysql", "ua", $row_data[0])."</a></td>
 									<td valign=\"top\" align=\"left\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=user&do=".$row['user']."\">".$users[$row['user']]."</a></td>
 									<td valign=\"top\" align=\"left\" >".$row['to']."</td>
 									<td valign=\"top\" align=\"left\" >".$row['subj']."</td>
@@ -1167,7 +1165,7 @@ if (isset($_SESSION['user_id']))
 											</tr>
 											<tr>
 												<td align=\"right\">{LANG_LOG_TIME}</td>
-												<td align=\"left\"><strong>".$row_data[0]."</strong> ".$row_data[1]."</td>
+												<td align=\"left\"><strong>".data_trans("mysql", "ua", $row_data[0])."</strong> ".$row_data[1]."</td>
 											</tr>
 											<tr>
 												<td align=\"right\">{RETURN_BLANK_N}</td>
