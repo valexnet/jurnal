@@ -2,7 +2,7 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET NAMES 'utf8' COLLATE 'utf8_general_ci';
 SET CHARACTER SET 'utf8';
 
-DROP TABLE `banned`;
+DROP TABLE IF EXISTS `banned`;
 CREATE TABLE `banned` (
   `id` int(11) NOT NULL auto_increment,
   `time` int(11) NOT NULL,
@@ -11,7 +11,7 @@ CREATE TABLE `banned` (
   PRIMARY KEY  (`id`)
 ) ;
 
-DROP TABLE `config`;
+DROP TABLE IF EXISTS `config`;
 CREATE TABLE `config` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE `config` (
 
 INSERT INTO `config` VALUES (1, 'Site Name', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 3);
 
-DROP TABLE `cron`;
+DROP TABLE IF EXISTS `cron`;
 CREATE TABLE `cron` (
   `name` varchar(250) NOT NULL,
   `time` int(11) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `cron` (
 INSERT INTO `cron` VALUES ('backup', 0, 0);
 INSERT INTO `cron` VALUES ('backup_on_email', 0, 0);
 
-DROP TABLE `log`;
+DROP TABLE IF EXISTS `log`;
 CREATE TABLE `log` (
   `id` int(11) NOT NULL auto_increment,
   `ip` varchar(15) NOT NULL,
@@ -53,7 +53,7 @@ CREATE TABLE `log` (
   PRIMARY KEY  (`id`)
 ) ;
 
-DROP TABLE `nomenclatura`;
+DROP TABLE IF EXISTS `nomenclatura`;
 CREATE TABLE `nomenclatura` (
   `id` int(11) NOT NULL auto_increment,
   `structura` int(10) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE `nomenclatura` (
   PRIMARY KEY  (`id`)
 ) ;
 
-DROP TABLE `structura`;
+DROP TABLE IF EXISTS `structura`;
 CREATE TABLE `structura` (
   `id` int(11) NOT NULL auto_increment,
   `index` varchar(10) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE `structura` (
   PRIMARY KEY  (`id`)
 ) ;
 
-DROP TABLE `users`;
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,
   `login` varchar(250) NOT NULL,

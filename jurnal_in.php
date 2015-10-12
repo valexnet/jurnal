@@ -36,32 +36,68 @@ if (isset($_SESSION['user_id']))
 					{
 						if (isset($_POST['get_data']) and !empty($_POST['get_data']))
 							{
+								if ($_POST['form_id'] == $_SESSION['form_id']) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_FORM_ID}<br />';
 								// Убераєм з даних лишне
-								$_POST['get_data'] = htmlspecialchars($_POST['get_data'], ENT_QUOTES);
-								$_POST['org_name'] = htmlspecialchars($_POST['org_name'], ENT_QUOTES);
-								$_POST['org_index'] = htmlspecialchars($_POST['org_index'], ENT_QUOTES);
-								$_POST['org_data'] = htmlspecialchars($_POST['org_data'], ENT_QUOTES);
-								$_POST['org_subj'] = htmlspecialchars($_POST['org_subj'], ENT_QUOTES);
-								$_POST['make_visa'] = htmlspecialchars($_POST['make_visa'], ENT_QUOTES);
-								$_POST['make_data'] = htmlspecialchars($_POST['make_data'], ENT_QUOTES);
-								$_POST['do_user'] = htmlspecialchars($_POST['do_user'], ENT_QUOTES);
+								$_POST['org_name'] = str_replace($srch, $rpls, $_POST['org_name']);
+								$_POST['org_index'] = str_replace($srch, $rpls, $_POST['org_index']);
+								$_POST['org_subj'] = str_replace($srch, $rpls, $_POST['org_subj']);
+								$_POST['make_visa'] = str_replace($srch, $rpls, $_POST['make_visa']);
 								// Перевірка даних
 								$error = "";
 								if (!check_data($_POST['get_data'])) $error .= "{LANG_FORM_NO_GET_DATA}<br>";
 								if (!check_data($_POST['org_data'])) $error .= "{LANG_FORM_NO_ORG_DATA}<br>";
-								if ($_POST['make_data'] != "" AND !check_data($_POST['make_data'])) $error .= "{LANG_FORM_NO_MAKE_DATA}<br>";
+								if ($_POST['make_data'] != "")
+									{
+										if (!check_data($_POST['make_data']))
+											{
+												$error .= "{LANG_FORM_NO_MAKE_DATA}<br>";
+											}
+											else
+											{
+												$_POST['make_data'] = "'".$_POST['make_data']."'";
+											}
+									}
+									else
+									{
+										$_POST['make_data'] = "NULL";
+									}
 								if (!preg_match("/^([1-9]|[1-9][0-9]{1,})$/" ,$_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
 								if ($_POST['org_name'] == "") $error .= "{LANG_FORM_NO_ORG_NAME}<br>";
 								if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
 								if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
 								if ($_POST['make_visa'] == "") $error .= "{LANG_FORM_NO_MAKE_VISA}<br>";
 								
-								if ($error == "") $error .= "НА цьому все, запис до БД у розробці...";
-								
 								if ($error == "")
 									{
-										// save to db
-										
+										$query = "INSERT INTO `db_".date('Y')."_in` (
+										`id`,
+										`add_user`,
+										`add_time`,
+										`add_ip`,
+										`do_user`,
+										`get_data`,
+										`org_name`,
+										`org_index`,
+										`org_data`,
+										`org_subj`,
+										`make_visa`,
+										`make_data` 
+										) VALUES (
+										NULL ,
+										'".$_SESSION['user_id']."',
+										'".date('Y-m-d H:i:s')."',
+										'".$_SERVER['REMOTE_ADDR']."',
+										'".$_POST['do_user']."',
+										'".$_POST['get_data']."',
+										'".$_POST['org_name']."',
+										'".$_POST['org_index']."',
+										'".$_POST['org_data']."',
+										'".$_POST['org_subj']."',
+										'".$_POST['make_visa']."',
+										".$_POST['make_data']." 
+										) ;";
+										mysql_query($query) or die(mysql_error());
+										$queryes_num++;
 										$_SESSION['error_in_add'] = '';
 										$_SESSION['error_in_add_get_data'] = '';
 										$_SESSION['error_in_add_org_name'] = '';
@@ -71,6 +107,16 @@ if (isset($_SESSION['user_id']))
 										$_SESSION['error_in_add_make_visa'] = '';
 										$_SESSION['error_in_add_make_data'] = '';
 										$_SESSION['error_in_add_do_user'] = '';
+										$_SESSION['form_id'] = $_POST['form_id'];
+										
+										$query = "SELECT `id` FROM `db_".date('Y')."_in` ORDER BY `id` DESC LIMIT 1 ;";
+										$res = mysql_query($query) or die(mysql_error());
+										$queryes_num++;
+										while ($row=mysql_fetch_array($res))
+											{
+												$page.= file_get_contents("templates/information_success.html");
+												$page = str_replace("{INFORMATION}", "{LANG_YOUR_IN_N}: <kbd>".$row['id']."</kbd>", $page);
+											}
 									}
 									else
 									{

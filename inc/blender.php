@@ -97,14 +97,13 @@ if ($c_lch == 1) {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_ALLOW}", $p
 
 // Шукаємо старі версії ІЕ
 $browser_alarm = "";
-preg_match("/(MSIE)(?:\/| )([0-9.]+)/", $_SERVER['HTTP_USER_AGENT'], $browser_info);
-
+preg_match("/(MSIE)(?:\/| )([0-9]{1,}\.+)/i", $_SERVER['HTTP_USER_AGENT'], $browser_info);
 list(,$browser_name,$browser_version) = $browser_info;
 $browser_version = substr($browser_version, 0, strpos($browser_version, "."));
 if ($browser_name == 'MSIE' AND $browser_version < 8)
 	{
 		$browser_alarm = file_get_contents("templates/information_warning.html");
-		$browser_alarm = str_replace("{INFORMATION}", "{LANG_IE_IS_OLD} | ver:".$browser_version, $browser_alarm);
+		$browser_alarm = str_replace("{INFORMATION}", $browser_name." | ver:".$browser_version, $browser_alarm);
 	}
 $page = str_replace("{ALARM_IE_IS_OLD}", $browser_alarm, $page);
 // Підключаємо мову
