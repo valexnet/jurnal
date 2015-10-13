@@ -28,11 +28,12 @@
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="org_name">{LANG_ORG_NAME}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="org_name" class="form-control" id="org_name" value="{FORM_ORG_NAME}" placeholder="{LANG_ORG_NAME_MORE}" data-error="{LANG_FORM_NO_ORG_NAME}" required >
+			<div class="col-sm-5 has-feedback">
+				<input onkeyup="loadHelp('help_org_name', 'org_name', {USER_YEAR}, 'jurnal_in', this.value)" type="text" NAME="org_name" class="form-control" id="org_name" value="{FORM_ORG_NAME}" placeholder="{LANG_ORG_NAME_MORE}" data-error="{LANG_FORM_NO_ORG_NAME}" required >
 				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 				<div class="help-block with-errors"></div>
 			</div>
+			<label class="col-sm-5 text-left" for="org_name" id="help_org_name"></label>
 		</div>
 
 		<div class="form-group">
@@ -55,20 +56,22 @@
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="org_subj">{LANG_ORG_SUBJ}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="org_subj" class="form-control" id="org_subj" value="{FORM_ORG_SUBJ}" placeholder="{LANG_ORG_SUBJ_MORE}" data-error="{LANG_FORM_NO_ORG_SUBJ}" required >
+			<div class="col-sm-5 has-feedback">
+				<input onkeyup="loadHelp('help_org_subj', 'org_subj', {USER_YEAR}, 'jurnal_in', this.value)" type="text" NAME="org_subj" class="form-control" id="org_subj" value="{FORM_ORG_SUBJ}" placeholder="{LANG_ORG_SUBJ_MORE}" data-error="{LANG_FORM_NO_ORG_SUBJ}" required >
 				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 				<div class="help-block with-errors"></div>
 			</div>
+			<label class="col-sm-5 text-left" for="org_subj" id="help_org_subj"></label>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="make_visa">{LANG_MAKE_VISA}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="make_visa" class="form-control" id="make_visa" value="{FORM_MAKE_VISA}" placeholder="{LANG_MAKE_VISA_MORE}" data-error="{LANG_FORM_NO_MAKE_VISA}" required >
+			<div class="col-sm-5 has-feedback">
+				<input onkeyup="loadHelp('help_make_visa', 'make_visa', {USER_YEAR}, 'jurnal_in', this.value)" type="text" NAME="make_visa" class="form-control" id="make_visa" value="{FORM_MAKE_VISA}" placeholder="{LANG_MAKE_VISA_MORE}" data-error="{LANG_FORM_NO_MAKE_VISA}" required >
 				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
 				<div class="help-block with-errors"></div>
 			</div>
+			<label class="col-sm-5 text-left" for="make_visa" id="help_make_visa"></label>
 		</div>
 
 		<div class="form-group">
@@ -100,3 +103,28 @@
 
 	</FORM>
 </div>
+<script>
+<!--
+function loadHelp(a, b, c, d, e)
+	{
+		var xhttp;
+		if (window.XMLHttpRequest)
+			{
+				xhttp = new XMLHttpRequest();
+			}
+			else
+			{
+				xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		xhttp.onreadystatechange = function()
+			{
+				if (xhttp.readyState == 4 && xhttp.status == 200)
+					{
+						document.getElementById(a).innerHTML = xhttp.responseText;
+					}
+			}
+		xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
+		xhttp.send();
+	}
+//-->
+</script>

@@ -1,7 +1,1 @@
-#Disable mod_security completely
-#SecFilterEngine Off
-#SecFilterScanPOST Off
-
-#Disable mod security only for the upload.php
-#SecFilterEngine On
-#SecFilterSelective "REQUEST_URI" "C:/AppServ/www/jurnal/beta/upload.php" "allow,nolog"
+#

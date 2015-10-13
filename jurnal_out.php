@@ -194,6 +194,34 @@ if (isset($_SESSION['user_id']))
 							else
 							{
 								$page.= file_get_contents("templates/jurnal_out_add.html");
+								
+								if (isset($_GET['template']) AND preg_match("/^([1-9]|[1-9][0-9]{1,})$/", $_GET['template']))
+									{
+										$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `id`='".$_GET['template']."' LIMIT 1 ;";
+										$res = mysql_query($query) or die(mysql_error());
+										$queryes_num++;
+										if (mysql_num_rows($res) > 0)
+											{
+												while ($row=mysql_fetch_array($res))
+													{
+														$_SESSION['error'] = 'true';
+														$_SESSION['form_to'] = $row['to'];
+														$_SESSION['form_to_num'] = $row['to_num'];
+														$_SESSION['form_subj'] = $row['subj'];
+														$_SESSION['form_nom'] = $row['nom'];
+														$_SESSION['form_money'] = $row['money'];
+														$_SESSION['form_how'] = $row['how'];
+													}
+													
+												$query_blank = "SELECT `id` FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `num`='".$_GET['template']."' LIMIT 1 ;";
+												$res_blank = mysql_query($query_blank) or die(mysql_error());
+												$queryes_num++;
+												$template_blank = 0;
+												if (mysql_num_rows($res_blank) == 1) $template_blank = 1;
+												$_SESSION['form_blank_n'] = $template_blank;
+											}
+									}
+								
 								$query = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
 								$res = mysql_query($query) or die(mysql_error());
 								$queryes_num++;
@@ -1094,6 +1122,7 @@ if (isset($_SESSION['user_id']))
 						while ($row=mysql_fetch_array($res))
 							{
 								$admin_links_do = "";
+								if ($privat6 == 1) $admin_links_do .= "<a href=\"?add=do&template=".$row['id']."\" class=\"btn btn-info btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-random\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_NEW_WITH_TEMPLATE}\"></span></a>";
 								$show_files = 0;
 								//Робота з файлами для власника вихідного номеру та модератора
 								if ($row['user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;

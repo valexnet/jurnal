@@ -137,6 +137,29 @@ if (isset($_SESSION['user_id']))
 							else
 							{
 								$page.= file_get_contents("templates/jurnal_in_add.html");
+								
+								if (isset($_GET['template']) AND preg_match("/^([1-9]|[1-9][0-9]{1,})$/", $_GET['template']))
+									{
+										$query = "SELECT * FROM `db_".$_SESSION['user_year']."_in` WHERE `id`='".$_GET['template']."' LIMIT 1 ;";
+										$res = mysql_query($query) or die(mysql_error());
+										$queryes_num++;
+										if (mysql_num_rows($res) > 0)
+											{
+												while ($row=mysql_fetch_array($res))
+													{
+														$_SESSION['error_in_add'] = 1;
+														$_SESSION['error_in_add_get_data'] = $row['get_data'];
+														$_SESSION['error_in_add_org_name'] = $row['org_name'];
+														$_SESSION['error_in_add_org_index'] = $row['org_index'];
+														$_SESSION['error_in_add_org_data'] = $row['org_data'];
+														$_SESSION['error_in_add_org_subj'] = $row['org_subj'];
+														$_SESSION['error_in_add_make_visa'] = $row['make_visa'];
+														$_SESSION['error_in_add_make_data'] = $row['make_data'];
+													}
+											}
+									}
+								
+								
 								$select_user = 0;
 								if (isset($_SESSION['error_in_add']) AND $_SESSION['error_in_add'] == 1)
 									{
@@ -442,6 +465,7 @@ if (isset($_SESSION['user_id']))
 								if (!empty($row['edit'])) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['moder']]."</strong><br>{LANG_LOG_TIME} <strong>".data_trans("mysql", "ua", $row['edit'])."</strong></p></td></tr>";
 
 								$admin_links_do = "";
+								if ($privat4 == 1) $admin_links_do .= "<a href=\"?do=add&template=".$row['id']."\" class=\"btn btn-info btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-random\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_NEW_WITH_TEMPLATE}\"></span></a>";
 								$user_del_num = 0;
 								if ($row['user'] == $_SESSION['user_id'] AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_p_mod == 1 AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;

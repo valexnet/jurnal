@@ -115,7 +115,7 @@ if ($user_p_users == 1)
 						
 						if ($error_save <> "true")
 							{
-								$query = "SELECT `login` FROM `users` WHERE `login`='".$_POST['user_login']."'";
+								$query = "SELECT `login` FROM `users` WHERE `login`='".$_POST['user_login']."' AND `del`='0' ; ";
 								$res = mysql_query($query) or die(mysql_error());
 								$queryes_num++;
 								$numberall = mysql_num_rows($res);

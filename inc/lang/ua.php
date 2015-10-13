@@ -3,6 +3,7 @@
 // Українська мова
 $lang = array (
 
+'LANG_NEW_WITH_TEMPLATE' => "Створити по шаблону",
 'LANG_ENABLE' => "Підключено",
 'LANG_DISABLE' => "Не підключено",
 'LANG_ZIP_EXTENSION' => "Архіватор ZIP",
