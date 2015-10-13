@@ -2,30 +2,51 @@
 <div class="container">
 <hr>
 	{ALARM_IE_IS_OLD}
-	<div class="collapse" id="RemarkAndSuggestions">
-		<div class="well text-center">
-			<h3>{LANG_REMARK_AND_SUGGESTIONS_HELP1}</h3>
-			{LANG_REMARK_AND_SUGGESTIONS_HELP2}<br>
-			{LANG_REMARK_AND_SUGGESTIONS_HELP3} <a href="http://10.98.97.2/jurnal_ztp.php" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a><br>
-			{LANG_REMARK_AND_SUGGESTIONS_HELP4} <a href="mailto:vkhlivnyk@gmail.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a> <kbd>vkhlivnyk@gmail.com</kbd><br>
-		</div>
-	</div>
-	<div class="collapse" id="GitHubHelp">
-		<div class="well text-center">
-			<h3>{LANG_GITHUB_HELP1}</h3>
-			{LANG_GITHUB_HELP2}<br>
-			{LANG_GITHUB_HELP3} <a href="https://github.com/valexnet/jurnal" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a><br>
-			{LANG_GITHUB_HELP4} <a href="https://github.com/valexnet/jurnal/archive/master.zip" target="_blank"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span></a><br>
-		</div>
-	</div>
+
 	<div class="pull-left">
-		<p style="font-size: 10px;">{PAGE_GENERATION_TIME} {PAGE_QUERYES_NUM}<br>{TIMEOUT_SESSION_COUNTER} {LANG_COPYRIGHT}</p>
+		<p style="font-size: 10px;">{PAGE_GENERATION_TIME} {PAGE_QUERYES_NUM}<br>{TIMEOUT_SESSION_COUNTER}</p>
 	</div>
 	<div class="pull-right">
 		<a class="btn btn-success btn-xs" href="index.php?team" role="button">{LANG_ADMIN_TEAM}</a> 
-		<a class="btn btn-danger btn-xs" role="button" data-toggle="collapse" href="#RemarkAndSuggestions" aria-expanded="false" aria-controls="RemarkAndSuggestions">{LANG_REMARK_AND_SUGGESTIONS}</a> 
-		<a class="btn btn-primary btn-xs" role="button" data-toggle="collapse" href="#GitHubHelp" aria-expanded="false" aria-controls="GitHubHelp">GitHub</a>
+		<a class="btn btn-danger btn-xs" role="button" data-toggle="collapse" onclick="$('#RemarkAndSuggestions').modal('show');" aria-expanded="false" aria-controls="RemarkAndSuggestions">{LANG_REMARK_AND_SUGGESTIONS}</a> 
+		<a class="btn btn-primary btn-xs" role="button" data-toggle="collapse" onclick="$('#GitHubHelp').modal('show');" aria-expanded="false" aria-controls="GitHubHelp">GitHub</a>
 	</div>
+</div>
+
+<div class="modal fade" id="RemarkAndSuggestions" tabindex="-1" role="dialog" aria-labelledby="RemarkAndSuggestionsLabel">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content bg-warning">
+	  <div class="modal-header bg-warning">
+		<h4 class="modal-title text-center" id="myModalLabel">{LANG_REMARK_AND_SUGGESTIONS_HELP1}</h4>
+	  </div>
+	  <div class="modal-body bg-warning text-center">
+			{LANG_REMARK_AND_SUGGESTIONS_HELP2}<br>
+			{LANG_REMARK_AND_SUGGESTIONS_HELP3} <a href="http://10.98.97.2/jurnal_ztp.php" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a><br>
+			{LANG_REMARK_AND_SUGGESTIONS_HELP4} <a href="mailto:vkhlivnyk@gmail.com"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></a> <kbd>vkhlivnyk@gmail.com</kbd><br>
+	  </div>
+	  <div class="modal-footer bg-warning">
+		<button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div class="modal fade" id="GitHubHelp" tabindex="-1" role="dialog" aria-labelledby="GitHubHelpLabel">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content bg-warning">
+	  <div class="modal-header bg-warning">
+		<h4 class="modal-title text-center" id="myModalLabel">{LANG_GITHUB_HELP1}</h4>
+	  </div>
+	  <div class="modal-body bg-warning text-center">
+			{LANG_GITHUB_HELP2}<br>
+			{LANG_GITHUB_HELP3} <a href="https://github.com/valexnet/jurnal" target="_blank"><span class="glyphicon glyphicon-link" aria-hidden="true"></span></a><br>
+			{LANG_GITHUB_HELP4} <a href="https://github.com/valexnet/jurnal/archive/master.zip" target="_blank"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span></a><br>
+	  </div>
+	  <div class="modal-footer bg-warning">
+			<button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
+	  </div>
+	</div>
+  </div>
 </div>
 
 <div class="modal fade" id="SessionEnd" tabindex="-1" role="dialog" aria-labelledby="SessionEndLabel">

@@ -190,6 +190,116 @@ if (isset($_SESSION['user_id']))
 						$page = str_replace("{INFORMATION}", "{LANG_PRIVAT4_NO}", $page);
 					}
 			}
+			
+		if (isset($_GET['edit']) && preg_match("/^[1-9][0-9]*$/", $_GET['edit']))
+			{
+				$adres = 'true';
+				$query = "SELECT * FROM `db_".$_SESSION['user_year']."_in` WHERE `id`='".$_GET['edit']."' LIMIT 1 ;";
+				$res = mysql_query($query) or die(mysql_error());
+				$queryes_num++;
+				if (mysql_num_rows($res) > 0)
+					{
+						while ($row=mysql_fetch_array($res))
+							{
+								if ($row['add_user'] == $_SESSION['user_id'] OR $user_p_mod == 1)
+									{
+										if (isset($_POST['get_data']) and !empty($_POST['get_data']))
+											{
+												$_POST['org_name'] = str_replace($srch, $rpls, $_POST['org_name']);
+												$_POST['org_index'] = str_replace($srch, $rpls, $_POST['org_index']);
+												$_POST['org_subj'] = str_replace($srch, $rpls, $_POST['org_subj']);
+												$_POST['make_visa'] = str_replace($srch, $rpls, $_POST['make_visa']);
+
+												$error = "";
+												if ($_POST['form_id'] == $_SESSION['form_id']) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_FORM_ID}<br />';
+												if ($_SESSION['user_year'] != date('Y')) $error .= '{LANG_JURNAL_IN_EDIT_LAST_YEAR}<br />';
+												if (!check_data(data_trans("ua", "mysql", $_POST['get_data']))) $error .= "{LANG_FORM_NO_GET_DATA}<br>";
+												if (!check_data(data_trans("ua", "mysql", $_POST['org_data']))) $error .= "{LANG_FORM_NO_ORG_DATA}<br>";
+												if ($_POST['make_data'] != "")
+													{
+														if (!check_data(data_trans("ua", "mysql", $_POST['make_data'])))
+															{
+																$error .= "{LANG_FORM_NO_MAKE_DATA}<br>";
+															}
+															else
+															{
+																$mysql_make_data = "'".data_trans("ua", "mysql", $_POST['make_data'])."'";
+															}
+													}
+													else
+													{
+														$mysql_make_data = "NULL";
+													}
+												if (!preg_match("/^[1-9][0-9]*$/" ,$_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
+												if ($_POST['org_name'] == "") $error .= "{LANG_FORM_NO_ORG_NAME}<br>";
+												if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
+												if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
+												if ($_POST['make_visa'] == "") $error .= "{LANG_FORM_NO_MAKE_VISA}<br>";
+
+												if ($error == "")
+													{
+														$query = "UPDATE `db_".date('Y')."_in` SET
+														`moder`='".$_SESSION['user_id']."',
+														`edit`='".date('Y-m-d H:i:s')."',
+														`do_user`='".$_POST['do_user']."',
+														`get_data`='".data_trans("ua", "mysql", $_POST['get_data'])."',
+														`org_name`='".$_POST['org_name']."',
+														`org_index`='".$_POST['org_index']."',
+														`org_data`='".data_trans("ua", "mysql", $_POST['org_data'])."',
+														`org_subj`='".$_POST['org_subj']."',
+														`make_visa`='".$_POST['make_visa']."',
+														`make_data`=".$mysql_make_data." 
+														WHERE `id`='".$row['id']."' LIMIT 1 ; ";
+														mysql_query($query) or die(mysql_error());
+														$queryes_num++;
+														$_SESSION['form_id'] = $_POST['form_id'];
+														$page.= file_get_contents("templates/information_success.html");
+														$page = str_replace("{INFORMATION}", "{LANG_OUT_EDIT_OK}", $page);
+													}
+													else
+													{
+														$page .= file_get_contents("templates/information_danger.html");
+														$page = str_replace("{INFORMATION}", $error, $page);
+														
+														$page.= file_get_contents("templates/information_danger.html");
+														$page = str_replace("{INFORMATION}", $error, $page);
+														$page.= file_get_contents("templates/information.html");
+														$page = str_replace("{INFORMATION}", "<a href=\"jurnal_in.php?edit=".$_GET['edit']."\">{LANG_RETURN_AND_GO}</a>", $page);
+														$loging_do = "{LANG_LOG_JURNAL_IN_EDIT_ERROR}:<br />".$error;
+														include ('inc/loging.php');
+													}
+											}
+											else
+											{
+												$page .= file_get_contents("templates/jurnal_in_edit.html");
+												$page = str_replace("{FORM_ID}", $row['id'], $page);
+												$page = str_replace("{FORM_DATA}", date('d.m.Y H:i:s'), $page);
+												$page = str_replace("{FORM_GET_DATA}", data_trans("mysql", "ua", $row['get_data']), $page);
+												$page = str_replace("{FORM_ORG_NAME}", $row['org_name'], $page);
+												$page = str_replace("{FORM_ORG_INDEX}", $row['org_index'], $page);
+												$page = str_replace("{FORM_ORG_DATA}", data_trans("mysql", "ua", $row['org_data']), $page);
+												$page = str_replace("{FORM_ORG_SUBJ}", $row['org_subj'], $page);
+												$page = str_replace("{FORM_MAKE_VISA}", $row['make_visa'], $page);
+												if ($row['make_data'] != "") $page = str_replace("{FORM_MAKE_DATA}", data_trans("mysql", "ua", $row['make_data']), $page);
+												$page = str_replace("{FORM_MAKE_DATA}", "", $page);
+												$page = str_replace("{FORM_DO_USER}", get_users_selection_options($row['do_user'], 0, "name", "ASC", 0), $page);
+												$queryes_num++;
+											}
+									}
+									else
+									{
+										$page.= file_get_contents("templates/information_danger.html");
+										$page = str_replace("{INFORMATION}", "{LANG_JURNAL_IN_EDIT_NOT_AUTHOR}", $page);
+									}
+							}
+					}
+					else
+					{
+						$page.= file_get_contents("templates/information_danger.html");
+						$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_ID_NOT_FOUND}", $page);
+					}
+					
+			}
 
 		if (isset($_GET['do']) && $_GET['do'] == 'src')
 			{
@@ -466,13 +576,17 @@ if (isset($_SESSION['user_id']))
 
 								$admin_links_do = "";
 								if ($privat4 == 1) $admin_links_do .= "<a href=\"?do=add&template=".$row['id']."\" class=\"btn btn-info btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-random\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_NEW_WITH_TEMPLATE}\"></span></a>";
+								$show_files = 0;
+								if ($row['add_user'] == $_SESSION['user_id'] OR $row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
+								if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
+								$user_edit_num = 0;
+								if ($row['add_user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
+								if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
+								
 								$user_del_num = 0;
 								if ($row['user'] == $_SESSION['user_id'] AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_p_mod == 1 AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_del_num == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
-								$show_files = 0;
-								if ($row['add_user'] == $_SESSION['user_id'] OR $row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
-								if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
 
 								$jurnal_in .= "
 								<tr valign=\"top\" align=\"center\" id=\"TRn".$row['id']."\" onclick=\"cTR('TRn".$row['id']."')\">
@@ -524,10 +638,7 @@ if (isset($_SESSION['user_id']))
 											</tr>
 										</table>
 									  </div>
-									  <div class=\"modal-footer\">
-										<a href=\"#\" role=\"button\" class=\"btn btn-default btn-lg\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_JURN_OUT_NUM_CLOSE}\"></span></a>
-										".$admin_links_do."
-									  </div>
+									  <div class=\"modal-footer\"><a href=\"#\" role=\"button\" class=\"btn btn-default btn-lg\" data-dismiss=\"modal\"><span class=\"glyphicon glyphicon-remove\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_JURN_OUT_NUM_CLOSE}\"></span></a>".$admin_links_do."</div>
 									</div>
 								  </div>
 								</div>";
