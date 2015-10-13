@@ -49,26 +49,26 @@
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="to">{LANG_OUT_ADD_TO}:</label>
-			<div class="col-sm-5 has-feedback">
-				<input onkeyup="loadHelp('help_to', 'to', {USER_YEAR}, 'jurnal_out', this.value)" type="text" NAME="to" class="form-control" id="to">
+			<div class="col-sm-10 has-feedback">
+				<input onkeyup="loadHelp('help_to', 'to', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="to" class="form-control" id="to">
+				<div class="hidden" id="help_to"></div>
 			</div>
-			<label class="col-sm-5 text-left" for="to" id="help_to"></label>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="to_num">{LANG_OUT_ADD_TO_N}:</label>
-			<div class="col-sm-5">
-				<input onkeyup="loadHelp('help_to_num', 'to_num', {USER_YEAR}, 'jurnal_out', this.value)" type="text" NAME="to_num" class="form-control" id="to_num">
+			<div class="col-sm-10">
+				<input onkeyup="loadHelp('help_to_num', 'to_num', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="to_num" class="form-control" id="to_num">
+				<div class="hidden" id="help_to_num"></div>
 			</div>
-			<label class="col-sm-5 text-left" for="to_num" id="help_to_num"></label>
 		</div>
 
 		<div class="form-group">
 			<label class="control-label col-sm-2" for="subj">{LANG_OUT_TEMA}:</label>
-			<div class="col-sm-5 has-feedback">
-				<input onkeyup="loadHelp('help_subj', 'subj', {USER_YEAR}, 'jurnal_out', this.value)" type="text" NAME="subj" class="form-control" id="subj">
+			<div class="col-sm-10 has-feedback">
+				<input onkeyup="loadHelp('help_subj', 'subj', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="subj" class="form-control" id="subj">
+				<div class="hidden" id="help_subj"></div>
 			</div>
-			<label class="col-sm-5 text-left" for="subj" id="help_subj"></label>
 		</div>
 
 		<div class="form-group">
@@ -140,7 +140,16 @@ function loadHelp(a, b, c, d, e)
 			{
 				if (xhttp.readyState == 4 && xhttp.status == 200)
 					{
-						document.getElementById(a).innerHTML = xhttp.responseText;
+						if (xhttp.responseText.length > 100)
+							{
+								document.getElementById(a).innerHTML = xhttp.responseText;
+								document.getElementById(a).className = 'col-sm-5 text-left dropdown clearfix open';
+							}
+							else
+							{
+								document.getElementById(a).innerHTML = '';
+								document.getElementById(a).className = 'hidden';
+							}
 					}
 			}
 		xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);

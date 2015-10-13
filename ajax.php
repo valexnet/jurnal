@@ -4,7 +4,8 @@ include ('inc/config.php');
 
 if (isset($_SESSION['user_id']))
 	{
-		if (isset($_GET['for']) AND !empty($_GET['for']) 
+		if (isset($_GET['help']) AND !empty($_GET['help']) 
+			AND isset($_GET['for']) AND !empty($_GET['for']) 
 			AND isset($_GET['year']) AND !empty($_GET['year']) 
 			AND isset($_GET['where']) AND !empty($_GET['where']) 
 			AND isset($_GET['input']) AND !empty($_GET['input']))
@@ -12,6 +13,7 @@ if (isset($_SESSION['user_id']))
 				$for = "";
 				$where = "";
 				$input = str_replace($srch, $rpls, $_GET['input']);
+				$help = str_replace($srch, $rpls, $_GET['help']);
 				if (preg_match("/^[0-9]{4}$/", $_GET['year']))
 					{
 						if ($_GET['for'] == "org_name") $for = $_GET['for'];
@@ -32,21 +34,19 @@ if (isset($_SESSION['user_id']))
 										$count = 0;
 										$find = array();
 										$result = "";
+										echo "<ul class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuDivider\">";
 										while ($row=mysql_fetch_array($res))
 											{
 												if (!in_array($row[$for], $find))
 													{
 														$count++;
 														$find[] = $row[$for];
-														if ($count != 1) echo ", ";
-														echo "<a onclick=\"document.getElementById('".$for."').value = '".$row[$for]."' \">".$row[$for]."</a>";
-														if ($count >= 5) exit;
+														//if ($count != 1) echo ", ";
+														echo "<li><a onclick=\"document.getElementById('".$for."').value = '".$row[$for]."'; document.getElementById('".$help."').className = 'col-sm-5'; \">".$row[$for]."</a></li>";
+														if ($count >= 10) exit;
 													}
 											}
-									}
-									else
-									{
-										echo "Підказки не знайдено для: ".$input;
+										echo "</ul>";
 									}
 							}
 					}
