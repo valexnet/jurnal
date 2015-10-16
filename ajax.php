@@ -51,8 +51,44 @@ if (isset($_SESSION['user_id']))
 							}
 					}
 			}
+			
+		if (isset($_GET['do']) AND !empty($_GET['do']))
+			{
+				if ($_GET['do'] == "check_new_rows")
+					{
+						$html = "";
+						$query = "SELECT `id`, `add_time`, `org_name`, `org_subj` FROM `db_".date('Y')."_in` WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL ; "; 
+						$res = mysql_query($query) or die(mysql_error());
+						if (mysql_num_rows($res) > 0)
+							{
+								$html .= "Для Вас є ".mysql_num_rows($res)." новий(х) запис(ів) у вхідній кореспонденції.<hr>";
+								while ($row=mysql_fetch_array($res))
+									{
+										$html .= "<strong>".$row['add_time']."</strong>, №<strong>".$row['id']."</strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
+									}
+								$html .= "<hr>";
+							}
+
+						if ($html != "") echo "<div class=\"modal-header\">
+								<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
+								<h4 class=\"modal-title text-center\" id=\"myModalLabel\">Нове повідомлення</h4>
+							</div>
+							<div class=\"modal-body text-center\">
+								".$html."
+							</div>
+							<div class=\"modal-footer\">
+								<a class=\"btn btn-warning\" onClick=\"set_view_time();\">Принято до уваги</button>
+							</div>";
+					}
+				if ($_GET['do'] == "set_view")
+					{
+						$query = "UPDATE `db_".date('Y')."_in` SET `do_view`='".date('Y-m-d H:i:s')."', `do_view_ip`='".$_SERVER['REMOTE_ADDR']."' WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL ; "; 
+						$res = mysql_query($query) or die(mysql_error());
+						echo "OK";
+					}
+			}
 	}
 
 mysql_close();
-
+exit;
 ?>

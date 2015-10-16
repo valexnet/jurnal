@@ -5,7 +5,7 @@
 		<table class="table table-hover">
 			<tr>
 				<td align="right" width="50%">{LANG_ANONYMOUS_ALLOW}:&nbsp;&nbsp;</td>
-				<td width="50%"><input type="checkbox" name="anonymous_allow" value="1"{ANONYMOUS_ALLOW_C} /></td>
+				<td width="50%"><input type="checkbox" name="anonymous_allow" value="1" {ANONYMOUS_ALLOW_C} /></td>
 			</tr>
 			<tr>
 				<td align="right">{LANG_SITENAME}:&nbsp;&nbsp;</td>
@@ -32,6 +32,10 @@
 				<td><input type="text" name="page_limit" value="{PAGE_LIMIT_SERVER}" size="30" /></td>
 			</tr>
 			<tr>
+				<td align="right">{LANG_MAX_PAGE_LIMIT}:&nbsp;&nbsp;</td>
+				<td><input type="text" name="max_page_limit" value="{MAX_PAGE_LIMIT}" size="30" /></td>
+			</tr>
+			<tr>
 				<td align="right">{LANG_CRON_BACKUP}:&nbsp;&nbsp;</td>
 				<td><input type="text" name="cron_backup_timeout" value="{CRON_BACKUP_TIMEOUT}" size="30" /></td>
 			</tr>
@@ -41,7 +45,7 @@
 			</tr>
 			<tr>
 				<td align="right">{LANG_LOGIN_CHOOSE}:&nbsp;&nbsp;</td>
-				<td><input type="checkbox" name="login_choose" value="1"{LOGIN_CHOOSE_С} /></td>
+				<td><input type="checkbox" name="login_choose" value="1" {LOGIN_CHOOSE_C} /></td>
 			</tr>
 			<tr>
 				<td align="right">{LANG_YEAR_START}:&nbsp;&nbsp;</td>

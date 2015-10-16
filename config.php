@@ -89,6 +89,12 @@ if ($user_p_config == 1)
 								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_PAGE_LIMIT}", $page);
 							}
+						if (!preg_match("/^(0|[1-9][0-9]*)$/" ,$_POST['max_page_limit']))
+							{
+								$error = "true";
+								$page.= file_get_contents("templates/information_danger.html");
+								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_MAX_PAGE_LIMIT}", $page);
+							}
 						if ($_POST['cron_backup_timeout'] < 0)
 							{
 								$error = "true";
@@ -142,6 +148,7 @@ if ($user_p_config == 1)
 								`anonymous`='".$anonymous_allow."', 
 								`user_timeout`='".$_POST['timeout_auht']."', 
 								`page_limit`='".$_POST['page_limit']."', 
+								`max_page_limit`='".$_POST['max_page_limit']."',
 								`login_choose`='".$login_choose."', 
 								`year_start`='".$_POST['year_start']."', 
 								`n_ray`='".$_POST['n_ray']."', 
@@ -163,11 +170,13 @@ if ($user_p_config == 1)
 								$timeout = "config.php";
 							}
 					}
-				if ($edit <> "true")
+				if ($edit != "true")
 					{
-						$page.= file_get_contents("templates/config_edit.html");
-						if ($c_ano == 1) {$page = str_replace("{ANONYMOUS_ALLOW_C}", " checked", $page);} else {$page = str_replace("{ANONYMOUS_ALLOW_C}", "", $page);}
-						if ($c_lch == 1) {$page = str_replace("{LOGIN_CHOOSE_Ñ}", " checked", $page);} else {$page = str_replace("{LOGIN_CHOOSE_Ñ}", "", $page);}
+						$page .= file_get_contents("templates/config_edit.html");
+						if ($c_ano == 1) $page = str_replace("{ANONYMOUS_ALLOW_C}", "checked", $page);
+						$page = str_replace("{ANONYMOUS_ALLOW_C}", "", $page);
+						if ($c_lch == 1) $page = str_replace("{LOGIN_CHOOSE_C}", "checked", $page);
+						$page = str_replace("{LOGIN_CHOOSE_C}", "", $page);
 					}
 			}
 		if ($adress <> "true") $page.= file_get_contents("templates/config.html");

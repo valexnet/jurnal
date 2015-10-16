@@ -27,12 +27,14 @@ if (isset($timeout))
 		$page = str_replace("{REDIRECT_ANNONCE}", file_get_contents("templates/information_warning.html"), $page);
 		$page = str_replace("{INFORMATION}", "{REDIRECT_ANNONCE}", $page);
 		$page = str_replace("{REDIRECT_GIF}", "<td style=\"vertical-align: middle;\"><img src=\"templates/images/globe64.gif\"></td>", $page); 
+		$page = str_replace("{SHOW_CHECK_NEW_ROWS}", "", $page); 
 	}
 	else
 	{
 		$page = str_replace("{META_REFRESH}", "", $page);
 		$page = str_replace("{REDIRECT_ANNONCE}", "", $page);
 		$page = str_replace("{REDIRECT_GIF}", "", $page); 
+		$page = str_replace("{SHOW_CHECK_NEW_ROWS}", "check_new_rows();", $page); 
 	}
 $page = str_replace("{SITENAME}", $c_nam, $page);
 $page = str_replace("{MYSQL_BIN}", $c_bin, $page);
@@ -43,6 +45,7 @@ $page = str_replace("{BACK_TIME}", $c_but, $page);
 $page = str_replace("{TIMEOUT_AUHT}", $c_tmt, $page);
 $page = str_replace("{PAGE_LIMIT}", $c_lmt, $page);
 $page = str_replace("{PAGE_LIMIT_SERVER}", $c_lmt_s, $page);
+$page = str_replace("{MAX_PAGE_LIMIT}", $c_max_page_limit, $page);
 $page = str_replace("{VER_NUM}", $c_ver, $page);
 $page = str_replace("{YEAR_START}", $c_y_s, $page);
 $page = str_replace("{N_RAY}", $c_n_ray, $page);

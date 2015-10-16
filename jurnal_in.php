@@ -1,9 +1,5 @@
 <?php
 session_start();
-
-if (isset($_POST['show_year']) AND $_POST['show_year'] > 0 AND $_POST['show_year'] < 9999 AND $_POST['show_year'][3] <> "") $_SESSION['user_year'] = $_POST['show_year'];
-if (isset($_POST['show_num_list']) AND $_POST['show_num_list'] > 0 AND $_POST['show_num_list'] < 9999) $_SESSION['user_page_limit'] = $_POST['show_num_list'];
-
 include ('inc/config.php');
 $page.= file_get_contents("templates/header.html");
 
@@ -557,19 +553,20 @@ if (isset($_SESSION['user_id']))
 						$queryes_num++;
 						while ($row=mysql_fetch_array($res))
 							{
+								$tr_color_info = "onclick=\"cTR('TRn".$row['id']."')\"";
+								if ($row['make_data'] != "")
+									{
+										$tmp = explode(" ", $row['make_data']);
+										if ($tmp[1] == "00:00:00") $row['make_data'] = $tmp[0];
+										$tmp = explode("-", $tmp[0]);
+										$tmp = $tmp[0].$tmp[1].$tmp[2];
+										if ($tmp == date('Ymd')) $tr_color_info = "class=\"warning\"";
+										if ($tmp < date('Ymd')) $tr_color_info = "class=\"danger\"";
+									}
 								$tmp = explode(" ", $row['get_data']);
 								if ($tmp[1] == "00:00:00") $row['get_data'] = $tmp[0];
 								$tmp = explode(" ", $row['org_data']);
 								if ($tmp[1] == "00:00:00") $row['org_data'] = $tmp[0];
-								$tmp = explode(" ", $row['make_data']);
-								if (empty($row['make_data']))
-									{
-										$row['make_data'] = "-";
-									}
-									else
-									{
-										if ($tmp[1] == "00:00:00") $row['make_data'] = $tmp[0];
-									}
 
 								$num_is_edited = "";
 								if (!empty($row['edit'])) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['moder']]."</strong><br>{LANG_LOG_TIME} <strong>".data_trans("mysql", "ua", $row['edit'])."</strong></p></td></tr>";
@@ -587,10 +584,16 @@ if (isset($_SESSION['user_id']))
 								if ($row['user'] == $_SESSION['user_id'] AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_p_mod == 1 AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_del_num == 1) $admin_links_do .= "<a href=\"?delete_last=".$row['id']."\" class=\"btn btn-danger btn-lg\" role=\"button\" onClick=\"if(confirm('{LANG_REMOVE_NUM_CONFIRM}')) {return true;} return false;\"><span class=\"glyphicon glyphicon-remove-circle\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_DEL}\"></span></a>";
-
+								
+								$glyphicon = "glyphicon glyphicon-eye-close";
+								$glyphicon_tooltip = "{LANG_JURNAL_DO_NOT_VIEWED}";
+								if (!empty($row['do_view'])) { $glyphicon = "glyphicon glyphicon-eye-open"; $glyphicon_tooltip = "{LANG_JURNAL_DO_VIEWED} ".data_trans("mysql", "ua", $row['do_view']); }
+								if (!empty($row['do_made'])) { $glyphicon = "glyphicon glyphicon-ok"; $glyphicon_tooltip = "{LANG_JURNAL_DO_MADED} ".data_trans("mysql", "ua", $row['do_made']); }
+								
 								$jurnal_in .= "
-								<tr valign=\"top\" align=\"center\" id=\"TRn".$row['id']."\" onclick=\"cTR('TRn".$row['id']."')\">
+								<tr valign=\"top\" align=\"center\" id=\"TRn".$row['id']."\" ".$tr_color_info.">
 									<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><strong><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</strong></a></abbr></td>
+									<td valign=\"top\" align=\"center\" ><span class=\"".$glyphicon."\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$glyphicon_tooltip."\"></span></td>
 									<td valign=\"top\" align=\"center\" >".data_trans("mysql", "ua", $row['get_data'])."</td>
 									<td valign=\"top\" align=\"left\" >".$row['org_name']."</td>
 									<td valign=\"top\" align=\"left\" >".$row['org_index']."</td>
@@ -635,6 +638,10 @@ if (isset($_SESSION['user_id']))
 											<tr>
 												<td align=\"right\">{LANG_MAKE_DATA}</td>
 												<td align=\"left\"><strong>".data_trans("mysql", "ua", $row['make_data'])."</strong></td>
+											</tr>
+											<tr>
+												<td align=\"right\">{LANG_JURNAL_STEP_DO}</td>
+												<td align=\"left\"><strong><span class=\"".$glyphicon."\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$glyphicon_tooltip."\"></span> ".$glyphicon_tooltip."</td>
 											</tr>
 										</table>
 									  </div>
