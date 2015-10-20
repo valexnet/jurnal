@@ -26,15 +26,6 @@ if (isset($_SESSION['user_id']))
 				$query = str_replace("{YEAR}", date('Y'), $query);
 				mysql_query($query) or die(mysql_error());
 			}
-		$query = "SHOW TABLES LIKE \"DB_".date('Y')."_OUT_BLANK\";";
-		$res = mysql_query($query) or die(mysql_error());
-		$queryes_num++;
-		if (mysql_num_rows($res) == 0)
-			{
-				$query = file_get_contents("inc/db_out_blank.txt");
-				$query = str_replace("{YEAR}", date('Y'), $query);
-				mysql_query($query) or die(mysql_error());
-			}
 
 		if (isset($_GET['add']) && $_GET['add'] == 'do')
 			{
@@ -122,7 +113,26 @@ if (isset($_SESSION['user_id']))
 
 
 										if ($_POST['how'] <> 3 AND $_POST['how'] <> 2) $_POST['how'] = 1;
-										if ($_POST['blank_n'] == 1) {$blank_n = 1;} else {$blank_n = 0;}
+										if ($_POST['blank_n'] == 1)
+											{
+												$query = "SELECT `blank` FROM `db_".$_SESSION['user_year']."_out` WHERE `blank` IS NOT NULL ORDER BY `id` DESC LIMIT 1 ;";
+												$res = mysql_query($query) or die(mysql_error());
+												$queryes_num++;
+												$blank_n = 0;
+												if (mysql_num_rows($res) == 1)
+													{
+														while ($row=mysql_fetch_array($res))
+															{
+																$blank_n = $row['blank'];
+															}
+													}
+												$blank_n = $blank_n + 1;
+												$blank_sql = "'".$blank_n."'";
+											}
+											else
+											{
+												$blank_sql = "NULL";
+											}
 
 										if ($error == '')
 											{
@@ -130,6 +140,7 @@ if (isset($_SESSION['user_id']))
 												`id`,
 												`time`,
 												`ip`,
+												`blank`,
 												`nom`,
 												`data`,
 												`to`,
@@ -144,6 +155,7 @@ if (isset($_SESSION['user_id']))
 												NULL ,
 												'".time()."',
 												'".$_SERVER['REMOTE_ADDR']."',
+												".$blank_sql.",
 												'".$_POST['nom']."',
 												'".date('Y-m-d H:i:s')."',
 												'".$FORM_TO."',
@@ -167,30 +179,14 @@ if (isset($_SESSION['user_id']))
 												$_SESSION['form_blank_n'] = '';
 												$_SESSION['form_id'] = $_POST['form_id'];
 
-												$query = "SELECT `id`,`nom` FROM `db_".date('Y')."_out` ORDER BY `id` DESC LIMIT 1 ;";
+												$query = "SELECT `id`,`nom`,`blank` FROM `db_".date('Y')."_out` ORDER BY `id` DESC LIMIT 1 ;";
 												$res = mysql_query($query) or die(mysql_error());
 												$queryes_num++;
 												while ($row=mysql_fetch_array($res))
 													{
 														$nomer = $row['id'];
 														$nom = $row['nom'];
-														if ($blank_n == 1)
-															{
-																$query = "INSERT INTO `db_".date('Y')."_out_blank` ( `id`, `num` ) VALUES ( NULL , '".$row['id']."' ) ;";
-																mysql_query($query) or die(mysql_error());
-																$queryes_num++;
-																$query_blank = "SELECT `id` FROM `db_".date('Y')."_out_blank` WHERE `num`='".$row['id']."' LIMIT 1 ;";
-																$res_blank = mysql_query($query_blank) or die(mysql_error());
-																$queryes_num++;
-																while ($row_blank=mysql_fetch_array($res_blank))
-																	{
-																		$blank = $row_blank['id'];
-																	}
-															}
-															else
-															{
-																$blank = '';
-															}
+														$blank = $row['blank'];
 														$query_nom = "SELECT `structura`,`index`,`name` FROM `nomenclatura` WHERE `id`='".$nom."' AND `work`='1' LIMIT 1 ;";
 														$res_nom = mysql_query($query_nom) or die(mysql_error());
 														$queryes_num++;
@@ -214,7 +210,7 @@ if (isset($_SESSION['user_id']))
 												$page.= file_get_contents("templates/information_success.html");
 												$page = str_replace("{INFORMATION}", "{RETURN_N}: <kbd>".$print_nomer."</kbd>", $page);
 
-												if ($blank_n == 1)
+												if (!empty($blank))
 													{
 														$page.= file_get_contents("templates/information.html");
 														$page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <kbd>".$blank."</kbd>", $page);
@@ -241,7 +237,7 @@ if (isset($_SESSION['user_id']))
 												$_SESSION['form_nom'] = $_POST['nom'];
 												$_SESSION['form_money'] = $FORM_MONEY;
 												$_SESSION['form_how'] = $_POST['how'];
-												$_SESSION['form_blank_n'] = $blank_n;
+												$_SESSION['form_blank_n'] = $_POST['blank_n'];
 												$page.= file_get_contents("templates/information_danger.html");
 												$page = str_replace("{INFORMATION}", $error, $page);
 												$page.= file_get_contents("templates/information.html");
@@ -264,6 +260,7 @@ if (isset($_SESSION['user_id']))
 														while ($row=mysql_fetch_array($res))
 															{
 																$_SESSION['error'] = 'true';
+																$_SESSION['form_blank_n'] = $row['blank'];
 																$_SESSION['form_to'] = $row['to'];
 																$_SESSION['form_to_num'] = $row['to_num'];
 																$_SESSION['form_subj'] = $row['subj'];
@@ -271,13 +268,6 @@ if (isset($_SESSION['user_id']))
 																$_SESSION['form_money'] = $row['money'];
 																$_SESSION['form_how'] = $row['how'];
 															}
-															
-														$query_blank = "SELECT `id` FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `num`='".$_GET['template']."' LIMIT 1 ;";
-														$res_blank = mysql_query($query_blank) or die(mysql_error());
-														$queryes_num++;
-														$template_blank = 0;
-														if (mysql_num_rows($res_blank) == 1) $template_blank = 1;
-														$_SESSION['form_blank_n'] = $template_blank;
 													}
 											}
 											
@@ -473,23 +463,8 @@ if (isset($_SESSION['user_id']))
 												if ($row['how'] == 1) {$page = str_replace("{FORM_HOW_1}", "checked", $page);} else {$page = str_replace("{FORM_HOW_1}", "", $page);}
 												if ($row['how'] == 2) {$page = str_replace("{FORM_HOW_2}", "checked", $page);} else {$page = str_replace("{FORM_HOW_2}", "", $page);}
 												if ($row['how'] == 3) {$page = str_replace("{FORM_HOW_3}", "checked", $page);} else {$page = str_replace("{FORM_HOW_3}", "", $page);}
-												$query_blank = "SELECT * FROM `db_".date('Y')."_out_blank` WHERE `num`='".$row['id']."' LIMIT 1 ; ";
-												$res_blank = mysql_query($query_blank) or die(mysql_error());
-												$queryes_num++;
-												if (mysql_num_rows($res_blank) > 0)
-													{
-														while ($row_blank=mysql_fetch_array($res_blank))
-															{
-																$page = str_replace("{FORM_BLANK_NUM}", " № ".$row_blank['id'], $page);
-																$page = str_replace("{LANG_JURNAL_BLANK}", "{LANG_JURNAL_BLANK_REGISTERED}", $page);
-																$blank_ch = "checked";
-															}
-													}
-													else
-													{
-														$page = str_replace("{FORM_BLANK_NUM}", "", $page);
-														$blank_ch = "";
-													}
+												$blank_ch = "";
+												if (!empty($row['blank'])) $blank_ch = "checked";
 												$page = str_replace("{FORM_BLANK_N}", $blank_ch, $page);
 
 												$query5 = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
@@ -646,24 +621,6 @@ if (isset($_SESSION['user_id']))
 										$queryes_num++;
 										@mysql_query("ALTER TABLE `db_".date('Y')."_out` AUTO_INCREMENT =".$row['id']." ;") or die(mysql_error());
 										$queryes_num++;
-
-										$query_blank = "SELECT * FROM `db_".date('Y')."_out_blank` ORDER BY `id` DESC LIMIT 1 ; ";
-										$res_blank = mysql_query($query_blank) or die(mysql_error());
-										$queryes_num++;
-										if (mysql_num_rows($res_blank) > 0)
-											{
-												while ($row_blank=mysql_fetch_array($res_blank))
-													{
-														if ($row_blank['num'] == $row['id'])
-															{
-																@mysql_query("DELETE FROM `db_".date('Y')."_out_blank` WHERE `id`='".$row_blank['id']."' LIMIT 1 ; ");
-																$queryes_num++;
-																@mysql_query("ALTER TABLE `db_".date('Y')."_out_blank` AUTO_INCREMENT =".$row_blank['id']." ; ");
-																$queryes_num++;
-															}
-													}
-											}
-
 										$loging_do = "{LANG_LOG_JURNAL_OUT_DELETE_LAST} ".$row['id'];
 										include ('inc/loging.php');
 										$page.= file_get_contents("templates/information_success.html");
@@ -882,39 +839,34 @@ if (isset($_SESSION['user_id']))
 		$query_where = "";
 		if (isset($_GET['find']) AND !empty($_GET['find']) AND isset($_GET['do']) AND !empty($_GET['do']))
 			{
-				if ($_GET['blank'] == "do") $search_pre = "blank=do&";
+				if ($_GET['blank'] == "do") $search_pre .= "blank=do&";
 				if ($_GET['find'] == "id" AND preg_match("/^[1-9][0-9]*$/" ,$_GET['do']))
 					{
 						$query_where = "`id` = '".$_GET['do']."'";
-						$query_blank_where = "n.id = '".$_GET['do']."'";
 						$where_lang = "{LANG_JURNAL_OUT_FIND_ID}";
 						$search_pre .= "find=id&do=".$_GET['do']."&";
 					}
 				if ($_GET['find'] == "user" AND preg_match("/^[1-9][0-9]*$/" ,$_GET['do']))
 					{
 						$query_where = "`user` = '".$_GET['do']."'";
-						$query_blank_where = "n.user = '".$_GET['do']."'";
 						$where_lang = "{LANG_SEARCH_BY_USER}";
 						$search_pre .= "find=user&do=".$_GET['do']."&";
 					}
 				if ($_GET['find'] == "nom" AND preg_match("/^[1-9][0-9]*$/" ,$_GET['do']))
 					{
 						$query_where = "`nom` = '".$_GET['do']."'";
-						$query_blank_where = "n.nom = '".$_GET['do']."'";
 						$where_lang = "{LANG_SEARCH_BY_NOM}";
 						$search_pre .= "find=nom&do=".$_GET['do']."&";
 					}
 				if ($_GET['find'] == "data" AND preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ,$_GET['do']))
 					{
 						$query_where = "`data` LIKE '".$_GET['do']." %'";
-						$query_blank_where = "n.data LIKE '".$_GET['do']." %'";
 						$where_lang = "{LANG_SEARCH_BY_DATA}";
 						$search_pre .= "find=data&do=".$_GET['do']."&";
 					}
 				if ($_GET['find'] == "how" AND preg_match("/^[1-3]{1}$/" ,$_GET['do']))
 					{
 						$query_where = "`how` = '".$_GET['do']."'";
-						$query_blank_where = "n.how = '".$_GET['do']."'";
 						$where_lang = "{LANG_SEARCH_BY_HOW}";
 						$search_pre .= "find=how&do=".$_GET['do']."&";
 					}
@@ -949,40 +901,37 @@ if (isset($_SESSION['user_id']))
 						$search_pre .= "search=do&data_start=".$_GET['data_start']."&data_end=".$_GET['data_end']."&user=".$_GET['user']."&to=".$_GET['to']."&to_num=".$_GET['to_num']."&subj=".$_GET['subj']."&nom=".$_GET['nom']."&how=".$_GET['how']."&blank=".$_GET['blank']."&";
 						
 						$query_where .= "`data` >= '".$_GET['data_start']." 00:00:00' AND `data` <= '".$_GET['data_end']." 23:59:59'";
-						$query_blank_where .= "n.data >= '".$_GET['data_start']." 00:00:00' AND n.data <= '".$_GET['data_end']." 23:59:59'";
 						
+						if ($_GET['blank'] == "do")
+							{
+								$query_where .= " AND `blank` IS NOT NULL";
+							}
 						if ($_GET['user'] != "0")
 							{
 								$query_where .= " AND `user`='".$_GET['user']."'";
-								$query_blank_where .= " AND n.user = '".$_GET['user']."'";
 							}
 						if ($_GET['nom'] != "0")
 							{
 								$query_where .= " AND `nom`='".$_GET['nom']."'";
-								$query_blank_where .= " AND n.nom = '".$_GET['nom']."'";
 							}
 						if ($_GET['how'] != "0")
 							{
 								$query_where .= " AND `how`='".$_GET['how']."'";
-								$query_blank_where .= " AND n.how = '".$_GET['how']."'";
 							}
 						if ($_GET['to'] != "")
 							{
 								$_GET['to'] = str_replace("*", "%", $_GET['to']);
 								$query_where .= " AND `to` LIKE '".$_GET['to']."'";
-								$query_blank_where .= " AND n.to LIKE '".$_GET['to']."'";
 							}
 						if ($_GET['to_num'] != "")
 							{
 								$_GET['to_num'] = str_replace("*", "%", $_GET['to_num']);
 								$query_where .= " AND `to_num` LIKE '".$_GET['to_num']."'";
-								$query_blank_where .= " AND n.to_num LIKE '".$_GET['to_num']."'";
 							}
 						if ($_GET['subj'] != "")
 							{
 								$_GET['subj'] = str_replace("*", "%", $_GET['subj']);
 								$query_where .= " AND `subj` LIKE '".$_GET['subj']."'";
-								$query_blank_where .= " AND n.subj LIKE '".$_GET['subj']."'";
 							}
 					}
 					else
@@ -1026,31 +975,16 @@ if (isset($_SESSION['user_id']))
 				//Дивимся чи юзер пішов на бланки + звіряєм права.
 				$pre_link = $search_pre;
 				
+				$where = "";
 				if ($privat3 == 1)
 					{
-						$where = "";
 						if ($query_where != "") $where = " WHERE ".$query_where;
 						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
-						if ($_GET['blank'] == "do")
-							{
-								$where = "";
-								if ($query_blank_where != "") $where = " AND ".$query_blank_where;
-								$query = "SELECT n.* FROM `db_".$_SESSION['user_year']."_out` n, `db_".$_SESSION['user_year']."_out_blank` b WHERE b.num = n.id ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
-								$pre_link .= "blank=do";
-							}
 					}
 					else
 					{
-						$where = "";
 						if ($query_where != "") $where = " AND ".$query_where;
 						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `user`='".$_SESSION['user_id']."' ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
-						if ($_GET['blank'] == "do")
-							{
-								$where = "";
-								if ($query_blank_where != "") $where = " AND ".$query_blank_where;
-								$query = "SELECT n.* FROM `db_".$_SESSION['user_year']."_out` n, `db_".$_SESSION['user_year']."_out_blank` b WHERE b.num = n.id AND n.user = '".$_SESSION['user_id']."' ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
-								$pre_link .= "blank=do";
-							}
 					}
 
 				// Шукаємо цифру для кнопки left
@@ -1072,19 +1006,16 @@ if (isset($_SESSION['user_id']))
 				////
 
 				// Шукаємо кількість номерів по ліміту $c_lmt для останньої сторінки
+				$where = "";
 				if ($privat3 == 1)
 					{
-						$where = "";
 						if ($query_where != "") $where = " WHERE ".$query_where;
 						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` ".$where." ; ";
-						if ($_GET['blank'] == "do") $a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out_blank` ; ";
 					}
 					else
 					{
-						$where = "";
 						if ($query_where != "") $where = " AND ".$query_where;
 						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` WHERE `user`=".$_SESSION['user_id']." ".$where." ; ";
-						if ($_GET['blank'] == "do") $a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `user`=".$_SESSION['user_id']." ; ";
 					}
 					
 				$a = @mysql_query($a_qr);
@@ -1205,14 +1136,7 @@ if (isset($_SESSION['user_id']))
 								$row_data = explode(" ", $row['data']);
 
 								$blank_num = "-";
-
-								$query_blank = "SELECT `id` FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `num`='".$row['id']."' LIMIT 1 ; ";
-								$res_blank = mysql_query($query_blank) or die(mysql_error());
-								$queryes_num++;
-								while ($row_blank=mysql_fetch_array($res_blank))
-									{
-										$blank_num = $row_blank['id'];
-									}
+								if (!empty($row['blank'])) $blank_num = $row['blank'];
 								
 								$how_img = "<img title=\"{LANG_HOW_1}\" alt=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
 								if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_2}\" alt=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";

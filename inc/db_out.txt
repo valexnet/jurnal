@@ -2,7 +2,7 @@ CREATE TABLE `DB_{YEAR}_OUT` (
 `id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `time` INT( 11 ) NOT NULL ,
 `ip` VARCHAR( 15 ) NOT NULL ,
-`str` INT( 11 ) NOT NULL ,
+`blank` int(11) default NULL,
 `nom` INT( 11 ) NOT NULL ,
 `data` DATETIME NOT NULL ,
 `to` VARCHAR( 250 ) NOT NULL ,
