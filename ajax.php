@@ -13,6 +13,7 @@ if (isset($_SESSION['user_id']))
 				$for = "";
 				$where = "";
 				$input = str_replace($srch, $rpls, $_GET['input']);
+				$input = str_replace("*", "%", $_GET['input']);
 				$help = str_replace($srch, $rpls, $_GET['help']);
 				if (preg_match("/^[0-9]{4}$/", $_GET['year']))
 					{
@@ -41,12 +42,15 @@ if (isset($_SESSION['user_id']))
 													{
 														$count++;
 														$find[] = $row[$for];
-														//if ($count != 1) echo ", ";
 														echo "<li><a onclick=\"document.getElementById('".$for."').value = '".$row[$for]."'; document.getElementById('".$help."').className = 'col-sm-5'; \">".$row[$for]."</a></li>";
 														if ($count >= 10) exit;
 													}
 											}
 										echo "</ul>";
+									}
+									else
+									{
+									
 									}
 							}
 					}
@@ -57,7 +61,7 @@ if (isset($_SESSION['user_id']))
 				if ($_GET['do'] == "check_new_rows")
 					{
 						$html = "";
-						$query = "SELECT `id`, `add_time`, `org_name`, `org_subj` FROM `db_".date('Y')."_in` WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL ; "; 
+						$query = "SELECT `id`, `add_time`, `org_name`, `org_subj` FROM `db_".date('Y')."_in` WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL AND `do_made` IS NULL ; "; 
 						$res = mysql_query($query) or die(mysql_error());
 						if (mysql_num_rows($res) > 0)
 							{

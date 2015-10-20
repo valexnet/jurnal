@@ -41,261 +41,325 @@ if (isset($_SESSION['user_id']))
 				$adres = 'true';
 				if ($privat6 == 1)
 					{
-						if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
+						$error = '';
+						$from_update = '';
+						if (isset($_GET['from']) AND $_GET['from'] == "in" AND isset($_GET['id']) AND preg_match("/^[1-9][0-9]*$/", $_GET['id']))
 							{
-								$error = '';
-								$FORM_TO = str_replace($srch, $rpls, $_POST['to']);
-								$FORM_TO_NUM = str_replace($srch, $rpls, $_POST['to_num']);
-								$FORM_TO_SUBJ = str_replace($srch, $rpls, $_POST['subj']);
-
-								if ($_POST['form_id'] == $_SESSION['form_id']) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_FORM_ID}<br />';
-								if ($_POST['nom'] == '' OR !preg_match('/^[0-9]+$/', $_POST['nom'])) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_NOM}<br />';
-								if ($FORM_TO == '') $error .= '{LANG_FORM_NO_TO}<br />';
-								if ($FORM_TO_SUBJ == '') $error .= '{LANG_FORM_NO_TEMA}<br />';
-
-								// Рубаєм бабоси ;)
-								if (!isset($_POST['money']) OR $_POST['money'] == '') $_POST['money'] = 0;
-								$_POST['money'] = str_replace(",", ".", $_POST['money']);
-								$money_tmp = explode(".", $_POST['money']);
-								if (isset($money_tmp[1]))
+								$from_query = "SELECT * FROM `db_".$_SESSION['user_year']."_in` WHERE `id`='".$_GET['id']."' LIMIT 1 ;";
+								$from_res = mysql_query($from_query) or die(mysql_error());
+								$queryes_num++;
+								if (mysql_num_rows($from_res) == 1)
 									{
-										$FORM_MONEY = $money_tmp[0].".".$money_tmp[1];
-									}
-									else
-									{
-										$FORM_MONEY = $money_tmp[0];
-									}
-								if (!preg_match('/^[0-9\.]+$/', $FORM_MONEY)) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_MONEY}<br />';
-
-
-								if ($_POST['how'] <> 3 AND $_POST['how'] <> 2) $_POST['how'] = 1;
-								if ($_POST['blank_n'] == 1) {$blank_n = 1;} else {$blank_n = 0;}
-
-								if ($error == '')
-									{
-										$query = "INSERT INTO `db_".date('Y')."_out` (
-										`id`,
-										`time`,
-										`ip`,
-										`nom`,
-										`data`,
-										`to`,
-										`subj`,
-										`to_num`,
-										`user`,
-										`money`,
-										`how`,
-										`edit`,
-										`fav`
-										) VALUES (
-										NULL ,
-										'".time()."',
-										'".$_SERVER['REMOTE_ADDR']."',
-										'".$_POST['nom']."',
-										'".date('Y-m-d H:i:s')."',
-										'".$FORM_TO."',
-										'".$FORM_TO_SUBJ."',
-										'".$FORM_TO_NUM."',
-										'".$_SESSION['user_id']."',
-										'".$FORM_MONEY."',
-										'".$_POST['how']."',
-										'0',
-										'0'
-										) ;";
-										mysql_query($query) or die(mysql_error());
-										$queryes_num++;
-										$_SESSION['error'] = 'false';
-										$_SESSION['form_to'] = '';
-										$_SESSION['form_to_num'] = '';
-										$_SESSION['form_subj'] = '';
-										$_SESSION['form_nom'] = '';
-										$_SESSION['form_money'] = '';
-										$_SESSION['form_how'] = '';
-										$_SESSION['form_blank_n'] = '';
-										$_SESSION['form_id'] = $_POST['form_id'];
-
-										$query = "SELECT `id`,`nom` FROM `db_".date('Y')."_out` ORDER BY `id` DESC LIMIT 1 ;";
-										$res = mysql_query($query) or die(mysql_error());
-										$queryes_num++;
-										while ($row=mysql_fetch_array($res))
+										while ($from_row=mysql_fetch_array($from_res))
 											{
-												$nomer = $row['id'];
-												$nom = $row['nom'];
-												if ($blank_n == 1)
+												if ($from_row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1)
 													{
-														$query = "INSERT INTO `db_".date('Y')."_out_blank` ( `id`, `num` ) VALUES ( NULL , '".$row['id']."' ) ;";
-														mysql_query($query) or die(mysql_error());
-														$queryes_num++;
-														$query_blank = "SELECT `id` FROM `db_".date('Y')."_out_blank` WHERE `num`='".$row['id']."' LIMIT 1 ;";
-														$res_blank = mysql_query($query_blank) or die(mysql_error());
-														$queryes_num++;
-														while ($row_blank=mysql_fetch_array($res_blank))
+														if (empty($from_row['do_made']))
 															{
-																$blank = $row_blank['id'];
+																$from_update = 1;
+																$from_db = "in";
+																$from_id = $_GET['id'];
+																$org_data = explode(" ", $from_row['org_data']);
+																$_SESSION['error'] = 'true';
+																$_SESSION['form_to'] = $from_row['org_name'];
+																$_SESSION['form_to_num'] = $from_row['org_index']." від ".data_trans("mysql", "ua", $org_data[0]);
+																$_SESSION['form_subj'] = $from_row['org_subj'];
+																$_SESSION['form_nom'] = '';
+																$_SESSION['form_money'] = '';
+																$_SESSION['form_how'] = '1';
+																$_SESSION['form_blank_n'] = '';
+															}
+															else
+															{
+																$page.= file_get_contents("templates/information_warning.html");
+																$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_DO_MADED}", $page);
+																//$error = 1;
 															}
 													}
 													else
 													{
-														$blank = '';
+														$page.= file_get_contents("templates/information_warning.html");
+														$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_NOT_DO_USER}", $page);
+														$error = 1;
 													}
-												$query_nom = "SELECT `structura`,`index` FROM `nomenclatura` WHERE `id`='".$nom."' AND `work`='1' LIMIT 1 ;";
-												$res_nom = mysql_query($query_nom) or die(mysql_error());
-												$queryes_num++;
-												while ($row_nom=mysql_fetch_array($res_nom))
-													{
-														$nom_index = $row_nom['index'];
-														$nom_srt_id = $row_nom['structura'];
-														$query_str = "SELECT `index` FROM `structura` WHERE `id`='".$nom_srt_id."' AND `work`='1' LIMIT 1 ;";
-														$res_str = mysql_query($query_str) or die(mysql_error());
-														$queryes_num++;
-														while ($row_srt=mysql_fetch_array($res_str))
-															{
-																$nom_str = $row_srt['index'];
-															}
-													}
-												$print_nomer = "<b>".$nomer."</b> / ".$nom_str."-".$nom_index."";
-												$print_regular = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer."</b>";
 											}
-
-										$page.= file_get_contents("templates/information_success.html");
-										$page = str_replace("{INFORMATION}", "{RETURN_N}: <kbd>".$print_nomer."</kbd>", $page);
-
-										if ($blank_n == 1)
-											{
-												$page.= file_get_contents("templates/information.html");
-												$page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <kbd>".$blank."</kbd>", $page);
-											}
-											
-										$page.= file_get_contents("templates/information.html");
-										$page = str_replace("{INFORMATION}", "{RETURN_REGULAR_N}: <kbd>".$print_regular."</kbd>", $page);
 									}
 									else
 									{
-										$_SESSION['error'] = 'true';
-										$_SESSION['form_to'] = $FORM_TO;
-										$_SESSION['form_to_num'] = $FORM_TO_NUM;
-										$_SESSION['form_subj'] = $FORM_TO_SUBJ;
-										$_SESSION['form_nom'] = $_POST['nom'];
-										$_SESSION['form_money'] = $FORM_MONEY;
-										$_SESSION['form_how'] = $_POST['how'];
-										$_SESSION['form_blank_n'] = $blank_n;
 										$page.= file_get_contents("templates/information_danger.html");
-										$page = str_replace("{INFORMATION}", $error, $page);
-										$page.= file_get_contents("templates/information.html");
-										$page = str_replace("{INFORMATION}", "<a href=\"jurnal_out.php?add=do\">{LANG_RETURN_AND_GO}</a>", $page);
-										$loging_do = "{LANG_LOG_JURNAL_OUT_ADD_ERROR}:<br />".$error;
-										include ('inc/loging.php');
+										$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_NOT_EXISTS}", $page);
+										$error = 1;
 									}
 							}
-							else
+						
+						if ($error == '')
 							{
-								$page.= file_get_contents("templates/jurnal_out_add.html");
-								
-								if (isset($_GET['template']) AND preg_match("/^([1-9]|[1-9][0-9]{1,})$/", $_GET['template']))
+								if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
 									{
-										$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `id`='".$_GET['template']."' LIMIT 1 ;";
+										$error = '';
+										$FORM_TO = str_replace($srch, $rpls, $_POST['to']);
+										$FORM_TO_NUM = str_replace($srch, $rpls, $_POST['to_num']);
+										$FORM_TO_SUBJ = str_replace($srch, $rpls, $_POST['subj']);
+
+										if ($_POST['form_id'] == $_SESSION['form_id']) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_FORM_ID}<br />';
+										if ($_POST['nom'] == '' OR !preg_match('/^[0-9]+$/', $_POST['nom'])) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_NOM}<br />';
+										if ($FORM_TO == '') $error .= '{LANG_FORM_NO_TO}<br />';
+										if ($FORM_TO_SUBJ == '') $error .= '{LANG_FORM_NO_TEMA}<br />';
+
+										// Рубаєм бабоси ;)
+										if (!isset($_POST['money']) OR $_POST['money'] == '') $_POST['money'] = 0;
+										$_POST['money'] = str_replace(",", ".", $_POST['money']);
+										$money_tmp = explode(".", $_POST['money']);
+										if (isset($money_tmp[1]))
+											{
+												$FORM_MONEY = $money_tmp[0].".".$money_tmp[1];
+											}
+											else
+											{
+												$FORM_MONEY = $money_tmp[0];
+											}
+										if (!preg_match('/^[0-9\.]+$/', $FORM_MONEY)) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_MONEY}<br />';
+
+
+										if ($_POST['how'] <> 3 AND $_POST['how'] <> 2) $_POST['how'] = 1;
+										if ($_POST['blank_n'] == 1) {$blank_n = 1;} else {$blank_n = 0;}
+
+										if ($error == '')
+											{
+												$query = "INSERT INTO `db_".date('Y')."_out` (
+												`id`,
+												`time`,
+												`ip`,
+												`nom`,
+												`data`,
+												`to`,
+												`subj`,
+												`to_num`,
+												`user`,
+												`money`,
+												`how`,
+												`edit`,
+												`fav`
+												) VALUES (
+												NULL ,
+												'".time()."',
+												'".$_SERVER['REMOTE_ADDR']."',
+												'".$_POST['nom']."',
+												'".date('Y-m-d H:i:s')."',
+												'".$FORM_TO."',
+												'".$FORM_TO_SUBJ."',
+												'".$FORM_TO_NUM."',
+												'".$_SESSION['user_id']."',
+												'".$FORM_MONEY."',
+												'".$_POST['how']."',
+												'0',
+												'0'
+												) ;";
+												mysql_query($query) or die(mysql_error());
+												$queryes_num++;
+												$_SESSION['error'] = 'false';
+												$_SESSION['form_to'] = '';
+												$_SESSION['form_to_num'] = '';
+												$_SESSION['form_subj'] = '';
+												$_SESSION['form_nom'] = '';
+												$_SESSION['form_money'] = '';
+												$_SESSION['form_how'] = '';
+												$_SESSION['form_blank_n'] = '';
+												$_SESSION['form_id'] = $_POST['form_id'];
+
+												$query = "SELECT `id`,`nom` FROM `db_".date('Y')."_out` ORDER BY `id` DESC LIMIT 1 ;";
+												$res = mysql_query($query) or die(mysql_error());
+												$queryes_num++;
+												while ($row=mysql_fetch_array($res))
+													{
+														$nomer = $row['id'];
+														$nom = $row['nom'];
+														if ($blank_n == 1)
+															{
+																$query = "INSERT INTO `db_".date('Y')."_out_blank` ( `id`, `num` ) VALUES ( NULL , '".$row['id']."' ) ;";
+																mysql_query($query) or die(mysql_error());
+																$queryes_num++;
+																$query_blank = "SELECT `id` FROM `db_".date('Y')."_out_blank` WHERE `num`='".$row['id']."' LIMIT 1 ;";
+																$res_blank = mysql_query($query_blank) or die(mysql_error());
+																$queryes_num++;
+																while ($row_blank=mysql_fetch_array($res_blank))
+																	{
+																		$blank = $row_blank['id'];
+																	}
+															}
+															else
+															{
+																$blank = '';
+															}
+														$query_nom = "SELECT `structura`,`index`,`name` FROM `nomenclatura` WHERE `id`='".$nom."' AND `work`='1' LIMIT 1 ;";
+														$res_nom = mysql_query($query_nom) or die(mysql_error());
+														$queryes_num++;
+														while ($row_nom=mysql_fetch_array($res_nom))
+															{
+																$nom_name = $row_nom['name'];
+																$nom_index = $row_nom['index'];
+																$nom_srt_id = $row_nom['structura'];
+																$query_str = "SELECT `index` FROM `structura` WHERE `id`='".$nom_srt_id."' AND `work`='1' LIMIT 1 ;";
+																$res_str = mysql_query($query_str) or die(mysql_error());
+																$queryes_num++;
+																while ($row_srt=mysql_fetch_array($res_str))
+																	{
+																		$nom_str = $row_srt['index'];
+																	}
+															}
+														$print_nomer = "<b>".$nomer."</b> / ".$nom_str."-".$nom_index."";
+														$print_regular = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer."</b>";
+													}
+
+												$page.= file_get_contents("templates/information_success.html");
+												$page = str_replace("{INFORMATION}", "{RETURN_N}: <kbd>".$print_nomer."</kbd>", $page);
+
+												if ($blank_n == 1)
+													{
+														$page.= file_get_contents("templates/information.html");
+														$page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <kbd>".$blank."</kbd>", $page);
+													}
+													
+												$page.= file_get_contents("templates/information.html");
+												$page = str_replace("{INFORMATION}", "{RETURN_REGULAR_N}: <kbd>".$print_regular."</kbd>", $page);
+												
+												if ($from_update == 1)
+													{
+														$query = "UPDATE `db_".$_SESSION['user_year']."_".$from_db."` SET `do_made`='".date('Y-m-d H:i:s')."', `do_made_ip`='".$_SERVER['REMOTE_ADDR']."', `out_year`='".date('Y')."', `out_index`='".$nom_str."-".$nom_index.":".$nom_name."' WHERE `id`='".$from_id."' LIMIT 1 ;";
+														mysql_query($query) or die(mysql_error());
+														$queryes_num++;
+														$page.= file_get_contents("templates/information.html");
+														$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_UPDATED}: <strong>".$from_id."</strong><br><kbd>{LANG_JURNAL_IN_STATUS_3} ".date('d.m.Y H:i:s')."</kbd>", $page);
+													}
+											}
+											else
+											{
+												$_SESSION['error'] = 'true';
+												$_SESSION['form_to'] = $FORM_TO;
+												$_SESSION['form_to_num'] = $FORM_TO_NUM;
+												$_SESSION['form_subj'] = $FORM_TO_SUBJ;
+												$_SESSION['form_nom'] = $_POST['nom'];
+												$_SESSION['form_money'] = $FORM_MONEY;
+												$_SESSION['form_how'] = $_POST['how'];
+												$_SESSION['form_blank_n'] = $blank_n;
+												$page.= file_get_contents("templates/information_danger.html");
+												$page = str_replace("{INFORMATION}", $error, $page);
+												$page.= file_get_contents("templates/information.html");
+												$page = str_replace("{INFORMATION}", "<a href=\"jurnal_out.php?add=do\">{LANG_RETURN_AND_GO}</a>", $page);
+												$loging_do = "{LANG_LOG_JURNAL_OUT_ADD_ERROR}:<br />".$error;
+												include ('inc/loging.php');
+											}
+									}
+									else
+									{
+										$page.= file_get_contents("templates/jurnal_out_add.html");
+										
+										if (isset($_GET['template']) AND preg_match("/^[1-9][0-9]*$/", $_GET['template']))
+											{
+												$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `id`='".$_GET['template']."' LIMIT 1 ;";
+												$res = mysql_query($query) or die(mysql_error());
+												$queryes_num++;
+												if (mysql_num_rows($res) > 0)
+													{
+														while ($row=mysql_fetch_array($res))
+															{
+																$_SESSION['error'] = 'true';
+																$_SESSION['form_to'] = $row['to'];
+																$_SESSION['form_to_num'] = $row['to_num'];
+																$_SESSION['form_subj'] = $row['subj'];
+																$_SESSION['form_nom'] = $row['nom'];
+																$_SESSION['form_money'] = $row['money'];
+																$_SESSION['form_how'] = $row['how'];
+															}
+															
+														$query_blank = "SELECT `id` FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `num`='".$_GET['template']."' LIMIT 1 ;";
+														$res_blank = mysql_query($query_blank) or die(mysql_error());
+														$queryes_num++;
+														$template_blank = 0;
+														if (mysql_num_rows($res_blank) == 1) $template_blank = 1;
+														$_SESSION['form_blank_n'] = $template_blank;
+													}
+											}
+											
+										$query = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
 										$res = mysql_query($query) or die(mysql_error());
 										$queryes_num++;
 										if (mysql_num_rows($res) > 0)
 											{
 												while ($row=mysql_fetch_array($res))
 													{
-														$_SESSION['error'] = 'true';
-														$_SESSION['form_to'] = $row['to'];
-														$_SESSION['form_to_num'] = $row['to_num'];
-														$_SESSION['form_subj'] = $row['subj'];
-														$_SESSION['form_nom'] = $row['nom'];
-														$_SESSION['form_money'] = $row['money'];
-														$_SESSION['form_how'] = $row['how'];
-													}
-													
-												$query_blank = "SELECT `id` FROM `db_".$_SESSION['user_year']."_out_blank` WHERE `num`='".$_GET['template']."' LIMIT 1 ;";
-												$res_blank = mysql_query($query_blank) or die(mysql_error());
-												$queryes_num++;
-												$template_blank = 0;
-												if (mysql_num_rows($res_blank) == 1) $template_blank = 1;
-												$_SESSION['form_blank_n'] = $template_blank;
-											}
-									}
-								
-								$query = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
-								$res = mysql_query($query) or die(mysql_error());
-								$queryes_num++;
-								if (mysql_num_rows($res) > 0)
-									{
-										while ($row=mysql_fetch_array($res))
-											{
-												if (in_array($row['structura'], $usr_str_array))
-													{
-														if ($old_nom_id != $row['structura'])
+														if (in_array($row['structura'], $usr_str_array))
 															{
-																$query3 = "SELECT `index` FROM `structura` WHERE `id`='".$row['structura']."' AND `work`='1' LIMIT 1 ;";
-																$res3 = mysql_query($query3) or die(mysql_error());
-																$queryes_num++;
-																if (mysql_num_rows($res3) > 0)
+																if ($old_nom_id != $row['structura'])
 																	{
-																		while ($row3=mysql_fetch_array($res3))
+																		$query3 = "SELECT `index` FROM `structura` WHERE `id`='".$row['structura']."' AND `work`='1' LIMIT 1 ;";
+																		$res3 = mysql_query($query3) or die(mysql_error());
+																		$queryes_num++;
+																		if (mysql_num_rows($res3) > 0)
 																			{
-																				$structura = $row3['index'];
-																				$old_nom_id = $row['structura'];
-																				$old_nom_index = $structura;
+																				while ($row3=mysql_fetch_array($res3))
+																					{
+																						$structura = $row3['index'];
+																						$old_nom_id = $row['structura'];
+																						$old_nom_index = $structura;
+																					}
+																			}
+																			else
+																			{
+																				$structura = "{LANG_SRT_DELETED}";
 																			}
 																	}
 																	else
 																	{
-																		$structura = "{LANG_SRT_DELETED}";
+																		$structura = $old_nom_index;
+																	}
+
+																$ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row['name'],70,'<br>',false)),0,1));
+																if($ndi_nom_name_tmp!=$row['name']) $ndi_nom_name_tmp .= "...";
+
+																if ($_SESSION['error'] == 'true' AND $_SESSION['form_nom'] == $row['id'])
+																	{
+																		if ($structura <> "{LANG_SRT_DELETED}") $nom_tmp .= "<OPTION value = \"".$row['id']."\" selected >(".$structura."-".$row['index'].") ".$ndi_nom_name_tmp."</OPTION>";
+																	}
+																	else
+																	{
+																		if ($structura <> "{LANG_SRT_DELETED}") $nom_tmp .= "<OPTION value = \"".$row['id']."\" >(".$structura."-".$row['index'].") ".$ndi_nom_name_tmp."</OPTION>";
 																	}
 															}
-															else
-															{
-																$structura = $old_nom_index;
-															}
-
-														$ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row['name'],70,'<br>',false)),0,1));
-														if($ndi_nom_name_tmp!=$row['name']) $ndi_nom_name_tmp .= "...";
-
-														if ($_SESSION['error'] == 'true' AND $_SESSION['form_nom'] == $row['id'])
-															{
-																if ($structura <> "{LANG_SRT_DELETED}") $nom_tmp .= "<OPTION value = \"".$row['id']."\" selected >(".$structura."-".$row['index'].") ".$ndi_nom_name_tmp."</OPTION>";
-															}
-															else
-															{
-																if ($structura <> "{LANG_SRT_DELETED}") $nom_tmp .= "<OPTION value = \"".$row['id']."\" >(".$structura."-".$row['index'].") ".$ndi_nom_name_tmp."</OPTION>";
-															}
 													}
+													if ($nom_tmp == "") $nom_tmp = "<OPTION value = \"\">{LANG_NDI_NOM_EMPTY}</OPTION>";
 											}
-											if ($nom_tmp == "") $nom_tmp = "<OPTION value = \"\">{LANG_NDI_NOM_EMPTY}</OPTION>";
-									}
-									else
-									{
-										$nom_tmp .= "<OPTION value = \"\">{LANG_NDI_NOM_EMPTY}</OPTION>";
-									}
+											else
+											{
+												$nom_tmp .= "<OPTION value = \"\">{LANG_NDI_NOM_EMPTY}</OPTION>";
+											}
 
-								if ($nom_tmp == '') $nom_tmp .= "<OPTION value = \"\">{LANG_USER_NO_NOM}</OPTION>";
+										if ($nom_tmp == '') $nom_tmp .= "<OPTION value = \"\">{LANG_USER_NO_NOM}</OPTION>";
 
-								$page = str_replace("{NOMENCLATURA}", $nom_tmp, $page);
+										$page = str_replace("{NOMENCLATURA}", $nom_tmp, $page);
 
-								if ($_SESSION['error'] == 'true')
-									{
-										$page = str_replace("{FORM_TO}", $_SESSION['form_to'], $page);
-										$page = str_replace("{FORM_TO_N}", $_SESSION['form_to_num'], $page);
-										$page = str_replace("{FORM_SUBJ}", $_SESSION['form_subj'], $page);
-										$page = str_replace("{FORM_MONEY}", $_SESSION['form_money'], $page);
-										if ($_SESSION['form_how'] == 1) {$page = str_replace("{FORM_HOW_1}", "checked", $page);} else {$page = str_replace("{FORM_HOW_1}", "", $page);}
-										if ($_SESSION['form_how'] == 2) {$page = str_replace("{FORM_HOW_2}", "checked", $page);} else {$page = str_replace("{FORM_HOW_2}", "", $page);}
-										if ($_SESSION['form_how'] == 3) {$page = str_replace("{FORM_HOW_3}", "checked", $page);} else {$page = str_replace("{FORM_HOW_3}", "", $page);}
-										if ($_SESSION['form_blank_n'] == 1) {$page = str_replace("{FORM_BLANK_N}", "checked", $page);} else {$page = str_replace("{FORM_BLANK_N}", "", $page);}
-									}
-									else
-									{
-										$page = str_replace("{FORM_TO}", "ГУДКСУ", $page);
-										$page = str_replace("{FORM_TO_N}", "", $page);
-										$page = str_replace("{FORM_SUBJ}", "", $page);
-										$page = str_replace("{FORM_MONEY}", "0", $page);
-										$page = str_replace("{FORM_HOW_1}", "checked", $page);
-										$page = str_replace("{FORM_HOW_2}", "", $page);
-										$page = str_replace("{FORM_HOW_3}", "", $page);
-										$page = str_replace("{FORM_BLANK_N}", "", $page);
+										if ($_SESSION['error'] == 'true')
+											{
+												$page = str_replace("{FORM_TO}", $_SESSION['form_to'], $page);
+												$page = str_replace("{FORM_TO_N}", $_SESSION['form_to_num'], $page);
+												$page = str_replace("{FORM_SUBJ}", $_SESSION['form_subj'], $page);
+												$page = str_replace("{FORM_MONEY}", $_SESSION['form_money'], $page);
+												if ($_SESSION['form_how'] == 1) {$page = str_replace("{FORM_HOW_1}", "checked", $page);} else {$page = str_replace("{FORM_HOW_1}", "", $page);}
+												if ($_SESSION['form_how'] == 2) {$page = str_replace("{FORM_HOW_2}", "checked", $page);} else {$page = str_replace("{FORM_HOW_2}", "", $page);}
+												if ($_SESSION['form_how'] == 3) {$page = str_replace("{FORM_HOW_3}", "checked", $page);} else {$page = str_replace("{FORM_HOW_3}", "", $page);}
+												if ($_SESSION['form_blank_n'] == 1) {$page = str_replace("{FORM_BLANK_N}", "checked", $page);} else {$page = str_replace("{FORM_BLANK_N}", "", $page);}
+											}
+											else
+											{
+												$page = str_replace("{FORM_TO}", "ГУДКСУ", $page);
+												$page = str_replace("{FORM_TO_N}", "", $page);
+												$page = str_replace("{FORM_SUBJ}", "", $page);
+												$page = str_replace("{FORM_MONEY}", "0", $page);
+												$page = str_replace("{FORM_HOW_1}", "checked", $page);
+												$page = str_replace("{FORM_HOW_2}", "", $page);
+												$page = str_replace("{FORM_HOW_3}", "", $page);
+												$page = str_replace("{FORM_BLANK_N}", "", $page);
+											}
 									}
 							}
 					}
@@ -569,7 +633,7 @@ if (isset($_SESSION['user_id']))
 				$queryes_num++;
 				if (mysql_num_rows($res) > 0)
 					{
-						while ($row=@mysql_fetch_array($res))
+						while ($row=mysql_fetch_array($res))
 							{
 								if ($_GET['delete_last'] <> $row['id']) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_FIRST}<br />";
 								if ($row['user'] <> $_SESSION['user_id'] AND $user_p_mod <> 1) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_AUTHOR}<br />";
@@ -578,7 +642,7 @@ if (isset($_SESSION['user_id']))
 								if ($ERROR == "")
 									{
 										$query = "DELETE FROM `db_".date('Y')."_out` WHERE `id`='".$row['id']."' LIMIT 1 ; ";
-										$res = mysql_query($query) or die(mysql_error());
+										mysql_query($query) or die(mysql_error());
 										$queryes_num++;
 										@mysql_query("ALTER TABLE `db_".date('Y')."_out` AUTO_INCREMENT =".$row['id']." ;") or die(mysql_error());
 										$queryes_num++;

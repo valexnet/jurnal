@@ -36,6 +36,7 @@ if (isset($timeout))
 		$page = str_replace("{REDIRECT_GIF}", "", $page); 
 		$page = str_replace("{SHOW_CHECK_NEW_ROWS}", "check_new_rows();", $page); 
 	}
+
 $page = str_replace("{SITENAME}", $c_nam, $page);
 $page = str_replace("{MYSQL_BIN}", $c_bin, $page);
 $page = str_replace("{BACKUPDIR}", $c_dir, $page);
@@ -109,6 +110,16 @@ if ($browser_name == 'MSIE' AND $browser_version < 8)
 		$browser_alarm = str_replace("{INFORMATION}", $browser_name." | ver:".$browser_version, $browser_alarm);
 	}
 $page = str_replace("{ALARM_IE_IS_OLD}", $browser_alarm, $page);
+// Показуємо повідомлення про закритий журнал
+if ($c_ano == 0)
+	{
+		$page = str_replace("{SHOW_C_ANO}", "{LANG_ANONYMOUS_ALLOW}: <strong>{LANG_DISALLOW}</strong>", $page);
+	}
+	else
+	{
+		$page = str_replace("{SHOW_C_ANO}", "", $page);
+	}
+
 // Підключаємо мову
 if (!file_exists("inc/lang/".$c_lng.".php")) die("Language file [inc/lang/".$c_lng.".php] not exist");
 include_once ("lang/".$c_lng.".php");
@@ -130,7 +141,7 @@ $page = str_replace("{PAGE_QUERYES_NUM}", " include ".$queryes_num." MySQL query
 
 if (isset($_GET['export']) AND $_GET['export'] == "do")
 	{
-		$export = str_replace($srch_csv, $rpls_csv, $export);
+		//$export = str_replace($srch_csv, $rpls_csv, $export);
 		header("Content-Type: ".$export_type.";");
 		header("Content-Disposition: attachment; filename=".$export_name."");
 		echo(iconv('UTF-8', 'windows-1251', $export));
