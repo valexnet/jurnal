@@ -82,7 +82,7 @@ if (isset($_SESSION['user_id']))
 										$error = 1;
 									}
 							}
-						
+
 						if ($error == '')
 							{
 								if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
@@ -215,10 +215,10 @@ if (isset($_SESSION['user_id']))
 														$page.= file_get_contents("templates/information.html");
 														$page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <kbd>".$blank."</kbd>", $page);
 													}
-													
+
 												$page.= file_get_contents("templates/information.html");
 												$page = str_replace("{INFORMATION}", "{RETURN_REGULAR_N}: <kbd>".$print_regular."</kbd>", $page);
-												
+
 												if ($from_update == 1)
 													{
 														$query = "UPDATE `db_".$_SESSION['user_year']."_".$from_db."` SET `do_made`='".date('Y-m-d H:i:s')."', `do_made_ip`='".$_SERVER['REMOTE_ADDR']."', `out_year`='".date('Y')."', `out_index`='".$nom_str."-".$nom_index.":".$nom_name."' WHERE `id`='".$from_id."' LIMIT 1 ;";
@@ -249,7 +249,7 @@ if (isset($_SESSION['user_id']))
 									else
 									{
 										$page.= file_get_contents("templates/jurnal_out_add.html");
-										
+
 										if (isset($_GET['template']) AND preg_match("/^[1-9][0-9]*$/", $_GET['template']))
 											{
 												$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `id`='".$_GET['template']."' LIMIT 1 ;";
@@ -270,7 +270,7 @@ if (isset($_SESSION['user_id']))
 															}
 													}
 											}
-											
+
 										$query = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
 										$res = mysql_query($query) or die(mysql_error());
 										$queryes_num++;
@@ -389,7 +389,7 @@ if (isset($_SESSION['user_id']))
 								if (!preg_match('/^[0-9\.]+$/', $FORM_MONEY)) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_MONEY}<br />';
 
 								if ($_POST['how'] <> 3 AND $_POST['how'] <> 2) $_POST['how'] = 1;
-				
+
 								$query = "SELECT * FROM `db_".date('Y')."_out` WHERE `id`='".$_GET['edit']."' LIMIT 1 ; ";
 								$res = mysql_query($query) or die(mysql_error());
 								$queryes_num++;
@@ -406,7 +406,7 @@ if (isset($_SESSION['user_id']))
 									{
 										$error .= "{LANG_USER_OUT_NUM_NOT_EXIST}<br />";
 									}
-									
+
 								if ($error == '')
 									{
 										$query = "UPDATE `db_".date('Y')."_out` SET
@@ -538,24 +538,19 @@ if (isset($_SESSION['user_id']))
 						$page = str_replace("{INFORMATION}", "{LANG_PRIVAT6_NO}", $page);
 					}
 			}
-			
+
 		if (isset($_GET['src']) && $_GET['src'] == 'do')
 			{
 				$adres = 'true';
 				$page.= file_get_contents("templates/jurnal_out_search.html");
-				
+
 				$page = str_replace("{FORM_DATA_START}", $_SESSION['user_year']."-01-01", $page);
 				$page = str_replace("{FORM_DATA_END}", $_SESSION['user_year']."-12-31", $page);
-				
-				$query_users = "SELECT `id`,`name` FROM `users` ORDER BY `name` ; ";
-				$res_users = mysql_query($query_users) or die(mysql_error());
+
+				$html_select_users = get_users_selection_options(0, 0, "name", "ASC", 0);
 				$queryes_num++;
-				while ($row_users=mysql_fetch_array($res_users))
-					{
-						$users .= "<OPTION value = \"".$row_users['id']."\">".$row_users['name']."</OPTION>";
-					}
-				$page = str_replace("{USERS}", $users, $page);
-				
+				$page = str_replace("{USERS}", $html_select_users, $page);
+
 				$query = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
 				$res = mysql_query($query) or die(mysql_error());
 				$queryes_num++;
@@ -613,7 +608,7 @@ if (isset($_SESSION['user_id']))
 								if ($_GET['delete_last'] <> $row['id']) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_FIRST}<br />";
 								if ($row['user'] <> $_SESSION['user_id'] AND $user_p_mod <> 1) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_NOT_AUTHOR}<br />";
 								if ($_SESSION['user_year'] <> date('Y')) $ERROR .= "{LANG_JURNAL_OUT_DELETE_LAST_YEAR}<br />";
-								
+
 								if ($ERROR == "")
 									{
 										$query = "DELETE FROM `db_".date('Y')."_out` WHERE `id`='".$row['id']."' LIMIT 1 ; ";
@@ -641,7 +636,7 @@ if (isset($_SESSION['user_id']))
 					}
 
 			}
-			
+
 		if (isset($_GET['attach']) && preg_match('/^[1-9][0-9]*$/', $_GET['attach']))
 			{
 				$adres = 'true';
@@ -655,21 +650,21 @@ if (isset($_SESSION['user_id']))
 								$manage_files = 0;
 								$view_files = 0;
 								$row = mysql_fetch_assoc($res);
-								
+
 								$query_numenclatura = "SELECT * FROM `nomenclatura` WHERE `id`='".$row['nom']."' LIMIT 1 ; ";
 								$res_numenclatura = mysql_query($query_numenclatura) or $error = true;
 								$queryes_num++;
 								$row_numenclatura = mysql_fetch_assoc($res_numenclatura);
-								
+
 								$query_structura = "SELECT * FROM `structura` WHERE `id`='".$row_numenclatura['structura']."' LIMIT 1 ; ";
 								$res_structura = mysql_query($query_structura) or $error = true;
 								$queryes_num++;
 								$row_structura = mysql_fetch_assoc($res_structura);
 
-								
+
 								$page.= file_get_contents("templates/information.html");
 								$page = str_replace("{INFORMATION}", "{LANG_FILE_ABOUT_NUM} <b>".$row['id']." / ".$row_structura['index']."-".$row_numenclatura['index']."</b>", $page);
-								
+
 								if ($row['user'] == $_SESSION['user_id'])
 									{
 										$manage_files = 1;
@@ -684,7 +679,7 @@ if (isset($_SESSION['user_id']))
 										$manage_files = 1;
 										$view_files = 1;
 									}
-								
+
 								$tmp_add_new_file = 0;
 								if ($manage_files == 1)
 									{
@@ -743,9 +738,9 @@ if (isset($_SESSION['user_id']))
 											}
 										$page.= file_get_contents("templates/jurnal_out_add_file.html");
 										$page = str_replace("{FILE_PRE_NAME}", "<b>".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_</b>", $page);
-										
+
 									}
-									
+
 								if ($view_files == 1)
 									{
 										if ($dir = opendir("uploads\\".$_SESSION['user_year']."\\OUT"))
@@ -796,7 +791,7 @@ if (isset($_SESSION['user_id']))
 																				exit;
 																				die();
 																			}
-																			
+
 																		if ($tmp_do == 0)
 																			{
 																				$page.= file_get_contents("templates/information.html");
@@ -834,7 +829,7 @@ if (isset($_SESSION['user_id']))
 						$page = str_replace("{INFORMATION}", "{LANG_ADD_ADMIN_ADD_BD_ERROR}", $page);
 					}
 			}
-		
+
 		$search_pre = "";
 		$query_where = "";
 		if (isset($_GET['find']) AND !empty($_GET['find']) AND isset($_GET['do']) AND !empty($_GET['do']))
@@ -871,22 +866,27 @@ if (isset($_SESSION['user_id']))
 						$search_pre .= "find=how&do=".$_GET['do']."&";
 					}
 			}
-		
+
 		if (isset($_GET['search']) AND $_GET['search'] == "do")
 			{
 				$error = "";
+				if (!isset($_GET['data_start'])) $_GET['data_start'] = "2015-01-01";
+				if (!isset($_GET['data_end'])) $_GET['data_end'] = "2015-12-31";
+				if (!isset($_GET['user'])) $_GET['user'] = "0";
+				if (!isset($_GET['nom'])) $_GET['nom'] = "0";
+				if (!isset($_GET['how'])) $_GET['how'] = "0";
 				if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ,$_GET['data_start'])) $error .= "{LANG_FORM_NO_DATA_START}<br>";
 				if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/" ,$_GET['data_end'])) $error .= "{LANG_FORM_NO_DATA_END}<br>";
 				if (!preg_match("/^[0-9]{1,}$/" ,$_GET['user'])) $error .= "{LANG_SEARCH_NO_USER}<br>";
 				if (!preg_match("/^[0-9]{1,}$/" ,$_GET['nom'])) $error .= "{LANG_SEARCH_NO_NOM}<br>";
 				if (!preg_match("/^[0-3]$/" ,$_GET['how'])) $error .= "{LANG_SEARCH_NO_HOW}<br>";
-				
+
 				$_GET['to'] = str_replace($srch, $rpls, $_GET['to']);
 				$_GET['to_num'] = str_replace($srch, $rpls, $_GET['to_num']);
 				$_GET['subj'] = str_replace($srch, $rpls, $_GET['subj']);
 				if ($_GET['blank'] != "do") $_GET['blank'] = "0";
 				if ($_GET['nom'] == "") $_GET['nom'] = "0";
-				
+
 				if ($error == "")
 					{
 						$where_lang = "{LANG_EXTRA_SEARCH}:<br><small>{LANG_DATA_START}:</small> ".$_GET['data_start']." <small>{LANG_DATA_END}:</small> ".$_GET['data_end']."<br>";
@@ -897,11 +897,11 @@ if (isset($_SESSION['user_id']))
 						if ($_GET['to'] != "") $where_lang .= "<small>{LANG_OUT_ADD_TO}:</small> ".$_GET['to']."<br>";
 						if ($_GET['to_num'] != "") $where_lang .= "<small>{LANG_OUT_ADD_TO_N}:</small> ".$_GET['to_num']."<br>";
 						if ($_GET['subj'] != "") $where_lang .= "<small>{LANG_OUT_TEMA}:</small> ".$_GET['subj']."<br>";
-						
+
 						$search_pre .= "search=do&data_start=".$_GET['data_start']."&data_end=".$_GET['data_end']."&user=".$_GET['user']."&to=".$_GET['to']."&to_num=".$_GET['to_num']."&subj=".$_GET['subj']."&nom=".$_GET['nom']."&how=".$_GET['how']."&blank=".$_GET['blank']."&";
-						
+
 						$query_where .= "`data` >= '".$_GET['data_start']." 00:00:00' AND `data` <= '".$_GET['data_end']." 23:59:59'";
-						
+
 						if ($_GET['blank'] == "do")
 							{
 								$query_where .= " AND `blank` IS NOT NULL";
@@ -943,29 +943,29 @@ if (isset($_SESSION['user_id']))
 						$page = str_replace("{INFORMATION}", $error, $page);
 					}
 			}
-			
+
 		if ($adres <> 'true')
 			{
 				$page = str_replace("{JURNAL_OUT_TOP_STAT}", file_get_contents("templates/jurnal_out_top_stat.html"), $page);
 				$page = str_replace("{JURNAL_OUT_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
-				if (isset($_GET['list']) AND $_GET['list'] > 0)
+
+				if (isset($_GET['page_num']) AND preg_match('/^[1-9][0-9]*$/', $_GET['page_num']))
 					{
-						if ($_GET['list'] > 0 AND $_GET['list'] < 99999999999)
-							{
-								$list = $_GET['list'];
-							}
-							else
-							{
-								$list = 0;
-							}
+						$active = $_GET['page_num'];
 					}
 					else
 					{
-						$list = 0;
+						$active = 1;
 					}
-					
+
+				$limit_pre = (($active - 1) * $_SESSION['user_page_limit']);
+				$sql_limit = "LIMIT ".$limit_pre.", ".$_SESSION['user_page_limit'];
+
+				$query_order_by = "ORDER BY `id` DESC ";
+
 				if (isset($_GET['export']) AND $_GET['export'] == "do")
 					{
+						$query_order_by = "ORDER BY `id` ";
 						$list = 0;
 						$c_lmt = 999999;
 						$export_type = "text/csv";
@@ -974,86 +974,20 @@ if (isset($_SESSION['user_id']))
 
 				//Дивимся чи юзер пішов на бланки + звіряєм права.
 				$pre_link = $search_pre;
-				
+
 				$where = "";
 				if ($privat3 == 1)
 					{
 						if ($query_where != "") $where = " WHERE ".$query_where;
-						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
+						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` ".$where." ".$query_order_by." ".$sql_limit." ; ";
 					}
 					else
 					{
 						if ($query_where != "") $where = " AND ".$query_where;
-						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `user`='".$_SESSION['user_id']."' ".$where." ORDER BY `id` DESC LIMIT ".$list." , ".$c_lmt." ; ";
+						$query = "SELECT * FROM `db_".$_SESSION['user_year']."_out` WHERE `user`='".$_SESSION['user_id']."' ".$where." ".$query_order_by." ".$sql_limit." ; ";
 					}
 
-				// Шукаємо цифру для кнопки left
-				if ($list > 0)
-					{
-						if ($list - $c_lmt > 0)
-							{
-								$page = str_replace("{LIST_LEFT}", "?list=".($list - $c_lmt)."&".$pre_link, $page);
-							}
-							else
-							{
-								$page = str_replace("{LIST_LEFT}", "?".$pre_link, $page);
-							}
-					}
-					else
-					{
-						$page = str_replace("{LIST_LEFT}", "?".$pre_link, $page);
-					}
-				////
-
-				// Шукаємо кількість номерів по ліміту $c_lmt для останньої сторінки
-				$where = "";
-				if ($privat3 == 1)
-					{
-						if ($query_where != "") $where = " WHERE ".$query_where;
-						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` ".$where." ; ";
-					}
-					else
-					{
-						if ($query_where != "") $where = " AND ".$query_where;
-						$a_qr = "SELECT COUNT(1) FROM `db_".$_SESSION['user_year']."_out` WHERE `user`=".$_SESSION['user_id']." ".$where." ; ";
-					}
-					
-				$a = @mysql_query($a_qr);
-				$queryes_num++;
-				$b = @mysql_fetch_array($a);
-				if ($b[0] - $c_lmt <= 0)
-					{
-						$page = str_replace("{LIST_END}", "?".$pre_link, $page);
-					}
-					else
-					{
-						$page = str_replace("{LIST_END}", "?list=".($b[0] - $c_lmt)."&".$pre_link, $page);
-					}
-				////
-
-				// Шукаємо цифру для кнопки right
-				if ($list > 0)
-					{
-						if ($b[0] - $c_lmt > $list)
-							{
-								$page = str_replace("{LIST_RIGHT}", "?list=".($list + $c_lmt)."&".$pre_link, $page);
-							}
-							else
-							{
-								$page = str_replace("{LIST_RIGHT}", "?list=".$list."&".$pre_link, $page);
-							}
-
-					}
-					else
-					{
-						if ($b[0] < $c_lmt) $page = str_replace("{LIST_RIGHT}", "?list=0"."&".$pre_link, $page);
-						$page = str_replace("{LIST_RIGHT}", "?list=".$c_lmt."&".$pre_link, $page);
-					}
-				////
-
-				$page = str_replace("{LIST_END}", "", $page);
 				$error = "false";
-				if (isset($_GET['export']) AND $_GET['export'] == "do") $query = str_replace(" DESC ", " ", $query);
 				$res = mysql_query($query) or $error = "true";
 				$queryes_num++;
 				if ($error != "true")
@@ -1098,10 +1032,19 @@ if (isset($_SESSION['user_id']))
 								$page.= file_get_contents("templates/information.html");
 								$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
 							}
-							
+
+						$where = "";
+						if ($query_where != "") $where = " WHERE ".$query_where;
+
+						$html_navy = get_navy("DB_".$_SESSION['user_year']."_OUT", $where, $query_order_by, $active, $_SESSION['user_page_limit'], "jurnal_out.php?".$pre_link."&page_num=");
+						$page = str_replace("{NAVY}", $html_navy, $page);
+
 						$page.= file_get_contents("templates/jurnal_out.html");
+
+						$page = str_replace("{NAVY_INSERT_SHOW}", mysql_num_rows($res), $page);
+
 						$modals = "";
-						
+
 						if (isset($_GET['export']) AND $_GET['export'] == "do")
 							{
 								$export = "\"".$c_nam."\";\n\n";
@@ -1109,7 +1052,7 @@ if (isset($_SESSION['user_id']))
 								$export .= "\"{LANG_SEARCH_RESULTS} :\";\n";
 								$export .=  "\"{LANG_INDEX_DOC}\";\"{LANG_JURNAL_OUT_BLANK_NUM} №\";\"{LANG_OUT_ADD_TO_N}\";\"{LANG_LOG_TIME}\";\"{LANG_OUT_TEMA}\";\"{LANG_OUT_ADD_FROM}\";\"{LANG_OUT_ADD_TO}\";\"{LANG_HOW}\";\"{LANG_SEND_MONEY}\";\n";
 							}
-						
+
 						while ($row=mysql_fetch_array($res))
 							{
 								$admin_links_do = "";
@@ -1121,11 +1064,11 @@ if (isset($_SESSION['user_id']))
 								if (file_exists("uploads\\".$_SESSION['user_year']."\\OUT\\".$c_n_ray."_".$nomenclatura[$row['nom']]."_".$row['id']."_*")) $show_files = 1;
 								// Показуєм ссилку на управління файлами
 								if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
-								
+
 								$user_edit_num = 0;
 								if ($row['user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
 								if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
-								
+
 								$user_del_num = 0;
 								if ($row['user'] == $_SESSION['user_id'] AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
 								if ($user_p_mod == 1 AND $list == 0 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
@@ -1137,19 +1080,19 @@ if (isset($_SESSION['user_id']))
 
 								$blank_num = "-";
 								if (!empty($row['blank'])) $blank_num = $row['blank'];
-								
+
 								$how_img = "<img title=\"{LANG_HOW_1}\" alt=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
 								if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_2}\" alt=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
 								if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_3}\" alt=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
-								
+
 								$need_serch_blank = "";
 								if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
-								
+
 								if ($row['to_num'] == "") $row['to_num'] = "-";
-								
+
 								$num_is_edited = "";
 								if ($row['edit'] == 1) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['fav']]."</strong><br>{LANG_LOG_TIME} <strong>".date('Y-m-d H:i:s', $row['time'])."</strong></p></td></tr>";
-								
+
 								$jurnal_out .= "
 								<tr valign=\"top\" align=\"center\">
 									<td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a></abbr> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
@@ -1160,7 +1103,7 @@ if (isset($_SESSION['user_id']))
 									<td valign=\"top\" align=\"left\" >".$row['to']."</td>
 									<td valign=\"top\" align=\"left\" >".$row['subj']."</td>
 								</tr>";
-								
+
 								$modals .= "
 								<div class=\"modal fade\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
 								  <div class=\"modal-dialog\" role=\"document\">
@@ -1219,7 +1162,7 @@ if (isset($_SESSION['user_id']))
 						$page .= $modals;
 						$page = str_replace("{JURNAL_OUT}", $jurnal_out, $page);
 						$page = str_replace("{JURNAL_OUT_STAT}", "{JURNAL_OUT_NUM_ON_PAGE}: ".$list." / ".mysql_num_rows($res)." / ".($b[0] - mysql_num_rows($res) - $list), $page);
-						
+
 						if (mysql_num_rows($res) == 0)
 							{
 								$page.= file_get_contents("templates/information_danger.html");
