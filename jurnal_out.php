@@ -395,11 +395,21 @@ if (isset($_SESSION['user_id']))
 								$queryes_num++;
 								if (mysql_num_rows($res) > 0)
 									{
-										while ($row=@mysql_fetch_array($res))
+										$change_blank_sql = "";
+										while ($row=mysql_fetch_array($res))
 											{
-												if ($_GET['edit'] <> $row['id'] AND $user_p_mod <> 1) $error .= "{LANG_USER_OUT_NUM_NOT_EXIST}<br />";
 												if ($_SESSION['user_id'] <> $row['user'] AND $user_p_mod <> 1) $error .= "{LANG_JURNAL_OUT_EDIT_LAST_NOT_AUTHOR}<br />";
 												if (data_trans("ua", "mysql", $_POST['data']) <> $row['data'] AND $user_p_mod <> 1) $error = '{LANG_JURNAL_OUT_FORM_EDIT_DATE_NOT_PREG}<br />';
+												$tmp_blank_num = "{LANG_SRT_DELETED}";
+												if ($_POST['blank_n'] == "1")
+													{
+														$tmp_blank_num = get_blank_change($row['id'], 1);
+														if (empty($row['blank']) AND $tmp_blank_num > 0) $change_blank_sql = "`blank`='".$tmp_blank_num."',";
+													}
+													else
+													{
+														if (!empty($row['blank']) AND get_blank_change($row['id'], 0) == -1) $change_blank_sql = "`blank`=NULL,";
+													}
 											}
 									}
 									else
@@ -412,6 +422,7 @@ if (isset($_SESSION['user_id']))
 										$query = "UPDATE `db_".date('Y')."_out` SET
 										`time`='".time()."',
 										`ip`='".$_SERVER['REMOTE_ADDR']."',
+										".$change_blank_sql."
 										`nom`='".$_POST['nom']."',
 										`data`='".data_trans("ua", "mysql", $_POST['data'])."',
 										`to`='".$FORM_TO."',
@@ -426,6 +437,11 @@ if (isset($_SESSION['user_id']))
 										$queryes_num++;
 										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_OUT_EDIT_OK}", $page);
+										if ($change_blank_sql != "")
+											{
+												$page.= file_get_contents("templates/information_success.html");
+												$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_CHANGE_BLANK} ".$tmp_blank_num, $page);
+											}
 									}
 									else
 									{
@@ -466,7 +482,10 @@ if (isset($_SESSION['user_id']))
 												$blank_ch = "";
 												if (!empty($row['blank'])) $blank_ch = "checked";
 												$page = str_replace("{FORM_BLANK_N}", $blank_ch, $page);
-
+												$change_blank_status = "disabled";
+												if (!empty($row['blank']) AND get_blank_change($_GET['edit'], 0) == -1) $change_blank_status = "";
+												if (empty($row['blank']) AND get_blank_change($_GET['edit'], 1) > 0) $change_blank_status = "";
+												$page = str_replace("{CHANGE_BLANK_STATUS}", $change_blank_status, $page);
 												$query5 = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` WHERE `work`='1' ORDER BY `structura`,`index` ; ";
 												$res5 = mysql_query($query5) or die(mysql_error());
 												$queryes_num++;

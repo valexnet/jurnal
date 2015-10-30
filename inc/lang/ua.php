@@ -3,6 +3,7 @@
 // Українська мова
 $lang = array (
 
+'LANG_JURNAL_OUT_CHANGE_BLANK' => "Статус бланку змінено:",
 'LANG_JURNAL_IN_ADD_AS_MADED' => "Створити із статусом \"Виконано\"",
 'LANG_NUM_NOT_FOUND' => "Номер не знайдено",
 'LANG_IN_SET_AS_MADED' => "Відмітити як виконаний",
