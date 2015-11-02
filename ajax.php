@@ -24,6 +24,7 @@ if (isset($_SESSION['user_id']))
 						if ($_GET['for'] == "to_num") $for = $_GET['for'];
 						if ($_GET['for'] == "subj") $for = $_GET['for'];
 						if ($_GET['where'] == "jurnal_in") $where = "db_".$_GET['year']."_in";
+						if ($_GET['where'] == "jurnal_in_ep") $where = "db_".$_GET['year']."_in_ep";
 						if ($_GET['where'] == "jurnal_out") $where = "db_".$_GET['year']."_out";
 						
 						if ($for != "" AND $where != "")
@@ -72,7 +73,19 @@ if (isset($_SESSION['user_id']))
 									}
 								$html .= "<hr>";
 							}
-
+							
+						$query = "SELECT `id`, `add_time`, `org_name`, `org_subj` FROM `db_".date('Y')."_in_ep` WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL AND `do_made` IS NULL ; "; 
+						$res = mysql_query($query) or die(mysql_error());
+						if (mysql_num_rows($res) > 0)
+							{
+								$html .= "Для Вас є ".mysql_num_rows($res)." новий(х) запис(ів) у вхідній ел. кореспонденції.<hr>";
+								while ($row=mysql_fetch_array($res))
+									{
+										$html .= "<strong>".$row['add_time']."</strong>, №<strong>".$row['id']."</strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
+									}
+								$html .= "<hr>";
+							}
+							
 						if ($html != "") echo "<div class=\"modal-header\">
 								<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
 								<h4 class=\"modal-title text-center\" id=\"myModalLabel\">Нове повідомлення</h4>
@@ -87,6 +100,8 @@ if (isset($_SESSION['user_id']))
 				if ($_GET['do'] == "set_view")
 					{
 						$query = "UPDATE `db_".date('Y')."_in` SET `do_view`='".date('Y-m-d H:i:s')."', `do_view_ip`='".$_SERVER['REMOTE_ADDR']."' WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL ; "; 
+						$res = mysql_query($query) or die(mysql_error());
+						$query = "UPDATE `db_".date('Y')."_in_ep` SET `do_view`='".date('Y-m-d H:i:s')."', `do_view_ip`='".$_SERVER['REMOTE_ADDR']."' WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL ; "; 
 						$res = mysql_query($query) or die(mysql_error());
 						echo "OK";
 					}

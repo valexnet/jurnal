@@ -1,0 +1,13 @@
+<div class="container" {JURNAL_IN_EP_AFFIX} style="background-color: #FFF;">
+	<h3><p class="text-center">{LANG_YEAR} {USER_YEAR}. {LANG_JURNAL_IN_EP}</p></h3>
+	<form method="POST">
+		<div class="col-sm-12 text-center">
+			<a href="jurnal_in_ep.php{JURNAL_OUT_PRE_LINK}"><img src="templates/images/home2.png"></a>
+			<a href="jurnal_in_ep.php?do=add"><img src="templates/images/add.png"></a>
+			<a href="jurnal_in_ep.php?do=src"><img src="templates/images/search2.png"></a>
+			{LANG_YEAR}: <select NAME="show_year">{SELECT_YEARS}</select>
+			<button type="submit" class="btn btn-primary btn-xs">{LANG_YEAR_CHANGE}</button>
+		</div>
+	</form>
+{JURNAL_IN_EP_TOP_STAT}
+</div>

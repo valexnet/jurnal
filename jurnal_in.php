@@ -146,7 +146,7 @@ if (isset($_SESSION['user_id']))
 							{
 								$page.= file_get_contents("templates/jurnal_in_add.html");
 
-								if (isset($_GET['template']) AND preg_match("/^[1-9][0-9]*)$/", $_GET['template']))
+								if (isset($_GET['template']) AND preg_match("/^[1-9][0-9]*$/", $_GET['template']))
 									{
 										$query = "SELECT * FROM `db_".$_SESSION['user_year']."_in` WHERE `id`='".$_GET['template']."' LIMIT 1 ;";
 										$res = mysql_query($query) or die(mysql_error());
@@ -157,13 +157,13 @@ if (isset($_SESSION['user_id']))
 													{
 														$_SESSION['error_in_add'] = 1;
 														$_SESSION['error_in_add_do_user'] = $row['do_user'];
-														$_SESSION['error_in_add_get_data'] = $row['get_data'];
+														$_SESSION['error_in_add_get_data'] = data_trans("mysql", "ua", $row['get_data']);
 														$_SESSION['error_in_add_org_name'] = $row['org_name'];
 														$_SESSION['error_in_add_org_index'] = $row['org_index'];
-														$_SESSION['error_in_add_org_data'] = $row['org_data'];
+														$_SESSION['error_in_add_org_data'] = data_trans("mysql", "ua", $row['org_data']);
 														$_SESSION['error_in_add_org_subj'] = $row['org_subj'];
 														$_SESSION['error_in_add_make_visa'] = $row['make_visa'];
-														$_SESSION['error_in_add_make_data'] = $row['make_data'];
+														$_SESSION['error_in_add_make_data'] = data_trans("mysql", "ua", $row['make_data']);
 													}
 											}
 									}
@@ -812,10 +812,10 @@ if (isset($_SESSION['user_id']))
 								<tr valign=\"top\" align=\"center\" id=\"TRn".$row['id']."\" ".$tr_color_info.">
 									<td valign=\"top\" align=\"center\"><abbr title=\"{LANG_NUM_INFO_PLUS}\"><strong><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</strong></a></abbr></td>
 									<td valign=\"top\" align=\"center\"><a href=\"".$glyphicon_search_url."\"><span class=\"".$glyphicon."\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$glyphicon_tooltip."\"></span></a></td>
-									<td valign=\"top\" align=\"center\"><a href=\"?do=search&get_data=".$row['get_data']."\">".data_trans("mysql", "ua", $row['get_data'])."</a></td>
+									<td valign=\"top\" align=\"center\"><a href=\"?do=search&get_data=".data_trans("mysql", "ua", $row['get_data'])."\">".data_trans("mysql", "ua", $row['get_data'])."</a></td>
 									<td valign=\"top\" align=\"left\"><a href=\"?do=search&org_name=".$row['org_name']."\">".$row['org_name']."</a></td>
 									<td valign=\"top\" align=\"left\">".$row['org_index']."</td>
-									<td valign=\"top\" align=\"center\"><a href=\"?do=search&org_data=".$row['org_data']."\">".data_trans("mysql", "ua", $row['org_data'])."</a></td>
+									<td valign=\"top\" align=\"center\"><a href=\"?do=search&org_data=".data_trans("mysql", "ua", $row['org_data'])."\">".data_trans("mysql", "ua", $row['org_data'])."</a></td>
 									<td valign=\"top\" align=\"left\">".$row['org_subj']."</td>
 									<td valign=\"top\" align=\"left\"><a href=\"?do=search&do_user=".$row['do_user']."\">".$users[$row['do_user']]."</a></td>
 									<td valign=\"top\" align=\"left\">".$row['make_visa']."</td>
@@ -894,7 +894,6 @@ if (isset($_SESSION['user_id']))
 			}
 		$page = str_replace("{JURNAL_IN_TOP_STAT}", "&nbsp;", $page);
 		$page = str_replace("{JURNAL_IN_AFFIX}", "", $page);
-		$page = str_replace("{JURNAL_IN_STAT}", "", $page);
 	}
 	else
 	{

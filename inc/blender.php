@@ -6,7 +6,14 @@ if (isset($_SESSION['user_id']))
 		$session_counter = file_get_contents("templates/timer.html");
 		$page = str_replace("{TIMEOUT_SESSION_COUNTER}", $session_counter, $page);
 		if ($c_tmt > 3600) { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "declOfNum(hours, [\"година\", \"години\", \"годин\"]),", $page); } else { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "", $page); }
-		if ($c_tmt == 0) { $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "", $page); } else { $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page); }
+		if ($c_tmt == 0 OR $user_a_ip == "1" AND $user_ip == $_SERVER['REMOTE_ADDR'])
+			{
+				$page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "", $page);
+			}
+			else
+			{
+				$page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page);
+			}
 		$page = str_replace("{LINK_BUTTON_IN_OR_OUT_TYPE}", "warning", $page);
 		$page = str_replace("{LINK_BUTTON_IN_OR_OUT}", "$('#UserExit').modal('show');", $page);
 		$page = str_replace("{LANG_BUTTON_IN_OR_OUT}", "{LANG_USER_OUT}", $page);
@@ -47,7 +54,7 @@ $page = str_replace("{TIMEOUT_AUHT}", $c_tmt, $page);
 $page = str_replace("{PAGE_LIMIT}", $c_lmt, $page);
 $page = str_replace("{PAGE_LIMIT_SERVER}", $c_lmt_s, $page);
 $page = str_replace("{MAX_PAGE_LIMIT}", $c_max_page_limit, $page);
-$page = str_replace("{VER_NUM}", $c_ver, $page);
+$page = str_replace("{VER_NUM}", $c_ver." ".$c_ver_lang, $page);
 $page = str_replace("{YEAR_START}", $c_y_s, $page);
 $page = str_replace("{N_RAY}", $c_n_ray, $page);
 $page = str_replace("{REG_FILE}", $c_reg_file, $page);

@@ -1,0 +1,33 @@
+<script>
+function cTR(a)
+	{
+		if (document.getElementById(a).className == "")
+			{
+				document.getElementById(a).className = "info";
+			}
+			else 
+			{
+				document.getElementById(a).className = "";
+			}
+	}
+</script>
+
+<div class="container">
+	<div class="table-responsive">
+	<table class="table table-hover">
+		<tr valign="top" align="center">
+			<td valign="middle" width="60"><b>№</b></td>
+			<td valign="middle" width="40"><span class="glyphicon glyphicon-tag" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_JURNAL_STEP_DO}"></span></td>
+			<td valign="middle"><b>{LANG_GET_DATA_S}</b></td>
+			<td valign="middle"><b>{LANG_ORG_NAME_S}</b></td>
+			<td valign="middle"><b>{LANG_ORG_INDEX_S}</b></td>
+			<td valign="middle"><b>{LANG_ORG_DATA_S}</b></td>
+			<td valign="middle"><b>{LANG_ORG_SUBJ_S}</b></td>
+			<td valign="middle"><b>{LANG_DO_USER}</b></td>
+			<td valign="middle"><b>{LANG_MAKE_VISA_S}</b></td>
+			<td valign="middle"><b>{LANG_MAKE_DATA}</b></td>
+		</tr>
+		{JURNAL_IN_EP}
+	</table>
+	</div>
+</div>

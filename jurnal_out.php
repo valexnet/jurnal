@@ -45,27 +45,23 @@ if (isset($_SESSION['user_id']))
 											{
 												if ($from_row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1)
 													{
-														if (empty($from_row['do_made']))
-															{
-																$from_update = 1;
-																$from_db = "in";
-																$from_id = $_GET['id'];
-																$org_data = explode(" ", $from_row['org_data']);
-																$_SESSION['error'] = 'true';
-																$_SESSION['form_to'] = $from_row['org_name'];
-																$_SESSION['form_to_num'] = $from_row['org_index']." від ".data_trans("mysql", "ua", $org_data[0]);
-																$_SESSION['form_subj'] = $from_row['org_subj'];
-																$_SESSION['form_nom'] = '';
-																$_SESSION['form_money'] = '';
-																$_SESSION['form_how'] = '1';
-																$_SESSION['form_blank_n'] = '';
-															}
-															else
+														if (!empty($from_row['do_made']))
 															{
 																$page.= file_get_contents("templates/information_warning.html");
 																$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_DO_MADED}", $page);
-																//$error = 1;
 															}
+														$from_update = 1;
+														$from_db = "in";
+														$from_id = $_GET['id'];
+														$org_data = explode(" ", $from_row['org_data']);
+														$_SESSION['error'] = 'true';
+														$_SESSION['form_to'] = $from_row['org_name'];
+														$_SESSION['form_to_num'] = $from_row['org_index']." від ".data_trans("mysql", "ua", $org_data[0]);
+														$_SESSION['form_subj'] = $from_row['org_subj'];
+														$_SESSION['form_nom'] = '';
+														$_SESSION['form_money'] = '';
+														$_SESSION['form_how'] = '1';
+														$_SESSION['form_blank_n'] = '';
 													}
 													else
 													{
@@ -83,6 +79,50 @@ if (isset($_SESSION['user_id']))
 									}
 							}
 
+						if (isset($_GET['from']) AND $_GET['from'] == "in_ep" AND isset($_GET['id']) AND preg_match("/^[1-9][0-9]*$/", $_GET['id']))
+							{
+								$from_query = "SELECT * FROM `db_".$_SESSION['user_year']."_in_ep` WHERE `id`='".$_GET['id']."' LIMIT 1 ;";
+								$from_res = mysql_query($from_query) or die(mysql_error());
+								$queryes_num++;
+								if (mysql_num_rows($from_res) == 1)
+									{
+										while ($from_row=mysql_fetch_array($from_res))
+											{
+												if ($from_row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1)
+													{
+														if (!empty($from_row['do_made']))
+															{
+																$page.= file_get_contents("templates/information_warning.html");
+																$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_EP_WITH_DO_MADED}", $page);
+															}
+														$from_update = 1;
+														$from_db = "in_ep";
+														$from_id = $_GET['id'];
+														$org_data = explode(" ", $from_row['org_data']);
+														$_SESSION['error'] = 'true';
+														$_SESSION['form_to'] = $from_row['org_name'];
+														$_SESSION['form_to_num'] = $from_row['org_index']." від ".data_trans("mysql", "ua", $org_data[0]);
+														$_SESSION['form_subj'] = $from_row['org_subj'];
+														$_SESSION['form_nom'] = '';
+														$_SESSION['form_money'] = '';
+														$_SESSION['form_how'] = '1';
+														$_SESSION['form_blank_n'] = '';
+													}
+													else
+													{
+														$page.= file_get_contents("templates/information_warning.html");
+														$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_EP_WITH_NOT_DO_USER}", $page);
+														$error = 1;
+													}
+											}
+									}
+									else
+									{
+										$page.= file_get_contents("templates/information_danger.html");
+										$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_NOT_EXISTS}", $page);
+										$error = 1;
+									}
+							}							
 						if ($error == '')
 							{
 								if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
