@@ -3,7 +3,7 @@ session_start();
 include ('inc/config.php');
 $page.= file_get_contents("templates/header.html");
 
-if (isset($_SESSION['user_id']) AND $_SESSION['user_id'] == 1)
+if (isset($_SESSION['user_id']))
 	{
 		$page .= file_get_contents("templates/jurnal_in_ep_header.html");
 		$pre_link = "";
