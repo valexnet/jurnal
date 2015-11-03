@@ -1087,7 +1087,7 @@ if (isset($_SESSION['user_id']))
 						if (isset($where_lang) AND !empty($where_lang))
 							{
 								$disable_serch = "jurnal_out.php";
-								if ($_GET['blank'] == "do") $disable_serch .= "?blank=do";
+								//if ($_GET['blank'] == "do") $disable_serch .= "?blank=do";
 								$page.= file_get_contents("templates/information.html");
 								$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
 							}

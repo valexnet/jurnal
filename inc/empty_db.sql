@@ -12,6 +12,7 @@ CREATE TABLE `banned` (
 ) ;
 
 DROP TABLE IF EXISTS `config`;
+
 CREATE TABLE `config` (
   `id` int(11) NOT NULL,
   `name` varchar(250) NOT NULL,
@@ -27,10 +28,12 @@ CREATE TABLE `config` (
   `reg_file` varchar(10240) NOT NULL,
   `file_size` int(9) NOT NULL,
   `ver` int(9) NOT NULL,
+  `max_page_limit` int(6) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ;
 
-INSERT INTO `config` VALUES (1, 'Site Name', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 3);
+INSERT INTO `config` VALUES (1, 'Назва УДКСУ', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 7, 250);
+
 
 DROP TABLE IF EXISTS `cron`;
 CREATE TABLE `cron` (
