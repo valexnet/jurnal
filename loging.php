@@ -6,73 +6,83 @@ $page.= file_get_contents("templates/header.html");
 
 if ($user_p_log == 1)
 	{
-		$page.= file_get_contents("templates/log_admin.html");
-		$query = "SELECT `id` FROM `log`;";
-		$res = mysql_query($query) or die(mysql_error());
+		$error = "";
+		$where = "";
+		$query_where = "";
+		$search_pre = "";
+		$users = get_users_names(0);
 		$queryes_num++;
-		$numberall_log = mysql_num_rows($res);
-		$limit = 30;
-		$end_page = $numberall_log - $limit;
-		$start_page = 0;
-		if(isset($_GET['page_num']))
+		
+		if (isset($_GET['search']) AND $_GET['search'] == "do")
 			{
-				$page_num = $_GET['page_num'];
-				if ($page_num < 0) $page_num = 0;
-				$nexpage = $page_num + $limit;
-				$prev_page = $page_num - $limit;
-				if ($prev_page < 0) $prev_page = 0;
-			}
-			else
-			{
-				$page_num = 0;
-				$nexpage = $page_num + $limit;
-				$prev_page = 0;
-			}
-		$query = "SELECT * FROM `log` ORDER BY `id` DESC LIMIT ".$page_num." , ".$limit.";";
-		$res = mysql_query($query) or die(mysql_error());
-		$queryes_num++;
-		$numberall = mysql_num_rows($res);
-		while ($row=mysql_fetch_array($res))
-			{
-				if ($row['user']==0)
+				$error = "";
+				if (isset($_GET['ip']) AND !preg_match("/^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$/", $_GET['ip'])) $error .= "{LANG_SEARCH_NO_IP}<br>";
+				if (isset($_GET['user']) AND !preg_match("/^[0-9]{1,}$/", $_GET['user'])) $error .= "{LANG_SEARCH_NO_USER}<br>";
+				if ($error == "")
 					{
-						$user = "{ANONYMOUS}";
+						$query_where = "`id` IS NOT NULL";
+						if (isset($_GET['ip']))
+							{
+								$where_lang = "{LANG_SEARCH_BY_IP} ".$_GET['ip'];
+								$query_where .= " AND `ip`='".$_GET['ip']."'";
+								$search_pre .= "&ip=".$_GET['ip'];
+							}
+						if (isset($_GET['user']))
+							{
+								$where_lang = "{LANG_SEARCH_BY_USER} ".$users[$_GET['user']];
+								$query_where .= " AND `user`='".$_GET['user']."'";
+								$search_pre .= "&user=".$_GET['user'];
+							}
+						if ($search_pre != "") $search_pre = "search=do".$search_pre."&";
 					}
 					else
 					{
-						$query2 = "SELECT `name` FROM `users` WHERE `id`='".$row['user']."' LIMIT 1;";
-						$res2 = mysql_query($query2) or die(mysql_error());
-						$queryes_num++;
-						$numberall2 = mysql_num_rows($res2);
-						if ($numberall2 == 0)
-							{
-								$user = $row['user']." {USER_DELETED}";
-							}
-							else
-							{
-								while ($row2=mysql_fetch_array($res2))
-									{
-										$user = $row2['name'];
-									}
-							}
+						$error = "true";
+						$page.= file_get_contents("templates/information_danger.html");
+						$page = str_replace("{INFORMATION}", "{LANG_SEARCH_ERROR}", $page);
+						$page.= file_get_contents("templates/information.html");
+						$page = str_replace("{INFORMATION}", $error, $page);
 					}
-				$template_log.="<tr valign=\"middle\" align=\"center\">
-							<td align=\"center\">".date('d.m.Y H:i:s', $row['time'])."</td>
-							<td align=\"center\">".$user."</td>
-							<td align=\"center\">".$row['ip']."</td>
-							<td align=\"left\">".$row['do']."</td>
-						</tr>";
 			}
-		$page_navy.="<table border=\"0\" cellspacing=\"0\" cellpadding=\"0\" align=\"center\">
-			<tr valign=\"top\" align=\"center\">
-				<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$start_page."\"><img src=\"templates/images/home2.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_HOME}\" title=\"{LANG_LOG_NAVY_HOME}\"></a></td>";
-				if ($page_num > 0)  $page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$prev_page."\"><img src=\"templates/images/left.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_LEFT}\" title=\"{LANG_LOG_NAVY_LEFT}\"></a></td>";
-				if ($page_num < $end_page)  $page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$nexpage."\"><img src=\"templates/images/right.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_RIGHT}\" title=\"{LANG_LOG_NAVY_RIGHT}\"></a></td>";
-				$page_navy.="<td valign=\"middle\" width=\"30\"><a href=\"loging.php?page_num=".$end_page."\"><img src=\"templates/images/end.png\" border=\"0\" alt=\"{LANG_LOG_NAVY_END}\" title=\"{LANG_LOG_NAVY_END}\"></a></td>
-			</tr>
-		</table>";
-		$page = str_replace("{LOG_VIEWS}", $template_log, $page);
-		$page = str_replace("{LOG_NAVY}", $page_navy, $page);
+			
+		if ($error == "")
+			{
+				if (isset($where_lang) AND !empty($where_lang))
+					{
+						$page.= file_get_contents("templates/information.html");
+						$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"loging.php\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
+					}
+				$page.= file_get_contents("templates/log_admin.html");
+				if (isset($_GET['page_num']) AND preg_match('/^[1-9][0-9]*$/', $_GET['page_num']))
+					{
+						$active = $_GET['page_num'];
+					}
+					else
+					{
+						$active = 1;
+					}
+				$limit_pre = (($active - 1) * $_SESSION['user_page_limit']);
+				$sql_limit = "LIMIT ".$limit_pre.", ".$_SESSION['user_page_limit'];
+				$query_order_by = "ORDER BY `id` DESC ";
+				if ($query_where != "") $where = " WHERE ".$query_where;
+				$html_navy = get_navy("log", $where, $query_order_by, $active, $_SESSION['user_page_limit'], "loging.php?".$search_pre."page_num=");
+				$queryes_num++;
+				$page = str_replace("{NAVY}", $html_navy, $page);
+				$query = "SELECT * FROM `log` ".$where." ".$query_order_by." ".$sql_limit." ; ";
+				$res = mysql_query($query) or die(mysql_error());
+				$queryes_num++;
+				while ($row=mysql_fetch_array($res))
+					{
+						$template_log.="<tr valign=\"middle\" align=\"center\">
+									<td align=\"center\">".date('d.m.Y H:i:s', $row['time'])."</td>
+									<td align=\"center\"><a href=\"?search=do&user=".$row['user']."\">".$users[$row['user']]."</a></td>
+									<td align=\"center\"><a href=\"?search=do&ip=".$row['ip']."\">".$row['ip']."</a></td>
+									<td align=\"left\">".$row['do']."</td>
+								</tr>";
+					}
+				$page = str_replace("{LOG_VIEWS}", $template_log, $page);
+				$page = str_replace("{NAVY_INSERT_SHOW}", mysql_num_rows($res), $page);
+			}
 	}
 	else
 	{

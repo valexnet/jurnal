@@ -179,38 +179,49 @@ if ($user_p_config == 1)
 						$page = str_replace("{LOGIN_CHOOSE_C}", "", $page);
 					}
 			}
-		if ($adress <> "true") $page.= file_get_contents("templates/config.html");
-
-		$query = "SELECT * FROM `cron` WHERE `name`='backup' LIMIT 1 ;";
-		$res = mysql_query($query) or die(mysql_error());
-		$queryes_num++;
-		while ($row=mysql_fetch_array($res))
+			
+		if (isset($_GET['phpinfo']))
 			{
-				$backup_timeout = $row['time'];
-				$backup_last = $row['last'];
+				$adress = "true";
+				if ($_GET['phpinfo'] == "show") die(phpinfo());
+				$page .= "<center><iframe src=\"?phpinfo=show\" frameborder=\"0\" width=\"820\" height=\"510\" scrolling=\"auto\"></iframe></center>";
 			}
+			
+		if ($adress <> "true")
+			{
+				$page.= file_get_contents("templates/config.html");
 
-		$query = "SELECT * FROM `cron` WHERE `name`='backup_on_email' LIMIT 1 ;";
-		$res = mysql_query($query) or die(mysql_error());
-		$queryes_num++;
-		while ($row=mysql_fetch_array($res))
-			{
-				$backup_on_email_timeout = $row['time'];
-				$backup_on_email_last = $row['last'];
-			}
+				$query = "SELECT * FROM `cron` WHERE `name`='backup' LIMIT 1 ;";
+				$res = mysql_query($query) or die(mysql_error());
+				$queryes_num++;
+				while ($row=mysql_fetch_array($res))
+					{
+						$backup_timeout = $row['time'];
+						$backup_last = $row['last'];
+					}
 
-		$page = str_replace("{CRON_BACKUP_TIMEOUT}", $backup_timeout, $page);
-		$page = str_replace("{CRON_BACKUP_LAST}", date('Y.m.d H:i:s', $backup_last), $page);
-		$page = str_replace("{CRON_BACKUP_ON_EMAIL_TIMEOUT}", $backup_on_email_timeout, $page);
-		$page = str_replace("{CRON_BACKUP_ON_EMAIL_LAST}", date('Y.m.d H:i:s', $backup_on_email_last), $page);
-		
-		if(extension_loaded('zip'))
-			{
-				$page = str_replace("{ZIP_EXTENSION}", "<font color=\"green\">{LANG_ENABLE}</font>", $page);
-			}
-			else
-			{
-				$page = str_replace("{ZIP_EXTENSION}", "<font color=\"red\">{LANG_DISABLE}</font>", $page);
+				$query = "SELECT * FROM `cron` WHERE `name`='backup_on_email' LIMIT 1 ;";
+				$res = mysql_query($query) or die(mysql_error());
+				$queryes_num++;
+				while ($row=mysql_fetch_array($res))
+					{
+						$backup_on_email_timeout = $row['time'];
+						$backup_on_email_last = $row['last'];
+					}
+
+				$page = str_replace("{CRON_BACKUP_TIMEOUT}", $backup_timeout, $page);
+				$page = str_replace("{CRON_BACKUP_LAST}", date('Y.m.d H:i:s', $backup_last), $page);
+				$page = str_replace("{CRON_BACKUP_ON_EMAIL_TIMEOUT}", $backup_on_email_timeout, $page);
+				$page = str_replace("{CRON_BACKUP_ON_EMAIL_LAST}", date('Y.m.d H:i:s', $backup_on_email_last), $page);
+				
+				if(extension_loaded('zip'))
+					{
+						$page = str_replace("{ZIP_EXTENSION}", "<font color=\"green\">{LANG_ENABLE}</font>", $page);
+					}
+					else
+					{
+						$page = str_replace("{ZIP_EXTENSION}", "<font color=\"red\">{LANG_DISABLE}</font>", $page);
+					}
 			}
 	}
 	else

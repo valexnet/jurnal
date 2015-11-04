@@ -165,37 +165,7 @@ if (isset($_SESSION['user_id']))
 			}
 			else
 			{
-				if ($_SESSION['user_login_error_num'] >= 4)
-					{
-						$page.= file_get_contents("templates/information_danger.html");
-						$page = str_replace("{INFORMATION}", "{LANG_LOGIN_ERR_4_TIMES}", $page);
-					}
-					
-				if ($c_lch == 1)
-					{
-						$query = "SELECT `login`,`name`,`ip` FROM `users` WHERE `del`='0' ORDER BY `name` ;";
-						$res = mysql_query($query) or die(mysql_error());
-						$queryes_num++;
-				
-						while ($row=mysql_fetch_array($res))
-							{
-								if ($row['ip'] == $_SERVER['REMOTE_ADDR'])
-									{
-										$users_list.= "<OPTION selected value = \"".$row['login']."\">".$row['name']."</OPTION>";
-									}
-									else
-									{
-										$users_list.= "<OPTION value = \"".$row['login']."\">".$row['name']."</OPTION>";
-									}
-							}
-						$page.= file_get_contents("templates/user_login.html");
-						$page = str_replace("{USERS_LIST}", "<SELECT name=\"login\" class=\"form-control\" />".$users_list."</SELECT>", $page);
-					}
-					else
-					{
-						$page.= file_get_contents("templates/user_login.html");
-						$page = str_replace("{USERS_LIST}", "<input type=\"text\" name=\"login\" />", $page);
-					}
+				header('Location: index.php');
 			}
 	}
 include ("inc/blender.php");

@@ -3,6 +3,7 @@
 // Українська мова
 $lang = array (
 
+'LANG_SEARCH_BY_IP' => "Пошук по IP адресі",
 'LANG_NEW_OUT_EP_WITH_UPDATED' => "Оновлено статус вхідного ел. номеру",
 'LANG_NEW_OUT_EP_WITH_NOT_DO_USER' => "Ви не являєтесь виконавцем по Вхідному ел. номеру",
 'LANG_NEW_OUT_EP_WITH_DO_MADED' => "Вхідний ел. номер вже відмічений як Виконаний",

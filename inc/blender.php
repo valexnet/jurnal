@@ -14,19 +14,15 @@ if (isset($_SESSION['user_id']))
 			{
 				$page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page);
 			}
-		$page = str_replace("{LINK_BUTTON_IN_OR_OUT_TYPE}", "warning", $page);
-		$page = str_replace("{LINK_BUTTON_IN_OR_OUT}", "$('#UserExit').modal('show');", $page);
-		$page = str_replace("{LANG_BUTTON_IN_OR_OUT}", "{LANG_USER_OUT}", $page);
 	}
 	else
 	{
 		$page = str_replace("{TIMEOUT_SESSION_COUNTER}", "", $page);
-		$page = str_replace("{LINK_BUTTON_IN_OR_OUT_TYPE}", "success", $page);
-		$page = str_replace("{LINK_BUTTON_IN_OR_OUT}", "window.location = 'user.php';", $page);
-		$page = str_replace("{LANG_BUTTON_IN_OR_OUT}", "{LANG_LOG_USER_ENTER}", $page);
 	}
-	
+
+$page = str_replace("{PRE_MENU}", $pre_menu, $page);
 $page = str_replace("{MENU}", $menu, $page);
+$page = str_replace("{AFT_MENU}", $aft_menu, $page);
 
 if (isset($timeout))
 	{
@@ -54,7 +50,7 @@ $page = str_replace("{TIMEOUT_AUHT}", $c_tmt, $page);
 $page = str_replace("{PAGE_LIMIT}", $c_lmt, $page);
 $page = str_replace("{PAGE_LIMIT_SERVER}", $c_lmt_s, $page);
 $page = str_replace("{MAX_PAGE_LIMIT}", $c_max_page_limit, $page);
-$page = str_replace("{VER_NUM}", $c_ver." ".$c_ver_lang, $page);
+$page = str_replace("{VER_NUM}", $c_ver.".".$c_ver_alt." ".$c_ver_lang, $page);
 $page = str_replace("{YEAR_START}", $c_y_s, $page);
 $page = str_replace("{N_RAY}", $c_n_ray, $page);
 $page = str_replace("{REG_FILE}", $c_reg_file, $page);
@@ -141,6 +137,7 @@ foreach ($lang as $key => $value)
 				$page = str_replace("{".$key."}", $value, $page);
 			}
 	}
+
 $page = str_replace("{MAX_FILE_SIZE_MB}", (($max_file_size / 1024) / 1024 )." MB", $page);
 if ($queryes_num < 1) $queryes_num = 0;
 $page = str_replace("{PAGE_GENERATION_TIME}", "Page gen. ".sprintf("%.4f",(microtime(TRUE) - $start_php_time))."s. ", $page);

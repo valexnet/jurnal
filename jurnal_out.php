@@ -929,8 +929,8 @@ if (isset($_SESSION['user_id']))
 		if (isset($_GET['search']) AND $_GET['search'] == "do")
 			{
 				$error = "";
-				if (!isset($_GET['data_start'])) $_GET['data_start'] = "2015-01-01";
-				if (!isset($_GET['data_end'])) $_GET['data_end'] = "2015-12-31";
+				if (!isset($_GET['data_start'])) $_GET['data_start'] = $_SESSION['user_year']."-01-01";
+				if (!isset($_GET['data_end'])) $_GET['data_end'] = $_SESSION['user_year']."-12-31";
 				if (!isset($_GET['user'])) $_GET['user'] = "0";
 				if (!isset($_GET['nom'])) $_GET['nom'] = "0";
 				if (!isset($_GET['how'])) $_GET['how'] = "0";
@@ -948,35 +948,28 @@ if (isset($_SESSION['user_id']))
 
 				if ($error == "")
 					{
-						$where_lang = "{LANG_EXTRA_SEARCH}:<br><small>{LANG_DATA_START}:</small> ".$_GET['data_start']." <small>{LANG_DATA_END}:</small> ".$_GET['data_end']."<br>";
-						if ($_GET['user'] != "0") $where_lang .= "<small>{LANG_LOG_USER}:</small> {GET_NAME_USER_".$_GET['user']."}<br>";
+						$where_lang = "";
+						if ($_GET['data_start'] != $_SESSION['user_year']."-01-01" OR $_GET['data_end'] != $_SESSION['user_year']."-12-31") $where_lang .="<small>{LANG_DATA_START}:</small> ".$_GET['data_start']." <small>{LANG_DATA_END}:</small> ".$_GET['data_end']."<br>";
+						if ($_GET['user'] != "0")
+							{
+								$where_lang .= "<small>{LANG_LOG_USER}:</small> ".get_users_names($_GET['user'])."<br>";
+								$queryes_num++;
+							}
 						if ($_GET['nom'] != "0") $where_lang .= "<small>{LANG_NOMENCLATURA}:</small> {GET_NAME_NOM_".$_GET['nom']."}<br>";
 						if ($_GET['how'] != "0") $where_lang .= "<small>{LANG_HOW}:</small> {LANG_HOW_".$_GET['how']."}<br>";
-						if ($_GET['blank'] == "do") $where_lang .= "{LANG_IS_REGISTER_BLANK}<br>";
 						if ($_GET['to'] != "") $where_lang .= "<small>{LANG_OUT_ADD_TO}:</small> ".$_GET['to']."<br>";
 						if ($_GET['to_num'] != "") $where_lang .= "<small>{LANG_OUT_ADD_TO_N}:</small> ".$_GET['to_num']."<br>";
 						if ($_GET['subj'] != "") $where_lang .= "<small>{LANG_OUT_TEMA}:</small> ".$_GET['subj']."<br>";
-
+						if ($where_lang != "" AND $_GET['blank'] == "do") $where_lang .= "{LANG_IS_REGISTER_BLANK}<br>";
+						if ($where_lang != "") $where_lang = "{LANG_EXTRA_SEARCH}:<br>".$where_lang;
+						
 						$search_pre .= "search=do&data_start=".$_GET['data_start']."&data_end=".$_GET['data_end']."&user=".$_GET['user']."&to=".$_GET['to']."&to_num=".$_GET['to_num']."&subj=".$_GET['subj']."&nom=".$_GET['nom']."&how=".$_GET['how']."&blank=".$_GET['blank']."&";
-
 						$query_where .= "`data` >= '".$_GET['data_start']." 00:00:00' AND `data` <= '".$_GET['data_end']." 23:59:59'";
 
-						if ($_GET['blank'] == "do")
-							{
-								$query_where .= " AND `blank` IS NOT NULL";
-							}
-						if ($_GET['user'] != "0")
-							{
-								$query_where .= " AND `user`='".$_GET['user']."'";
-							}
-						if ($_GET['nom'] != "0")
-							{
-								$query_where .= " AND `nom`='".$_GET['nom']."'";
-							}
-						if ($_GET['how'] != "0")
-							{
-								$query_where .= " AND `how`='".$_GET['how']."'";
-							}
+						if ($_GET['blank'] == "do") $query_where .= " AND `blank` IS NOT NULL";
+						if ($_GET['user'] != "0") $query_where .= " AND `user`='".$_GET['user']."'";
+						if ($_GET['nom'] != "0") $query_where .= " AND `nom`='".$_GET['nom']."'";
+						if ($_GET['how'] != "0") $query_where .= " AND `how`='".$_GET['how']."'";
 						if ($_GET['to'] != "")
 							{
 								$_GET['to'] = str_replace("*", "%", $_GET['to']);
@@ -1051,17 +1044,8 @@ if (isset($_SESSION['user_id']))
 				$queryes_num++;
 				if ($error != "true")
 					{
-						// Імена юзерів в масів
-						$users = array();
-						$query_users = "SELECT `id`,`name` FROM `users` ORDER BY `id` ; ";
-						$res_users = mysql_query($query_users) or die(mysql_error());
+						$users = get_users_names(0);
 						$queryes_num++;
-						while ($row_users=mysql_fetch_array($res_users))
-							{
-								$users[$row_users['id']] = $row_users['name'];
-								if ($where_lang != "") $where_lang = str_replace("{GET_NAME_USER_".$row_users['id']."}", $row_users['name'], $where_lang);
-							}
-						////////////////////////
 
 						// Назва номенклатури в масів
 						$structura = array();
@@ -1087,7 +1071,6 @@ if (isset($_SESSION['user_id']))
 						if (isset($where_lang) AND !empty($where_lang))
 							{
 								$disable_serch = "jurnal_out.php";
-								//if ($_GET['blank'] == "do") $disable_serch .= "?blank=do";
 								$page.= file_get_contents("templates/information.html");
 								$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"".$disable_serch."\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
 							}

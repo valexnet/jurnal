@@ -1,6 +1,8 @@
 <div class="container" data-spy="affix" data-offset-top="170" style="background-color: #FFF;">
 	<h3><p class="text-center">{LANG_LOG_VIEW}</p></h3>
-	<p class="text-center">{LOG_NAVY}</p>
+	<form method="POST" action="loging.php">
+		<p class="text-center">{NAVY} {LANG_USER_SET_LIMIT_PAGE} <INPUT TYPE="text" NAME="show_num_list" value="{PAGE_LIMIT}" size="2" /> {LANG_USER_SET_LIMIT_PAGE2}</p>
+	</form>
 </div>
 <div class="container">
 	<div class="table-responsive">
