@@ -3,6 +3,18 @@
 // Українська мова
 $lang = array (
 
+'LANG_IMAP_BREAK_N' => "Закінчено IMAP сканування по таймауту на №",
+'LANG_IMAP_SUBJECT_EMPTY' => "[ без теми ]",
+'LANG_IMAP_FORM_IMPORTED' => "Дані успішно імпортовано в форму",
+'LANG_IMAP_SIZE' => "Розмір",
+'LANG_IMAP_DATA' => "Дата листа",
+'LANG_IMAP_FROM' => "Від кого",
+'LANG_IMAP_TO' => "Кому",
+'LANG_IMAP_SUBJECT' => "Тема листа",
+'LANG_IMAP_LAST_MAILS' => "Показано останні листи на сервері",
+'LANG_IMAP_NOT_CONNECTED' => "Не вдалось підключитись до поштового сервера",
+'LANG_ADD_NEW_FROM_SERVER' => "Додати із Поштового Сервера",
+'LANG_FIRST_PAGE' => "Перша сторінка",
 'LANG_SEARCH_BY_IP' => "Пошук по IP адресі",
 'LANG_NEW_OUT_EP_WITH_UPDATED' => "Оновлено статус вхідного ел. номеру",
 'LANG_NEW_OUT_EP_WITH_NOT_DO_USER' => "Ви не являєтесь виконавцем по Вхідному ел. номеру",

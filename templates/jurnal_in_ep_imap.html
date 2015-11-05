@@ -1,0 +1,26 @@
+<script>
+function insert(d,n,s)
+	{
+		document.getElementById('get_data').value = d;
+		document.getElementById('org_name').value = n;
+		document.getElementById('org_data').value = d;
+		document.getElementById('org_subj').value = s;
+		alert('{LANG_IMAP_FORM_IMPORTED}');
+	}
+</script>
+
+<div class="container">
+	<div class="table-responsive">
+	<table class="table table-hover">
+		<tr valign="top" align="center">
+			<td valign="middle"><b>IMAP №</b></td>
+			<td valign="middle"><b>{LANG_IMAP_DATA}</b></td>
+			<td valign="middle"><b>{LANG_IMAP_FROM}</b></td>
+			<td valign="middle"><b>{LANG_IMAP_SUBJECT}</b></td>
+			<td valign="middle"><b>{LANG_IMAP_TO}</b></td>
+			<td valign="middle"><b>{LANG_IMAP_SIZE}</b></td>
+		</tr>
+		{JURNAL_IN_EP_IMAP}
+	</table>
+	</div>
+</div>
