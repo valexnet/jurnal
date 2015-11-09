@@ -2,7 +2,9 @@
 include ('inc/config.php');
 
 if (!isset($_SESSION['user_id'])) $user_nick = $_SERVER['REMOTE_ADDR'];
+if (isset($user_name)) $user_nick = $user_name;
 if (isset($_SESSION['user_nick'])) $user_nick = $_SESSION['user_nick'];
+
 if (!isset($_SESSION['last_message_id'])) $_SESSION['last_message_id'] = 0;
 $view_ip = 0;
 if (isset($user_p_config) AND $user_p_config == 1) $view_ip = 1;
@@ -116,7 +118,7 @@ function Load($user_nick)
 
 function Members($view_ip)
 	{
-		$query = mysql_query("SELECT `ip`,`name` FROM `messages` WHERE `time` >= '".(time() - 60)."' ORDER BY `name` ; ");
+		$query = mysql_query("SELECT `ip`,`name` FROM `messages` WHERE `time` >= '".(time() - 15)."' ORDER BY `name` ; ");
 		if (mysql_num_rows($query) > 0)
 			{
 				$text = "";
