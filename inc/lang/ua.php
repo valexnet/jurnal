@@ -3,6 +3,9 @@
 // Українська мова
 $lang = array (
 
+'LANG_CHAT_SMILES' => "Смайлики",
+'LANG_CHAT_NO_USERS' => "Користувачі відсутні",
+'LANG_CHAT' => "Чат",
 'LANG_IMAP_BREAK_N' => "Закінчено IMAP сканування по таймауту на №",
 'LANG_IMAP_SUBJECT_EMPTY' => "[ без теми ]",
 'LANG_IMAP_FORM_IMPORTED' => "Дані успішно імпортовано в форму",

@@ -1,0 +1,157 @@
+<script>
+<!--
+var load_in_process = false;
+
+function DoReload()
+	{
+		load_in_process = false;
+	}
+
+function DoSend()
+	{
+		var xhttpSend;
+		var new_message = document.getElementById("message");
+		if (new_message.value.length > 1)
+			{
+				if (window.XMLHttpRequest)
+					{
+						xhttpSend = new XMLHttpRequest();
+					}
+					else
+					{
+						xhttpSend = new ActiveXObject("Microsoft.XMLHTTP");
+					}
+				xhttpSend.onreadystatechange = function()
+					{
+						if (xhttpSend.readyState == 4 && xhttpSend.status == 200)
+							{
+								new_message.value = '';
+								new_message.focus();
+							}
+					}
+				xhttpSend.open("GET", "chat.php?act=send&text=" + encodeURIComponent(new_message.value) + "&rnd=" + (new Date()).getTime(), true);
+				xhttpSend.send();
+			}
+	}
+
+function DoLoad()
+	{
+		if(!load_in_process)
+			{
+				load_in_process = true;
+				var xhttpLoad;
+				if (window.XMLHttpRequest)
+					{
+						xhttpLoad = new XMLHttpRequest();
+					}
+					else
+					{
+						xhttpLoad = new ActiveXObject("Microsoft.XMLHTTP");
+					}
+				xhttpLoad.onreadystatechange = function()
+					{
+						if (xhttpLoad.readyState == 4 && xhttpLoad.status == 200)
+							{
+								if (xhttpLoad.responseText != 'OK')
+									{
+										document.getElementById("chat").innerHTML += xhttpLoad.responseText;
+										document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+									}
+									
+							}
+						load_in_process = false;
+					}
+				xhttpLoad.open("GET", "chat.php?act=load&rnd=" + (new Date()).getTime(), true);
+				xhttpLoad.send();
+			}
+	}
+
+function DoLoadMembers()
+	{
+		var xhttpMembers;
+		if (window.XMLHttpRequest)
+			{
+				xhttpMembers = new XMLHttpRequest();
+			}
+			else
+			{
+				xhttpMembers = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		xhttpMembers.onreadystatechange = function()
+			{
+				if (xhttpMembers.readyState == 4 && xhttpMembers.status == 200)
+					{
+						document.getElementById("members").innerHTML = xhttpMembers.responseText;
+					}
+			}
+		xhttpMembers.open("GET", "chat.php?act=members&rnd=" + (new Date()).getTime(), true);
+		xhttpMembers.send();
+	}
+//-->
+</script>
+
+
+<div class="container">
+	<div id="chat" class="col-sm-9" style="height:300px; overflow: auto; position: relative; text-align: left; border: solid #818181 1px;">
+	</div>
+	<div id="members" class="col-sm-3" style="height:300px; overflow: auto; position: relative;">
+		<a class="btn btn-default btn-block" role="button">{LANG_CHAT_NO_USERS}</a>
+	</div>
+</div>
+
+<div class="container">
+	<form id="pac_form" name="pac_form" action="" onsubmit="DoSend(); return false;">
+		<div class="form-group">
+			<div class="col-sm-1">
+				<a class="btn btn-success btn-xs" role="button" data-toggle="collapse" onclick="$('#Smiles').modal('show');" aria-expanded="false" aria-controls="Smiles">Смайли</a>
+			</div>
+			<div class="col-sm-8">
+				<input type="text" NAME="message" class="form-control" id="message" value="" autocomplete="off">
+			</div>
+			<div class="col-sm-3">
+				<input type="submit" class="btn btn-success btn-block" value="{LANG_SEND}">
+			</div>
+		</div>
+	</form>
+</div>
+
+<div class="modal fade" id="Smiles" tabindex="-1" role="dialog" aria-labelledby="SmilesLabel">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content bg-warning">
+	  <div class="modal-header bg-warning">
+		<h4 class="modal-title text-center" id="myModalLabel">{LANG_CHAT_SMILES}</h4>
+	  </div>
+	  <div class="modal-body bg-warning text-center">
+			{SMILES_LIST}
+	  </div>
+	  <div class="modal-footer bg-warning">
+		<button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
+	  </div>
+	</div>
+  </div>
+</div>
+
+<div id="skm_LockPane" class="LockOff"></div>
+<script src="templates/js/jquery.min.js"></script>
+<script src="templates/js/bootstrap.min.js"></script>
+<script src="templates/js/validator.min.js"></script>
+<script src="templates/js/transition.js"></script>
+<script src="templates/js/tooltip.js"></script>
+
+<!-- JavaScript Test -->
+<script>
+$(function ()
+	{
+		DoLoad();
+		DoLoadMembers();
+		$('[data-toggle="tooltip"]').tooltip();
+		setInterval("DoLoad();", 2000);
+		setInterval("DoLoadMembers();", 10000);
+		setInterval("DoReload();", 60000);
+		document.getElementById("message").focus();
+	}
+)
+</script>
+
+</body>
+</html>

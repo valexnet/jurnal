@@ -81,6 +81,16 @@ CREATE TABLE `structura` (
   PRIMARY KEY  (`id`)
 ) ;
 
+DROP TABLE IF EXISTS messages;
+CREATE TABLE `messages` (
+  `id` int(5) NOT NULL auto_increment,
+  `ip` varchar(15) NOT NULL,
+  `time` int(11) NOT NULL,
+  `name` char(255) NOT NULL,
+  `text` text,
+  PRIMARY KEY  (`id`)
+) ;
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL auto_increment,

@@ -74,6 +74,30 @@ if ($f_address == "true")
 						$page = str_replace("{ADMIN_LIST}", "{LANG_NO_ADMIN_IN_BD}", $page);
 					}
 			}
+		/* Чат */
+		if (isset($_GET['chat']))
+			{
+				$address = "true";
+				$_SESSION['last_message_id'] = 0;
+				if (!isset($_SESSION['user_id'])) $user_name = $_SERVER['REMOTE_ADDR'];
+				mysql_query("INSERT INTO `messages` (`time`, `name`, `text`) VALUES ('".time()."', '".$user_name."', 'new_user')");
+				$page.= file_get_contents("templates/chat.html");
+				$files = glob("templates/images/smiles/smile-*.png");
+				$c = count($files);
+				$html_smiles = "";
+				$a = 0;
+				foreach ($files as $file)
+					{
+						$a++;
+						$html_smiles .= "<img onclick=\"document.getElementById('message').value += ' :".basename($file, ".png").": ';\" src=\"templates/images/smiles/".basename($file)."\"</img> ";
+						if ($a == 27)
+							{
+								$a = 0;
+								$html_smiles .= "<br>\n";
+							}
+					}
+				$page = str_replace("{SMILES_LIST}", $html_smiles, $page);
+			}
 
 		/* Головна сторінка */
 		if ($address <> "true")

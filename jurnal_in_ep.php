@@ -196,7 +196,7 @@ if (isset($_SESSION['user_id']))
 												$jurnal_in_ep_imap = "";
 												for ($i = 0; $i <= count($inbox); $i++)
 													{
-														if ((time() - $date_start) >= 10)
+														if ((time() - $date_start) >= 5)
 															{
 																$page.= file_get_contents("templates/information_warning.html");
 																$page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id, $page);
@@ -204,13 +204,13 @@ if (isset($_SESSION['user_id']))
 															}
 														if (isset($inbox[$i]))
 															{
-																
 																$header = @imap_headerinfo($connect, $inbox[$i]);
 																$html_to = "";
 																for ($it = 0; $it<=4; $it++)
 																	{
 																		if (!isset($header->to[$it]->mailbox)) break;
 																		$tmp_to_name = imap_utf8($header->to[$it]->personal);
+																		if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $tmp_to_name, $utf8)) $tmp_to_name = base64_decode($utf8[1]);
 																		$tmp_to_email = imap_utf8($header->to[$it]->mailbox)."@".imap_utf8($header->to[$it]->host);
 																		if ($html_to != "" AND isset($header->to[$it]->personal)) $html_to .= "<br>";
 																		$html_to .= "<a href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$tmp_to_email."\" target=\"_blank\">";
@@ -229,6 +229,7 @@ if (isset($_SESSION['user_id']))
 																	{
 																		if (!isset($header->from[$it]->mailbox)) break;
 																		$tmp_from_name = imap_utf8($header->from[$it]->personal);
+																		if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $tmp_from_name, $utf8)) $tmp_from_name = base64_decode($utf8[1]);
 																		$tmp_from_email = imap_utf8($header->from[$it]->mailbox)."@".imap_utf8($header->from[$it]->host);
 																		if ($html_from != "" AND isset($header->from[$it]->personal)) $html_from .= "<br>";
 																		$html_from .= "<a href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$tmp_from_email."\" target=\"_blank\">";
@@ -246,6 +247,7 @@ if (isset($_SESSION['user_id']))
 																if (isset($header->subject))
 																	{
 																		$html_subj = imap_utf8($header->subject);
+																		if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $html_subj, $utf8)) $html_subj = base64_decode($utf8[1]);
 																	}
 																	else
 																	{
