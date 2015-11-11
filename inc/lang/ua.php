@@ -3,13 +3,20 @@
 // Українська мова
 $lang = array (
 
+'LANG_IMAP_FILE_NOT_ZIPED' => "Файл не запаковано ZIP-ом",
+'LANG_IMAP_FILE_NOT_CREATE' => "Не можливо створити файл, перевірте права",
+'LANG_IMAP_FILE_EXISTS' => "Файл вже існує",
+'LANG_IMAP_EMAIL_NOT_UNDELETE' => "Лист не знайдено на сервері, можливо він був вилучений",
+'LANG_IMAP_EML_NOT_IMPORTED' => "Лист не імпортовано",
+'LANG_IMAP_EML_IMPORTED' => "Лист успішно імпортовано у файл",
+'LANG_FORM_ERRROR_IMAP_DOWLOAD_ID' => "Помилкове значення номеру IMAP листа",
 'LANG_CHAT_SMILES' => "Смайлики",
 'LANG_CHAT_NO_USERS' => "Користувачі відсутні",
 'LANG_CHAT' => "Чат",
 'LANG_IMAP_BREAK_N' => "Закінчено IMAP сканування по таймауту на №",
 'LANG_IMAP_SUBJECT_EMPTY' => "[ без теми ]",
 'LANG_IMAP_FORM_IMPORTED' => "Дані успішно імпортовано в форму",
-'LANG_IMAP_SIZE' => "Розмір",
+'LANG_IMAP_DOWNLOAD' => "Скачати",
 'LANG_IMAP_DATA' => "Дата листа",
 'LANG_IMAP_FROM' => "Від кого",
 'LANG_IMAP_TO' => "Кому",

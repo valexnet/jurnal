@@ -122,7 +122,7 @@ if (isset($_SESSION['user_id']))
 										$page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_NOT_EXISTS}", $page);
 										$error = 1;
 									}
-							}							
+							}
 						if ($error == '')
 							{
 								if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
@@ -679,6 +679,7 @@ if (isset($_SESSION['user_id']))
 										include ('inc/loging.php');
 										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_DELETE_LAST}", $page);
+										@array_map('unlink', @glob("uploads/".date('Y')."/OUT/".$c_n_ray."_".$row['id']."_*"));
 										$timeout = "jurnal_out.php";
 									}
 									else
@@ -962,7 +963,7 @@ if (isset($_SESSION['user_id']))
 						if ($_GET['subj'] != "") $where_lang .= "<small>{LANG_OUT_TEMA}:</small> ".$_GET['subj']."<br>";
 						if ($where_lang != "" AND $_GET['blank'] == "do") $where_lang .= "{LANG_IS_REGISTER_BLANK}<br>";
 						if ($where_lang != "") $where_lang = "{LANG_EXTRA_SEARCH}:<br>".$where_lang;
-						
+
 						$search_pre .= "search=do&data_start=".$_GET['data_start']."&data_end=".$_GET['data_end']."&user=".$_GET['user']."&to=".$_GET['to']."&to_num=".$_GET['to_num']."&subj=".$_GET['subj']."&nom=".$_GET['nom']."&how=".$_GET['how']."&blank=".$_GET['blank']."&";
 						$query_where .= "`data` >= '".$_GET['data_start']." 00:00:00' AND `data` <= '".$_GET['data_end']." 23:59:59'";
 

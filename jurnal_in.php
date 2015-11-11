@@ -512,6 +512,7 @@ if (isset($_SESSION['user_id']))
 										include ('inc/loging.php');
 										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_JURNAL_IN_DELETE_LAST} ".$row['id'], $page);
+										@array_map('unlink', @glob("uploads/".date('Y')."/IN/".$c_n_ray."_".$row['id']."_*"));
 										$timeout = "jurnal_in.php";
 									}
 									else

@@ -8,7 +8,7 @@ while ($row=mysql_fetch_array($res))
 	{
 		if (time() >= $row['time'] + $row['last'] && $row['time'] <> 0)
 			{
-$return = "SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO'; 
+$return = "SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';
 SET NAMES 'utf8' COLLATE 'utf8_general_ci';
 SET CHARACTER SET 'utf8';
 ";
@@ -32,14 +32,14 @@ SET CHARACTER SET 'utf8';
 						$queryes_num++;
 						$return.= "\n\n".$row2[1].";\n\n";
 
-						for ($i = 0; $i < $num_fields; $i++) 
+						for ($i = 0; $i < $num_fields; $i++)
 							{
 								while($row = mysql_fetch_row($result))
 									{
 										if ($table != "messages" AND $table != "log")
 											{
 												$return.= 'INSERT INTO '.$table.' VALUES(';
-												for($j=0; $j<$num_fields; $j++) 
+												for($j=0; $j<$num_fields; $j++)
 													{
 														$row[$j] = addslashes($row[$j]);
 														$row[$j] = ereg_replace("\n","\\n",$row[$j]);
@@ -104,7 +104,7 @@ SET CHARACTER SET 'utf8';
 				$queryes_num++;
 				while ($row2=mysql_fetch_array($res2))
 					{
-						if (time() >= $row2['last'] + $row2['time'] && $row2['time'] <> 0) 
+						if (time() >= $row2['last'] + $row2['time'] && $row2['time'] <> 0)
 							{
 								$mail->AddAddress($db_connect[4], $db_connect[10]);
 								$mail->Subject = "Архів АС Журнал";

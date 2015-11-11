@@ -1,10 +1,11 @@
 <script>
-function insert(d,n,s)
+function insert(d,n,s,f)
 	{
 		document.getElementById('get_data').value = d;
 		document.getElementById('org_name').value = n;
 		document.getElementById('org_data').value = d;
 		document.getElementById('org_subj').value = s;
+		document.getElementById('imap_file_download').value = f;
 		alert('{LANG_IMAP_FORM_IMPORTED}');
 	}
 </script>
@@ -18,7 +19,7 @@ function insert(d,n,s)
 			<td valign="middle"><b>{LANG_IMAP_FROM}</b></td>
 			<td valign="middle"><b>{LANG_IMAP_SUBJECT}</b></td>
 			<td valign="middle"><b>{LANG_IMAP_TO}</b></td>
-			<td valign="middle"><b>{LANG_IMAP_SIZE}</b></td>
+			<td valign="middle"><b>{LANG_IMAP_DOWNLOAD}</b></td>
 		</tr>
 		{JURNAL_IN_EP_IMAP}
 	</table>

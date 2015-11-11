@@ -30,21 +30,21 @@ if ($user_p_config == 1)
 				$page.= file_get_contents("templates/information.html");
 				$page = str_replace("{INFORMATION}", "{LANG_ARHIV_SEND_BY_EMAIL}", $page);
 			}
-			
+
 		if (isset($_GET['edit']))
 			{
 				$adress = "true";
 				if (isset($_GET['do']))
 					{
 						$edit = "true";
-						
+
 						$_POST['sitename'] = str_replace($srch, $rpls, $_POST['sitename']);
 						$_POST['backup_limit'] = str_replace($srch, $rpls, $_POST['backup_limit']);
 						$_POST['anonymous_allow'] = str_replace($srch, $rpls, $_POST['anonymous_allow']);
 						$_POST['n_ray'] = str_replace($srch, $rpls, $_POST['n_ray']);
 						$_POST['reg_file'] = str_replace($srch, $rpls, $_POST['reg_file']);
 						$_POST['file_size'] = str_replace($srch, $rpls, $_POST['file_size']);
-						
+
 						if ($_POST['backup_plus'] != "")
 							{
 								$_POST['backup_plus'] = str_replace("\\\\", "/", $_POST['backup_plus']);
@@ -55,7 +55,7 @@ if ($user_p_config == 1)
 										$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_BACKUP_PLUS}", $page);
 									}
 							}
-						
+
 						if ($_POST['sitename'] == "")
 							{
 								$error = "true";
@@ -100,7 +100,7 @@ if ($user_p_config == 1)
 								$error = "true";
 								$page.= file_get_contents("templates/information_danger.html");
 								$page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_CRON_BACKUP_TIMEOUT}", $page);
-							}							
+							}
 						if ($_POST['cron_backup_on_email_timeout'] < 0)
 							{
 								$error = "true";
@@ -145,15 +145,15 @@ if ($user_p_config == 1)
 								`name`='".$_POST['sitename']."',
 								`backup_plus`='".$_POST['backup_plus']."',
 								`backup_lim`='".$_POST['backup_limit']."',
-								`anonymous`='".$anonymous_allow."', 
-								`user_timeout`='".$_POST['timeout_auht']."', 
-								`page_limit`='".$_POST['page_limit']."', 
+								`anonymous`='".$anonymous_allow."',
+								`user_timeout`='".$_POST['timeout_auht']."',
+								`page_limit`='".$_POST['page_limit']."',
 								`max_page_limit`='".$_POST['max_page_limit']."',
-								`login_choose`='".$login_choose."', 
-								`year_start`='".$_POST['year_start']."', 
-								`n_ray`='".$_POST['n_ray']."', 
-								`reg_file`='".$_POST['reg_file']."', 
-								`file_size`='".$_POST['file_size']."' 
+								`login_choose`='".$login_choose."',
+								`year_start`='".$_POST['year_start']."',
+								`n_ray`='".$_POST['n_ray']."',
+								`reg_file`='".$_POST['reg_file']."',
+								`file_size`='".$_POST['file_size']."'
 								WHERE `id`='1' LIMIT 1;";
 								$sql = mysql_query($query) or die(mysql_error());
 								$queryes_num++;
@@ -179,41 +179,18 @@ if ($user_p_config == 1)
 						$page = str_replace("{LOGIN_CHOOSE_C}", "", $page);
 					}
 			}
-			
+
 		if (isset($_GET['phpinfo']))
 			{
 				$adress = "true";
 				if ($_GET['phpinfo'] == "show") die(phpinfo());
 				$page .= "<center><iframe src=\"?phpinfo=show\" frameborder=\"0\" width=\"820\" height=\"510\" scrolling=\"auto\"></iframe></center>";
 			}
-			
+
 		if ($adress <> "true")
 			{
 				$page.= file_get_contents("templates/config.html");
 
-				$query = "SELECT * FROM `cron` WHERE `name`='backup' LIMIT 1 ;";
-				$res = mysql_query($query) or die(mysql_error());
-				$queryes_num++;
-				while ($row=mysql_fetch_array($res))
-					{
-						$backup_timeout = $row['time'];
-						$backup_last = $row['last'];
-					}
-
-				$query = "SELECT * FROM `cron` WHERE `name`='backup_on_email' LIMIT 1 ;";
-				$res = mysql_query($query) or die(mysql_error());
-				$queryes_num++;
-				while ($row=mysql_fetch_array($res))
-					{
-						$backup_on_email_timeout = $row['time'];
-						$backup_on_email_last = $row['last'];
-					}
-
-				$page = str_replace("{CRON_BACKUP_TIMEOUT}", $backup_timeout, $page);
-				$page = str_replace("{CRON_BACKUP_LAST}", date('Y.m.d H:i:s', $backup_last), $page);
-				$page = str_replace("{CRON_BACKUP_ON_EMAIL_TIMEOUT}", $backup_on_email_timeout, $page);
-				$page = str_replace("{CRON_BACKUP_ON_EMAIL_LAST}", date('Y.m.d H:i:s', $backup_on_email_last), $page);
-				
 				if(extension_loaded('zip'))
 					{
 						$page = str_replace("{ZIP_EXTENSION}", "<font color=\"green\">{LANG_ENABLE}</font>", $page);
@@ -223,6 +200,30 @@ if ($user_p_config == 1)
 						$page = str_replace("{ZIP_EXTENSION}", "<font color=\"red\">{LANG_DISABLE}</font>", $page);
 					}
 			}
+
+		$query = "SELECT * FROM `cron` WHERE `name`='backup' LIMIT 1 ;";
+		$res = mysql_query($query) or die(mysql_error());
+		$queryes_num++;
+		while ($row=mysql_fetch_array($res))
+			{
+				$backup_timeout = $row['time'];
+				$backup_last = $row['last'];
+			}
+
+		$query = "SELECT * FROM `cron` WHERE `name`='backup_on_email' LIMIT 1 ;";
+		$res = mysql_query($query) or die(mysql_error());
+		$queryes_num++;
+		while ($row=mysql_fetch_array($res))
+			{
+				$backup_on_email_timeout = $row['time'];
+				$backup_on_email_last = $row['last'];
+			}
+
+		$page = str_replace("{CRON_BACKUP_TIMEOUT}", $backup_timeout, $page);
+		$page = str_replace("{CRON_BACKUP_LAST}", date('Y.m.d H:i:s', $backup_last), $page);
+		$page = str_replace("{CRON_BACKUP_ON_EMAIL_TIMEOUT}", $backup_on_email_timeout, $page);
+		$page = str_replace("{CRON_BACKUP_ON_EMAIL_LAST}", date('Y.m.d H:i:s', $backup_on_email_last), $page);
+
 	}
 	else
 	{

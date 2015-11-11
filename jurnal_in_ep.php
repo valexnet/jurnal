@@ -34,43 +34,6 @@ if (isset($_SESSION['user_id']))
 					{
 						if (isset($_POST['get_data']) and !empty($_POST['get_data']))
 							{
-								/* для роботи з файлами imap TO DO
-								$structure = imap_fetchstructure($connect, $inbox[$i]);
-								$boundary = '';
-								if ($structure->ifparameters)
-									{
-										foreach ($structure->parameters as $param)
-											{
-												if (strtolower($param->attribute) == 'boundary')
-												$boundary = $param->value;
-											}
-									}
-								$parts = array();
-								getParts($structure, $parts);
-								if ($structure->type == 1)
-									{
-										$parts = array();
-										getParts($structure, $parts);
-										$is = 0;
-										foreach ($parts as $part)
-											{
-												// Not text or multipart
-												if ($part['type'] > 1)
-													{
-														$file = imap_fetchbody($connect, $inbox[$i], $is);
-														$mail[$inbox[$i]]['files'][] = array('content' => base64_decode($file),
-														'filename' => imap_utf8($part['params'][0]['val']),
-														'size' => $part['bytes']);
-													}
-												$is++;
-											}
-									}
-									else
-									{
-										// File not found
-									}
-								*/
-
 								// Убераєм з даних лишне
 								$_POST['org_name'] = str_replace($srch, $rpls, $_POST['org_name']);
 								$_POST['org_index'] = str_replace($srch, $rpls, $_POST['org_index']);
@@ -78,6 +41,7 @@ if (isset($_SESSION['user_id']))
 								$_POST['make_visa'] = str_replace($srch, $rpls, $_POST['make_visa']);
 								// Перевірка даних
 								$error = "";
+								if (!preg_match("/^[0-9]*$/", $_POST['imap_file_download'])) $error .= '{LANG_FORM_ERRROR_IMAP_DOWLOAD_ID}<br />';
 								if ($_POST['form_id'] == $_SESSION['form_id']) $error .= '{LANG_JURNAL_OUT_FORM_ERROR_FORM_ID}<br />';
 								if (!check_data(data_trans("ua", "mysql", $_POST['get_data']))) $error .= "{LANG_FORM_NO_GET_DATA}<br>";
 								if (!check_data(data_trans("ua", "mysql", $_POST['org_data']))) $error .= "{LANG_FORM_NO_ORG_DATA}<br>";
@@ -104,7 +68,7 @@ if (isset($_SESSION['user_id']))
 									{
 										$mysql_do_made = "NULL";
 									}
-								if (!preg_match("/^([1-9]|[1-9][0-9]{1,})$/" ,$_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
+								if (!preg_match("/^[1-9][0-9]*$/", $_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
 								if ($_POST['org_name'] == "") $error .= "{LANG_FORM_NO_ORG_NAME}<br>";
 								if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
 								if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
@@ -159,8 +123,75 @@ if (isset($_SESSION['user_id']))
 										$queryes_num++;
 										while ($row=mysql_fetch_array($res))
 											{
+												$last_id = $row['id'];
 												$page.= file_get_contents("templates/information_success.html");
 												$page = str_replace("{INFORMATION}", "{LANG_YOUR_IN_EP_N}: <kbd>".$row['id']."</kbd>", $page);
+											}
+
+										if ($_POST['imap_file_download'] != "0")
+											{
+												$connect = @imap_open('{'.$db_connect[7].':143/imap/novalidate-cert}INBOX', $db_connect[11], base64_decode($db_connect[9]), OP_READONLY);
+												if ($connect)
+													{
+														$inbox = @imap_search($connect, 'UNDELETED');
+														if (in_array($_POST['imap_file_download'], $inbox))
+															{
+																$file = "uploads/".date('Y')."/IN_EP/".$c_n_ray."_".$last_id."_imap-".$_POST['imap_file_download'];
+																$file_eml = $file.".eml";
+																if (!file_exists($file_eml))
+																	{
+																		$headers = @imap_fetchheader($connect, $_POST['imap_file_download'], FT_PREFETCHTEXT);
+																		$body = @imap_body($connect, $_POST['imap_file_download']);
+																		@imap_close($connect);
+																		if (@file_put_contents($file_eml, $headers."\n".$body))
+																			{
+																				$new_file = $file_eml;
+																				if(extension_loaded('zip'))
+																					{
+																						$file_zip = $file.".zip";
+																						if (!file_exists($file_zip))
+																							{
+																								$zip = new ZipArchive();
+																								if($zip->open($file_zip, ZIPARCHIVE::CREATE))
+																									{
+																										$zip->addFile($file_eml);
+																										$zip->close();
+																										unlink($file_eml);
+																										$new_file = $file_zip;
+																									}
+																							}
+																							else
+																							{
+																								$page.= file_get_contents("templates/information_danger.html");
+																								$page = str_replace("{INFORMATION}", "{LANG_IMAP_FILE_EXISTS}:".$file_zip."<br>{LANG_IMAP_FILE_NOT_ZIPED}<br>", $page);
+																							}
+																					}
+																				$page.= file_get_contents("templates/information_success.html");
+																				$page = str_replace("{INFORMATION}", "{LANG_IMAP_EML_IMPORTED}: <kbd>".$new_file."</kbd>", $page);
+																			}
+																			else
+																			{
+																				$page.= file_get_contents("templates/information_danger.html");
+																				$page = str_replace("{INFORMATION}", "{LANG_IMAP_FILE_NOT_CREATE}:".$file_eml."<br>{LANG_IMAP_EML_NOT_IMPORTED}<br>", $page);
+																			}
+																	}
+																	else
+																	{
+																		$page.= file_get_contents("templates/information_danger.html");
+																		$page = str_replace("{INFORMATION}", "{LANG_IMAP_FILE_EXISTS}:".$file_eml."<br>{LANG_IMAP_EML_NOT_IMPORTED}<br>", $page);
+																	}
+															}
+															else
+															{
+																$page.= file_get_contents("templates/information_danger.html");
+																$page = str_replace("{INFORMATION}", "{LANG_IMAP_EMAIL_NOT_UNDELETE}<br>{LANG_IMAP_EML_NOT_IMPORTED}<br>", $page);
+															}
+													}
+													else
+													{
+														$page.= file_get_contents("templates/information_danger.html");
+														$page = str_replace("{INFORMATION}", "{LANG_IMAP_NOT_CONNECTED}<br>{LANG_IMAP_EML_NOT_IMPORTED}<br>".imap_last_error(), $page);
+													}
 											}
 									}
 									else
@@ -190,13 +221,32 @@ if (isset($_SESSION['user_id']))
 												$page.= file_get_contents("templates/information_success.html");
 												$page = str_replace("{INFORMATION}", "{LANG_IMAP_LAST_MAILS}<br>", $page);
 												$inbox = @imap_search($connect, 'UNDELETED');
+												if (isset($_GET['download']) AND preg_match("/^[1-9][0-9]*$/", $_GET['download']))
+													{
+														if (in_array($_GET['download'], $inbox))
+														{
+															$headers = imap_fetchheader($connect, $_GET['download'], FT_PREFETCHTEXT);
+															$body = imap_body($connect, $_GET['download']);
+															@imap_close($connect);
+															if (ob_get_level()) ob_end_clean();
+															header('Content-Description: File Transfer');
+															header('Content-Type: application/octet-stream');
+															header('Content-Disposition: attachment; filename='.$_GET['download'].'.eml');
+															header('Content-Transfer-Encoding: binary');
+															header('Expires: 0');
+															header('Cache-Control: must-revalidate');
+															header('Pragma: public');
+															echo $headers."\n".$body;
+															exit;
+															die();
+														}
+													}
 												@rsort($inbox);
-												$mail = array();
 												$page .= file_get_contents("templates/jurnal_in_ep_imap.html");
 												$jurnal_in_ep_imap = "";
 												for ($i = 0; $i <= count($inbox); $i++)
 													{
-														if ((time() - $date_start) >= 5)
+														if ((time() - $date_start) >= 5 AND $i >=3)
 															{
 																$page.= file_get_contents("templates/information_warning.html");
 																$page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id, $page);
@@ -256,12 +306,12 @@ if (isset($_SESSION['user_id']))
 																$html_mail_date = strtotime(imap_utf8($header->MailDate));
 																$jurnal_in_ep_imap .= "
 																<tr valign=\"top\" align=\"center\">
-																	<td valign=\"top\" align=\"center\"><a onclick=\"insert('".date('d.m.Y', $html_mail_date)."','".$firs_email."','".$html_subj."');\"><strong>".$inbox[$i]."</strong></a></td>
+																	<td valign=\"top\" align=\"center\"><a onclick=\"insert('".date('d.m.Y', $html_mail_date)."','".$firs_email."','".$html_subj."','".$inbox[$i]."');\"><strong>".$inbox[$i]."</strong></a></td>
 																	<td valign=\"top\" align=\"center\">".date('d.m.Y H:i', $html_mail_date)."</td>
 																	<td valign=\"top\" align=\"left\">".$html_from."</td>
 																	<td valign=\"top\" align=\"left\">".$html_subj."</td>
 																	<td valign=\"top\" align=\"left\">".$html_to."</td>
-																	<td valign=\"top\" align=\"center\">".$header->Size."</td>
+																	<td valign=\"top\" align=\"right\"><a href=\"?do=add&use=imap&download=".$inbox[$i]."\"><span class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$header->Size." байт\"></span></a></td>
 																</tr>";
 															}
 														$last_imap_id = $inbox[$i];
@@ -371,7 +421,7 @@ if (isset($_SESSION['user_id']))
 													{
 														$mysql_make_data = "NULL";
 													}
-												if (!preg_match("/^[1-9][0-9]*$/" ,$_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
+												if (!preg_match("/^[1-9][0-9]*$/", $_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
 												if ($_POST['org_name'] == "") $error .= "{LANG_FORM_NO_ORG_NAME}<br>";
 												if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
 												if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
@@ -495,7 +545,7 @@ if (isset($_SESSION['user_id']))
 																			{
 																				$file_new_name = $c_n_ray."_".$row['id']."_".$FILE['name'][$i];
 																				if (preg_match("/^".$c_n_ray."_".$row['id']."_.*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
-																				$file_name = "uploads\\".$_SESSION['user_year']."\\IN_EP\\".$file_new_name;
+																				$file_name = "uploads/".$_SESSION['user_year']."/IN_EP/".$file_new_name;
 																				$file_name = iconv('UTF-8', 'windows-1251', $file_name);
 																				if (!file_exists($file_name))
 																					{
@@ -536,7 +586,7 @@ if (isset($_SESSION['user_id']))
 							}
 						if ($view_files == 1)
 							{
-								if ($dir = opendir("uploads\\".$_SESSION['user_year']."\\IN_EP"))
+								if ($dir = opendir("uploads/".$_SESSION['user_year']."/IN_EP"))
 									{
 										while (false !== ($file = readdir($dir)))
 											{
@@ -549,7 +599,7 @@ if (isset($_SESSION['user_id']))
 																if (isset($_GET['delete']) AND $_GET['delete'] == $file_utf8 AND $manage_files == 1 AND $tmp_add_new_file == 0)
 																	{
 																		$tmp_do = 1;
-																		if (@unlink("uploads\\".$_SESSION['user_year']."\\IN_EP\\".$file))
+																		if (@unlink("uploads/".$_SESSION['user_year']."/IN_EP/".$file))
 																			{
 																				$page.= file_get_contents("templates/information_success.html");
 																				$page = str_replace("{INFORMATION}", $file_utf8." {LANG_REMOVE_FILE_OK}", $page);
@@ -572,8 +622,8 @@ if (isset($_SESSION['user_id']))
 																		header('Expires: 0');
 																		header('Cache-Control: must-revalidate');
 																		header('Pragma: public');
-																		header('Content-Length: ' . filesize("uploads\\".$_SESSION['user_year']."\\IN_EP\\".$file));
-																		if ($fd = fopen("uploads\\".$_SESSION['user_year']."\\IN_EP\\".$file, 'rb'))
+																		header('Content-Length: ' . filesize("uploads/".$_SESSION['user_year']."/IN_EP/".$file));
+																		if ($fd = fopen("uploads/".$_SESSION['user_year']."/IN_EP/".$file, 'rb'))
 																			{
 																				while (!feof($fd))
 																					{
@@ -588,7 +638,7 @@ if (isset($_SESSION['user_id']))
 																if ($tmp_do == 0)
 																	{
 																		$page.= file_get_contents("templates/information.html");
-																		$page = str_replace("{INFORMATION}", "{TMP_MANAGE_FILES}<a href=\"jurnal_in_ep.php?attach=".$_GET['attach']."&download=".$file_utf8."\">".$file_utf8."</a> [ ".date ('d.m.Y H:i:s', @filemtime ("uploads\\".$_SESSION['user_year']."\\IN_EP\\".$file))." ]", $page);
+																		$page = str_replace("{INFORMATION}", "{TMP_MANAGE_FILES}<a href=\"jurnal_in_ep.php?attach=".$_GET['attach']."&download=".$file_utf8."\">".$file_utf8."</a> [ ".date ('d.m.Y H:i:s', @filemtime ("uploads/".$_SESSION['user_year']."/IN_EP/".$file))." ]", $page);
 																		if ($manage_files == 1)
 																			{
 																				$page = str_replace("{TMP_MANAGE_FILES}", "<a href=\"jurnal_in_ep.php?attach=".$_GET['attach']."&delete=".$file_utf8."\" onClick=\"if(confirm('{LANG_REMOVE_FILE_CONFIRM}')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\"></a> ", $page);
@@ -644,6 +694,7 @@ if (isset($_SESSION['user_id']))
 										include ('inc/loging.php');
 										$page.= file_get_contents("templates/information_success.html");
 										$page = str_replace("{INFORMATION}", "{LANG_JURNAL_IN_EP_DELETE_LAST} ".$row['id'], $page);
+										@array_map('unlink', @glob("uploads/".date('Y')."/IN_EP/".$c_n_ray."_".$row['id']."_*"));
 										$timeout = "jurnal_in_ep.php";
 									}
 									else
