@@ -3,6 +3,7 @@
 // Українська мова
 $lang = array (
 
+'LANG_IMAP_SHOW_NEXT' => "Показати старіші",
 'LANG_IMAP_FILE_NOT_ZIPED' => "Файл не запаковано ZIP-ом",
 'LANG_IMAP_FILE_NOT_CREATE' => "Не можливо створити файл, перевірте права",
 'LANG_IMAP_FILE_EXISTS' => "Файл вже існує",

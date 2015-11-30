@@ -246,10 +246,11 @@ if (isset($_SESSION['user_id']))
 												$jurnal_in_ep_imap = "";
 												for ($i = 0; $i <= count($inbox); $i++)
 													{
+														if (isset($_GET['next']) and preg_match("/^[1-9][0-9]*$/", $_GET['next']) and $inbox[$i] >= $_GET['next']) continue;
 														if ((time() - $date_start) >= 5 AND $i >=3)
 															{
 																$page.= file_get_contents("templates/information_warning.html");
-																$page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id, $page);
+																$page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id."<br><a href=\"?do=add&use=imap&next=".$last_imap_id."\">{LANG_IMAP_SHOW_NEXT}</a>", $page);
 																break;
 															}
 														if (isset($inbox[$i]))
