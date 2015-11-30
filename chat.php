@@ -35,8 +35,6 @@ function Send($user_nick)
 		$srch = array("\"", "<", ">", "`", "'");
 		$rpls = array("&quot;", "&lt;", "&gt;", "&#096;", "&lsquo;");
 		$text = str_replace($srch, $rpls, $text);
-		//$text = htmlspecialchars($text);
-		//$text = mysql_real_escape_string($text);
 		if (strlen(utf8_decode($text)) > 1)
 			{
 				$do = 0;
@@ -59,13 +57,13 @@ function Send($user_nick)
 						mysql_query("INSERT INTO `messages` (`ip`, `time`, `name`, `text`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$user_nick."', '<font color=\"red\"><b>".$a[1]."</b></font>')");
 					}
 
-					if (preg_match("/^admin (.*)/", $text, $a))
+				if (preg_match("/^admin (.*)/", $text, $a))
 					{
 						$do = 1;
 						mysql_query("INSERT INTO `messages` (`ip`, `time`, `name`, `text`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '', '<font color=\"red\"><b>".$a[1]."</b></font>')");
 					}
 
-					if (preg_match("/^img:(.*)/", $text, $a))
+				if (preg_match("/^img:(.*)/", $text, $a))
 					{
 						$do = 1;
 						mysql_query("INSERT INTO `messages` (`ip`, `time`, `name`, `text`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$user_nick."', '<img src=\"".$a[1]."\" />')");
@@ -74,9 +72,10 @@ function Send($user_nick)
 				if ($do == 0)
 					{
 						mysql_query("INSERT INTO `messages` (`ip`, `time`, `name`, `text`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$user_nick."', '".$text."')");
-						mysql_query("DELETE FROM `messages` WHERE `time` < '".(time() - 3600)."' LIMIT 1; ");
 					}
 				echo "OK";
+				$old_messages = time() - 18000;
+				mysql_query("DELETE FROM `messages` WHERE `time` < '".$old_messages."' ; ");
 			}
 			else
 			{
