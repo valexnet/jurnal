@@ -250,7 +250,7 @@ if (isset($_SESSION['user_id']))
 														if ((time() - $date_start) >= 5 AND $i >=3)
 															{
 																$page.= file_get_contents("templates/information_warning.html");
-																$page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id."<br><a href=\"?do=add&use=imap&next=".$last_imap_id."\">{LANG_IMAP_SHOW_NEXT}</a>", $page);
+																$page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id."<br><a onclick=\"skm_LockScreen()\" href=\"?do=add&use=imap&next=".$last_imap_id."\">{LANG_IMAP_SHOW_NEXT}</a>", $page);
 																break;
 															}
 														if (isset($inbox[$i]))
@@ -456,7 +456,7 @@ if (isset($_SESSION['user_id']))
 														$page.= file_get_contents("templates/information_danger.html");
 														$page = str_replace("{INFORMATION}", $error, $page);
 														$page.= file_get_contents("templates/information.html");
-														$page = str_replace("{INFORMATION}", "<a href=\"jurnal_in_ep.php?edit=".$_GET['edit']."\">{LANG_RETURN_AND_GO}</a>", $page);
+														$page = str_replace("{INFORMATION}", "<a onclick=\"skm_LockScreen()\" href=\"jurnal_in_ep.php?edit=".$_GET['edit']."\">{LANG_RETURN_AND_GO}</a>", $page);
 														$loging_do = "{LANG_LOG_JURNAL_IN_EP_EDIT_ERROR}:<br />".$error;
 														include ('inc/loging.php');
 													}
@@ -912,7 +912,7 @@ if (isset($_SESSION['user_id']))
 				if (isset($where_lang) AND !empty($where_lang))
 					{
 						$page.= file_get_contents("templates/information.html");
-						$page = str_replace("{INFORMATION}", $where_lang." <a class=\"btn btn-default btn-sm\" href=\"jurnal_in_ep.php\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
+						$page = str_replace("{INFORMATION}", $where_lang." <a onclick=\"skm_LockScreen()\" class=\"btn btn-default btn-sm\" href=\"jurnal_in_ep.php\">{LANG_CLEAN_SERCH_RESULTS}</a>", $page);
 					}
 
 				$query_order_by = "ORDER BY `id` DESC ";
@@ -969,16 +969,16 @@ if (isset($_SESSION['user_id']))
 
 								if ($row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1)
 									{
-										if (empty($row['do_made'])) $admin_links_do .= "<a href=\"?do=made&id=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_IN_SET_AS_MADED}\"></span></a>";
-										$admin_links_do .= "<a href=\"jurnal_out.php?add=do&from=in_ep&id=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-send\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_NEW_OUT_WITH_IN_ID}\"></span></a>";
+										if (empty($row['do_made'])) $admin_links_do .= "<a onclick=\"skm_LockScreen()\" href=\"?do=made&id=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-ok\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_IN_SET_AS_MADED}\"></span></a>";
+										$admin_links_do .= "<a onclick=\"skm_LockScreen()\" href=\"jurnal_out.php?add=do&from=in_ep&id=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-send\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_NEW_OUT_WITH_IN_ID}\"></span></a>";
 									}
-								if ($privat5 == 1) $admin_links_do .= "<a href=\"?do=add&template=".$row['id']."\" class=\"btn btn-info btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-random\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_NEW_WITH_TEMPLATE}\"></span></a>";
+								if ($privat5 == 1) $admin_links_do .= "<a onclick=\"skm_LockScreen()\" href=\"?do=add&template=".$row['id']."\" class=\"btn btn-info btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-random\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_NEW_WITH_TEMPLATE}\"></span></a>";
 								$show_files = 0;
 								if ($row['add_user'] == $_SESSION['user_id'] OR $row['do_user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $show_files = 1;
-								if ($show_files == 1) $admin_links_do .= "<a href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
+								if ($show_files == 1) $admin_links_do .= "<a onclick=\"skm_LockScreen()\" href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
 								$user_edit_num = 0;
 								if ($row['add_user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
-								if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
+								if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a onclick=\"skm_LockScreen()\" href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
 
 								$user_del_num = 0;
 								if ($row['user'] == $_SESSION['user_id'] AND $active == 1 AND $is_first == "" AND $_SESSION['user_year'] == date('Y')) $user_del_num = 1;
@@ -995,13 +995,13 @@ if (isset($_SESSION['user_id']))
 								$jurnal_in_ep .= "
 								<tr valign=\"top\" align=\"center\" id=\"TRn".$row['id']."\" ".$tr_color_info.">
 									<td valign=\"top\" align=\"center\"><abbr title=\"{LANG_NUM_INFO_PLUS}\"><strong><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</strong></a></abbr></td>
-									<td valign=\"top\" align=\"center\"><a href=\"".$glyphicon_search_url."\"><span class=\"".$glyphicon."\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$glyphicon_tooltip."\"></span></a></td>
-									<td valign=\"top\" align=\"center\"><a href=\"?do=search&get_data=".data_trans("mysql", "ua", $row['get_data'])."\">".data_trans("mysql", "ua", $row['get_data'])."</a></td>
-									<td valign=\"top\" align=\"left\"><a href=\"?do=search&org_name=".$row['org_name']."\">".$row['org_name']."</a></td>
+									<td valign=\"top\" align=\"center\"><a onclick=\"skm_LockScreen()\" href=\"".$glyphicon_search_url."\"><span class=\"".$glyphicon."\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$glyphicon_tooltip."\"></span></a></td>
+									<td valign=\"top\" align=\"center\"><a onclick=\"skm_LockScreen()\" href=\"?do=search&get_data=".data_trans("mysql", "ua", $row['get_data'])."\">".data_trans("mysql", "ua", $row['get_data'])."</a></td>
+									<td valign=\"top\" align=\"left\"><a onclick=\"skm_LockScreen()\" href=\"?do=search&org_name=".$row['org_name']."\">".$row['org_name']."</a></td>
 									<td valign=\"top\" align=\"left\">".$row['org_index']."</td>
-									<td valign=\"top\" align=\"center\"><a href=\"?do=search&org_data=".data_trans("mysql", "ua", $row['org_data'])."\">".data_trans("mysql", "ua", $row['org_data'])."</a></td>
+									<td valign=\"top\" align=\"center\"><a onclick=\"skm_LockScreen()\" href=\"?do=search&org_data=".data_trans("mysql", "ua", $row['org_data'])."\">".data_trans("mysql", "ua", $row['org_data'])."</a></td>
 									<td valign=\"top\" align=\"left\">".$row['org_subj']."</td>
-									<td valign=\"top\" align=\"left\"><a href=\"?do=search&do_user=".$row['do_user']."\">".$users[$row['do_user']]."</a></td>
+									<td valign=\"top\" align=\"left\"><a onclick=\"skm_LockScreen()\" href=\"?do=search&do_user=".$row['do_user']."\">".$users[$row['do_user']]."</a></td>
 									<td valign=\"top\" align=\"left\">".$row['make_visa']."</td>
 									<td valign=\"top\" align=\"center\">".data_trans("mysql", "ua", $row['make_data'])."</td>
 								</tr>";

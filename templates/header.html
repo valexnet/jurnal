@@ -27,16 +27,16 @@
 			lock.innerHTML = '<h2><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND}</font></h2>';
 			var timerId = setInterval(function()
 				{
-					timer = timer + 0.1;
+					timer = timer + 0.5;
 					timer = parseFloat(timer.toFixed(1));
 					document.getElementById('skm_LockPane').innerHTML = '<h2><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND} <h2>' + timer + '<h2></font></h2>';
-				}, 100);
+				}, 500);
 		}
 	// ]]>
 </script>
 <style>
 	.LockOff { display: none; visibility: hidden; }
-	.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 100%; height: 100%; background-color: #fff; text-align: center; padding-top: 15%; }
+	.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 105%; height: 105%; background-color: #fff; text-align: center; padding-top: 15%; }
 
 	.affix { top: 0; width: 100%; }
 	.affix + .container-fluid { padding-top: 70px; }
