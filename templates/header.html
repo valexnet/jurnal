@@ -19,18 +19,24 @@
 	
 	<script type="text/javascript">
 	// <![CDATA[
-	function skm_LockScreen(str)
+	function skm_LockScreen()
 		{
+			var timer = 0
 			var lock = document.getElementById('skm_LockPane');
-			if (lock)
 			lock.className = 'LockOn';
-			lock.innerHTML = '<h1><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND}</font></h1>';
+			lock.innerHTML = '<h2><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND}</font></h2>';
+			var timerId = setInterval(function()
+				{
+					timer = timer + 0.1;
+					timer = parseFloat(timer.toFixed(1));
+					document.getElementById('skm_LockPane').innerHTML = '<h2><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND} <h2>' + timer + '<h2></font></h2>';
+				}, 100);
 		}
 	// ]]>
 </script>
 <style>
 	.LockOff { display: none; visibility: hidden; }
-	.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 105%; height: 105%; background-color: #fff; text-align: center; padding-top: 15%; }
+	.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 100%; height: 100%; background-color: #fff; text-align: center; padding-top: 15%; }
 
 	.affix { top: 0; width: 100%; }
 	.affix + .container-fluid { padding-top: 70px; }
@@ -42,17 +48,17 @@
 		<table class="table">
 			<tr>
 				<td width="150">
-					<a href="index.php"><img src="templates/images/logo.png"></a>
+					<a href="/"><img src="templates/images/logo.png"></a>
 				</td>
 				<td class="text-left" style="vertical-align: middle;">
 					<p style="font-size: 18px;">
-						<a href="index.php"><strong>{LANG_HEADERINFO}</strong> <span class="label label-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="{LANG_JUNAL_VER_TOOLTIP}">v.{VER_NUM}</span></a>
+						<a href="index.php" onclick="skm_LockScreen()"><strong>{LANG_HEADERINFO}</strong> <span class="label label-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="{LANG_JUNAL_VER_TOOLTIP}">v.{VER_NUM}</span></a>
 						<br>{SITENAME}
 					</p>
 					{SHOW_C_ANO}
 					<p>
 						<div class="dropdown">
-							<a class="btn btn-default btn-sm" href="index.php">{LANG_HOME}</a>
+							<a class="btn btn-default btn-sm" href="index.php" onclick="skm_LockScreen()">{LANG_HOME}</a>
 							{PRE_MENU}
 							{MENU}
 							{AFT_MENU}
