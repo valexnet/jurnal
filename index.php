@@ -12,7 +12,7 @@ if (isset($_SESSION['user_id']))
 	}
 	else
 	{
-		if ($c_ano == 0 && !isset($_GET['team']))
+		if ($c_ano == 0 && !isset($_GET['team']) && !isset($_GET['auth']))
 			{
 				DIE(file_get_contents("templates/close.html"));
 			}
