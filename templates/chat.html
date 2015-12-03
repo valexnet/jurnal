@@ -1,6 +1,54 @@
 <script>
 <!--
 var load_in_process = false;
+var play_sounds = true;
+var stop_chat = false;
+var show_smiles = false;
+var play_onse = true;
+
+function ShowSmiles()
+	{
+		if (show_smiles)
+			{
+				show_smiles = false;
+				document.getElementById('smiles_list').className = 'container hidden';
+				document.getElementById('show_smiles').innerHTML='{LANG_CHAT_SMILES_DO_ON}';
+			}
+			else
+			{
+				show_smiles = true;
+				document.getElementById('smiles_list').className = 'container';
+				document.getElementById('show_smiles').innerHTML='{LANG_CHAT_SMILES_DO_OFF}';
+			}
+	}
+
+function Mute()
+	{
+		if (play_sounds)
+			{
+				play_sounds = false;
+				document.getElementById('mute').innerHTML='{LANG_CHAT_SOUNDS_OFF}';
+			}
+			else
+			{
+				play_sounds = true;
+				document.getElementById('mute').innerHTML='{LANG_CHAT_SOUNDS_ON}';
+			}
+	}
+	
+function StopChat()
+	{
+		if (stop_chat)
+			{
+				stop_chat = false;
+				document.getElementById('stop_chat').innerHTML='{LANG_CHAT_ON}';
+			}
+			else
+			{
+				stop_chat = true;
+				document.getElementById('stop_chat').innerHTML='{LANG_CHAT_OFF}';
+			}
+	}
 
 function DoReload()
 	{
@@ -9,87 +57,154 @@ function DoReload()
 
 function DoSend()
 	{
-		var xhttpSend;
-		var new_message = document.getElementById("message");
-		if (new_message.value.length > 1)
+		if(!stop_chat)
 			{
-				if (window.XMLHttpRequest)
+				var xhttpSend;
+				var new_message = document.getElementById("message");
+				if (new_message.value.length > 0)
 					{
-						xhttpSend = new XMLHttpRequest();
-					}
-					else
-					{
-						xhttpSend = new ActiveXObject("Microsoft.XMLHTTP");
-					}
-				xhttpSend.onreadystatechange = function()
-					{
-						if (xhttpSend.readyState == 4 && xhttpSend.status == 200)
+						if (window.XMLHttpRequest)
 							{
-								new_message.value = '';
-								new_message.focus();
+								xhttpSend = new XMLHttpRequest();
 							}
+							else
+							{
+								xhttpSend = new ActiveXObject("Microsoft.XMLHTTP");
+							}
+						xhttpSend.onreadystatechange = function()
+							{
+								if (xhttpSend.readyState == 4 && xhttpSend.status == 200)
+									{
+										new_message.value = '';
+										new_message.focus();
+										play_onse = false;
+									}
+							}
+						xhttpSend.open("GET", "chat.php?act=send&text=" + encodeURIComponent(new_message.value) + "&rnd=" + (new Date()).getTime(), true);
+						xhttpSend.send();
 					}
-				xhttpSend.open("GET", "chat.php?act=send&text=" + encodeURIComponent(new_message.value) + "&rnd=" + (new Date()).getTime(), true);
-				xhttpSend.send();
+			}
+			else
+			{
+				alert('{LANG_CHAT_OFF_ALERT}');
 			}
 	}
 
 function DoLoad()
 	{
-		if(!load_in_process)
+		if(!stop_chat)
 			{
-				load_in_process = true;
-				var xhttpLoad;
-				if (window.XMLHttpRequest)
+				if(!load_in_process)
 					{
-						xhttpLoad = new XMLHttpRequest();
-					}
-					else
-					{
-						xhttpLoad = new ActiveXObject("Microsoft.XMLHTTP");
-					}
-				xhttpLoad.onreadystatechange = function()
-					{
-						if (xhttpLoad.readyState == 4 && xhttpLoad.status == 200)
+						load_in_process = true;
+						var xhttpLoad;
+						if (window.XMLHttpRequest)
 							{
-								if (xhttpLoad.responseText != 'OK')
-									{
-										document.getElementById("chat").innerHTML += xhttpLoad.responseText;
-										document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
-									}
-									
+								xhttpLoad = new XMLHttpRequest();
 							}
-						load_in_process = false;
+							else
+							{
+								xhttpLoad = new ActiveXObject("Microsoft.XMLHTTP");
+							}
+						xhttpLoad.onreadystatechange = function()
+							{
+								if (xhttpLoad.readyState == 4 && xhttpLoad.status == 200)
+									{
+										if (xhttpLoad.responseText != 'OK' && xhttpLoad.responseText.length > 4)
+											{
+												if (xhttpLoad.responseText == 'clean')
+													{
+														document.getElementById("chat").innerHTML = '';
+													}
+													else if (xhttpLoad.responseText == 'you_baneed')
+													{
+														document.getElementById('stop_chat').className = 'btn btn-warning btn-xs disabled';
+														document.getElementById('stop_chat').innerHTML='{LANG_CHAT_OFF}';
+														stop_chat = true;
+														document.getElementById("chat").innerHTML = '<font color=\"red\"><b>{LANG_CHAT_MODER_BAN}</b></font>';
+													}
+													else
+													{
+														document.getElementById("chat").innerHTML += xhttpLoad.responseText;
+														document.getElementById("chat").scrollTop = document.getElementById("chat").scrollHeight;
+														if (play_onse)
+															{
+																PlaySound();
+															}
+															else
+															{
+																play_onse = true;
+															}
+													}
+											}
+											
+									}
+								load_in_process = false;
+							}
+						xhttpLoad.open("GET", "chat.php?act=load&rnd=" + (new Date()).getTime(), true);
+						xhttpLoad.send();
 					}
-				xhttpLoad.open("GET", "chat.php?act=load&rnd=" + (new Date()).getTime(), true);
-				xhttpLoad.send();
 			}
 	}
 
 function DoLoadMembers()
 	{
-		var xhttpMembers;
-		if (window.XMLHttpRequest)
+		if(!stop_chat)
 			{
-				xhttpMembers = new XMLHttpRequest();
-			}
-			else
-			{
-				xhttpMembers = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-		xhttpMembers.onreadystatechange = function()
-			{
-				if (xhttpMembers.readyState == 4 && xhttpMembers.status == 200)
+				var xhttpMembers;
+				if (window.XMLHttpRequest)
 					{
-						document.getElementById("members").innerHTML = xhttpMembers.responseText;
+						xhttpMembers = new XMLHttpRequest();
 					}
+					else
+					{
+						xhttpMembers = new ActiveXObject("Microsoft.XMLHTTP");
+					}
+				xhttpMembers.onreadystatechange = function()
+					{
+						if (xhttpMembers.readyState == 4 && xhttpMembers.status == 200)
+							{
+								document.getElementById("members").innerHTML = xhttpMembers.responseText;
+							}
+					}
+				xhttpMembers.open("GET", "chat.php?act=members&rnd=" + (new Date()).getTime(), true);
+				xhttpMembers.send();
 			}
-		xhttpMembers.open("GET", "chat.php?act=members&rnd=" + (new Date()).getTime(), true);
-		xhttpMembers.send();
 	}
+	
+function PlaySound()
+	{
+		if (play_sounds)
+			{
+				document.getElementById("tmp_sound").remove();
+				$('body').append('<div id="tmp_sound" style="display:none;"><audio autoplay="autoplay"><source src="templates/images/notify.mp3" type="audio/mpeg" /><embed hidden="true" autostart="true" loop="false" src="templates/images/notify.mp3" /></audio></div>');
+			}
+	}
+	
+function InsSm(str)
+	{
+		document.getElementById('message').value += ' :' + str + ': ';
+		document.getElementById('message').focus();
+	}
+
 //-->
 </script>
 
+<div class="container">
+	<a class="btn btn-danger btn-xs" role="button" data-toggle="collapse" onclick="document.getElementById('chat').innerHTML=''">{LANG_CHAT_CLEAN}</a>
+	&nbsp;
+	<a id="show_smiles" class="btn btn-success btn-xs" role="button" data-toggle="collapse" onclick="ShowSmiles();">{LANG_CHAT_SMILES_DO_ON}</a>
+	&nbsp;
+	<a id="mute" class="btn btn-info btn-xs" role="button" data-toggle="collapse" onclick="Mute();">{LANG_CHAT_SOUNDS_ON}</a>
+	&nbsp;
+	<a id="stop_chat" class="btn btn-warning btn-xs" role="button" data-toggle="collapse" onclick="StopChat();">{LANG_CHAT_ON}</a>
+<hr></hr>
+</div>
+
+<div id="smiles_list" class="container hidden">
+{SMILES_LIST}
+<hr></hr>
+</div>
 
 <div class="container">
 	<div id="chat" class="col-sm-9" style="height:300px; overflow: auto; position: relative; text-align: left; border: solid #818181 1px;">
@@ -99,11 +214,13 @@ function DoLoadMembers()
 	</div>
 </div>
 
+<div id="tmp_sound"></div>
+
 <div class="container">
 	<form id="pac_form" name="pac_form" action="" onsubmit="DoSend(); return false;">
 		<div class="form-group">
 			<div class="col-sm-1">
-				<a class="btn btn-success btn-xs" role="button" data-toggle="collapse" onclick="$('#Smiles').modal('show');" aria-expanded="false" aria-controls="Smiles">Смайли</a>
+				<a class="btn btn-default btn-block" role="button" onclick="document.getElementById('message').value = ''; document.getElementById('message').focus();"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a>
 			</div>
 			<div class="col-sm-8">
 				<input type="text" NAME="message" class="form-control" id="message" value="" autocomplete="off">
@@ -113,22 +230,6 @@ function DoLoadMembers()
 			</div>
 		</div>
 	</form>
-</div>
-
-<div class="modal fade" id="Smiles" tabindex="-1" role="dialog" aria-labelledby="SmilesLabel">
-  <div class="modal-dialog" role="document">
-	<div class="modal-content bg-warning">
-	  <div class="modal-header bg-warning">
-		<h4 class="modal-title text-center" id="myModalLabel">{LANG_CHAT_SMILES}</h4>
-	  </div>
-	  <div class="modal-body bg-warning text-center">
-			{SMILES_LIST}
-	  </div>
-	  <div class="modal-footer bg-warning">
-		<button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
-	  </div>
-	</div>
-  </div>
 </div>
 
 <div id="skm_LockPane" class="LockOff"></div>

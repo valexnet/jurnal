@@ -89,11 +89,11 @@ if ($f_address == "true")
 				foreach ($files as $file)
 					{
 						$a++;
-						$html_smiles .= "<img onclick=\"document.getElementById('message').value += ' :".basename($file, ".png").": ';\" src=\"templates/images/smiles/".basename($file)."\"</img> ";
-						if ($a == 27)
+						$html_smiles .= "<img onclick=\"InsSm('".basename($file, ".png")."');\" src=\"templates/images/smiles/".basename($file)."\"</img> ";
+						if ($a == 10)
 							{
 								$a = 0;
-								$html_smiles .= "<br>\n";
+								$html_smiles .= "\n";
 							}
 					}
 				$page = str_replace("{SMILES_LIST}", $html_smiles, $page);

@@ -3,6 +3,15 @@
 // Українська мова
 $lang = array (
 
+'LANG_CHAT_MODER_BAN' => "Модератор Вас забанив",
+'LANG_CHAT_SMILES_DO_ON' => "Показати смайлики",
+'LANG_CHAT_SMILES_DO_OFF' => "Заховати смайлики",
+'LANG_CHAT_OFF_ALERT' => "Ви зупинили чат!",
+'LANG_CHAT_CLEAN' => "Очистити Чат",
+'LANG_CHAT_OFF' => "Чат зупинено",
+'LANG_CHAT_ON' => "Чат працює",
+'LANG_CHAT_SOUNDS_ON' => "Звуки увімкнені",
+'LANG_CHAT_SOUNDS_OFF' => "Звуки вимкнені",
 'LANG_IMAP_SHOW_NEXT' => "Показати старіші",
 'LANG_IMAP_FILE_NOT_ZIPED' => "Файл не запаковано ZIP-ом",
 'LANG_IMAP_FILE_NOT_CREATE' => "Не можливо створити файл, перевірте права",
