@@ -2,43 +2,43 @@
 mysql_close();
 $page.= file_get_contents("templates/footer.html");
 if (isset($_SESSION['user_id']))
-	{
-		$session_counter = file_get_contents("templates/timer.html");
-		$page = str_replace("{TIMEOUT_SESSION_COUNTER}", $session_counter, $page);
-		if ($c_tmt > 3600) { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "declOfNum(hours, [\"година\", \"години\", \"годин\"]),", $page); } else { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "", $page); }
-		if ($c_tmt == 0 OR $user_a_ip == "1" AND $user_ip == $_SERVER['REMOTE_ADDR'])
-			{
-				$page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "", $page);
-			}
-			else
-			{
-				$page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page);
-			}
-	}
-	else
-	{
-		$page = str_replace("{TIMEOUT_SESSION_COUNTER}", "", $page);
-	}
+    {
+        $session_counter = file_get_contents("templates/timer.html");
+        $page = str_replace("{TIMEOUT_SESSION_COUNTER}", $session_counter, $page);
+        if ($c_tmt > 3600) { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "declOfNum(hours, [\"година\", \"години\", \"годин\"]),", $page); } else { $page = str_replace("{LANG_TIMEOUT_MORE_THEN_HOUR}", "", $page); }
+        if ($c_tmt == 0 OR $user_a_ip == "1" AND $user_ip == $_SERVER['REMOTE_ADDR'])
+            {
+                $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "", $page);
+            }
+            else
+            {
+                $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page);
+            }
+    }
+    else
+    {
+        $page = str_replace("{TIMEOUT_SESSION_COUNTER}", "", $page);
+    }
 
 $page = str_replace("{PRE_MENU}", $pre_menu, $page);
 $page = str_replace("{MENU}", $menu, $page);
 $page = str_replace("{AFT_MENU}", $aft_menu, $page);
 
 if (isset($timeout))
-	{
-		$page = str_replace("{META_REFRESH}", "<meta http-equiv=\"refresh\" content=\"3;url=".$timeout."\" />", $page);
-		$page = str_replace("{REDIRECT_ANNONCE}", file_get_contents("templates/information_warning.html"), $page);
-		$page = str_replace("{INFORMATION}", "{REDIRECT_ANNONCE}", $page);
-		$page = str_replace("{REDIRECT_GIF}", "<td style=\"vertical-align: middle;\"><img src=\"templates/images/globe64.gif\"></td>", $page); 
-		$page = str_replace("{SHOW_CHECK_NEW_ROWS}", "", $page); 
-	}
-	else
-	{
-		$page = str_replace("{META_REFRESH}", "", $page);
-		$page = str_replace("{REDIRECT_ANNONCE}", "", $page);
-		$page = str_replace("{REDIRECT_GIF}", "", $page); 
-		$page = str_replace("{SHOW_CHECK_NEW_ROWS}", "check_new_rows();", $page); 
-	}
+    {
+        $page = str_replace("{META_REFRESH}", "<meta http-equiv=\"refresh\" content=\"3;url=".$timeout."\" />", $page);
+        $page = str_replace("{REDIRECT_ANNONCE}", file_get_contents("templates/information_warning.html"), $page);
+        $page = str_replace("{INFORMATION}", "{REDIRECT_ANNONCE}", $page);
+        $page = str_replace("{REDIRECT_GIF}", "<td style=\"vertical-align: middle;\"><img src=\"templates/images/globe64.gif\"></td>", $page);
+        $page = str_replace("{SHOW_CHECK_NEW_ROWS}", "", $page);
+    }
+    else
+    {
+        $page = str_replace("{META_REFRESH}", "", $page);
+        $page = str_replace("{REDIRECT_ANNONCE}", "", $page);
+        $page = str_replace("{REDIRECT_GIF}", "", $page);
+        $page = str_replace("{SHOW_CHECK_NEW_ROWS}", "check_new_rows();", $page);
+    }
 
 $page = str_replace("{SITENAME}", $c_nam, $page);
 $page = str_replace("{MYSQL_BIN}", $c_bin, $page);
@@ -81,12 +81,12 @@ $page = str_replace("{JURNAL_OUT_PRE_LINK}", "?".$pre_link, $page);
 
 //Перелік доступних років
 for ($i = $c_y_s; ; $i++)
-	{
-		$sel_year = "";
-		if ($i == $user_year) $sel_year = "selected";
-		$page_years .= "<OPTION value =\"".$i."\" ".$sel_year." >".$i."</OPTION>";
-		if ($i == date('Y')) break;
-	}
+    {
+        $sel_year = "";
+        if ($i == $user_year) $sel_year = "selected";
+        $page_years .= "<OPTION value =\"".$i."\" ".$sel_year." >".$i."</OPTION>";
+        if ($i == date('Y')) break;
+    }
 $page = str_replace("{SELECT_YEARS}", $page_years, $page);
 /////////////
 
@@ -108,35 +108,35 @@ preg_match("/(MSIE)(?:\/| )([0-9]{1,}\.+)/i", $_SERVER['HTTP_USER_AGENT'], $brow
 list(,$browser_name,$browser_version) = $browser_info;
 $browser_version = substr($browser_version, 0, strpos($browser_version, "."));
 if ($browser_name == 'MSIE' AND $browser_version < 8)
-	{
-		$browser_alarm = file_get_contents("templates/information_warning.html");
-		$browser_alarm = str_replace("{INFORMATION}", $browser_name." | ver:".$browser_version, $browser_alarm);
-	}
+    {
+        $browser_alarm = file_get_contents("templates/information_warning.html");
+        $browser_alarm = str_replace("{INFORMATION}", $browser_name." | ver:".$browser_version, $browser_alarm);
+    }
 $page = str_replace("{ALARM_IE_IS_OLD}", $browser_alarm, $page);
 // Показуємо повідомлення про закритий журнал
 if ($c_ano == 0)
-	{
-		$page = str_replace("{SHOW_C_ANO}", "{LANG_ANONYMOUS_ALLOW}: <strong>{LANG_DISALLOW}</strong>", $page);
-	}
-	else
-	{
-		$page = str_replace("{SHOW_C_ANO}", "", $page);
-	}
+    {
+        $page = str_replace("{SHOW_C_ANO}", "{LANG_ANONYMOUS_ALLOW}: <strong>{LANG_DISALLOW}</strong>", $page);
+    }
+    else
+    {
+        $page = str_replace("{SHOW_C_ANO}", "", $page);
+    }
 
 // Підключаємо мову
 if (!file_exists("inc/lang/".$c_lng.".php")) die("Language file [inc/lang/".$c_lng.".php] not exist");
 include_once ("lang/".$c_lng.".php");
 foreach ($lang as $key => $value)
-	{
-		if (isset($_GET['export']) AND $_GET['export'] == "do")
-			{
-				$export = str_replace("{".$key."}", $value, $export);
-			}
-			else
-			{
-				$page = str_replace("{".$key."}", $value, $page);
-			}
-	}
+    {
+        if (isset($_GET['export']) AND $_GET['export'] == "do")
+            {
+                $export = str_replace("{".$key."}", $value, $export);
+            }
+            else
+            {
+                $page = str_replace("{".$key."}", $value, $page);
+            }
+    }
 
 $page = str_replace("{MAX_FILE_SIZE_MB}", (($max_file_size / 1024) / 1024 )." MB", $page);
 if ($queryes_num < 1) $queryes_num = 0;
@@ -144,14 +144,13 @@ $page = str_replace("{PAGE_GENERATION_TIME}", "Page gen. ".sprintf("%.4f",(micro
 $page = str_replace("{PAGE_QUERYES_NUM}", " include ".$queryes_num." MySQL query'es", $page);
 
 if (isset($_GET['export']) AND $_GET['export'] == "do")
-	{
-		//$export = str_replace($srch_csv, $rpls_csv, $export);
-		header("Content-Type: ".$export_type.";");
-		header("Content-Disposition: attachment; filename=".$export_name."");
-		echo(iconv('UTF-8', 'windows-1251', $export));
-	}
-	else
-	{
-		echo $page;
-	}
-?>
+    {
+        //$export = str_replace($srch_csv, $rpls_csv, $export);
+        header("Content-Type: ".$export_type.";");
+        header("Content-Disposition: attachment; filename=".$export_name."");
+        echo(iconv('UTF-8', 'windows-1251', $export));
+    }
+    else
+    {
+        echo $page;
+    }

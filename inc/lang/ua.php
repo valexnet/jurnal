@@ -636,7 +636,7 @@ $lang = array (
 'LANG_LOG_JURNAL_OUT_ADD_ERROR' => "Помилка при додаванні вихідного номеру",
 'RETURN_BLANK_N' => "Номер зареєстрованого бланку",
 'LANG_JURNAL_OUT_NUM' => "Номер",
-'LANG_JURNAL_SENDER' => "Кореспондент",
+'LANG_JURNAL_SENDER' => "Виконавець",
 'LANG_JURNAL_TO' => "Адресат",
 'LANG_JURNAL_OUT_EMPTY' => "Не знайдено записів",
 'JURNAL_OUT_NUM_ON_PAGE' => "Показано",
@@ -713,5 +713,3 @@ $lang = array (
 'LANG_SESSION_RELOAD' => "Обновити",
 'LANG_WAIT_REDIRECT' => "Чекайте, йде переадресація..."
 );
-
-?>
