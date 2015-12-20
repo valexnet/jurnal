@@ -3,6 +3,7 @@
 // Українська мова
 $lang = array (
 
+'LANG_IMAP_EXT_NOT_LOADED' => "Розширення IMAP не підключене в PHP.",
 'LANG_CHAT_MODER_BAN' => "Модератор Вас забанив",
 'LANG_CHAT_SMILES_DO_ON' => "Показати смайлики",
 'LANG_CHAT_SMILES_DO_OFF' => "Заховати смайлики",

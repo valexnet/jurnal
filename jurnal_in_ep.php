@@ -215,116 +215,124 @@ if (isset($_SESSION['user_id']))
                                 if (isset($_GET['use']) AND $_GET['use'] == "imap")
                                     {
                                         $date_start = time();
-                                        $connect = @imap_open('{'.$db_connect[7].':143/imap/novalidate-cert}INBOX', $db_connect[11], base64_decode($db_connect[9]), OP_READONLY);
-                                        if ($connect)
-                                            {
-                                                $page.= file_get_contents("templates/information_success.html");
-                                                $page = str_replace("{INFORMATION}", "{LANG_IMAP_LAST_MAILS}<br>", $page);
-                                                $inbox = @imap_search($connect, 'UNDELETED');
-                                                if (isset($_GET['download']) AND preg_match("/^[1-9][0-9]*$/", $_GET['download']))
-                                                    {
-                                                        if (in_array($_GET['download'], $inbox))
-                                                        {
-                                                            $headers = imap_fetchheader($connect, $_GET['download'], FT_PREFETCHTEXT);
-                                                            $body = imap_body($connect, $_GET['download']);
-                                                            @imap_close($connect);
-                                                            if (ob_get_level()) ob_end_clean();
-                                                            header('Content-Description: File Transfer');
-                                                            header('Content-Type: application/octet-stream');
-                                                            header('Content-Disposition: attachment; filename='.$_GET['download'].'.eml');
-                                                            header('Content-Transfer-Encoding: binary');
-                                                            header('Expires: 0');
-                                                            header('Cache-Control: must-revalidate');
-                                                            header('Pragma: public');
-                                                            echo $headers."\n".$body;
-                                                            exit;
-                                                            die();
-                                                        }
-                                                    }
-                                                @rsort($inbox);
-                                                $page .= file_get_contents("templates/jurnal_in_ep_imap.html");
-                                                $jurnal_in_ep_imap = "";
-                                                for ($i = 0; $i <= count($inbox); $i++)
-                                                    {
-                                                        if (isset($_GET['next']) and preg_match("/^[1-9][0-9]*$/", $_GET['next']) and $inbox[$i] >= $_GET['next']) continue;
-                                                        if ((time() - $date_start) >= 5 AND $i >=3)
-                                                            {
-                                                                $page.= file_get_contents("templates/information_warning.html");
-                                                                $page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id."<br><a onclick=\"skm_LockScreen()\" href=\"?do=add&use=imap&next=".$last_imap_id."\">{LANG_IMAP_SHOW_NEXT}</a>", $page);
-                                                                break;
-                                                            }
-                                                        if (isset($inbox[$i]))
-                                                            {
-                                                                $header = @imap_headerinfo($connect, $inbox[$i]);
-                                                                $html_to = "";
-                                                                for ($it = 0; $it<=4; $it++)
-                                                                    {
-                                                                        if (!isset($header->to[$it]->mailbox)) break;
-                                                                        $tmp_to_name = imap_utf8($header->to[$it]->personal);
-                                                                        if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $tmp_to_name, $utf8)) $tmp_to_name = base64_decode($utf8[1]);
-                                                                        $tmp_to_email = imap_utf8($header->to[$it]->mailbox)."@".imap_utf8($header->to[$it]->host);
-                                                                        if ($html_to != "" AND isset($header->to[$it]->personal)) $html_to .= "<br>";
-                                                                        $html_to .= "<a href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$tmp_to_email."\" target=\"_blank\">";
-                                                                        if (isset($header->to[$it]->personal))
-                                                                            {
-                                                                                $html_to .= $tmp_to_name."</a>";
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                $html_to .= $tmp_to_email."</a>";
-                                                                            }
-                                                                    }
-                                                                $html_from = "";
-                                                                $firs_email = "";
-                                                                for ($it = 0; $it<=4; $it++)
-                                                                    {
-                                                                        if (!isset($header->from[$it]->mailbox)) break;
-                                                                        $tmp_from_name = imap_utf8($header->from[$it]->personal);
-                                                                        if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $tmp_from_name, $utf8)) $tmp_from_name = base64_decode($utf8[1]);
-                                                                        $tmp_from_email = imap_utf8($header->from[$it]->mailbox)."@".imap_utf8($header->from[$it]->host);
-                                                                        if ($html_from != "" AND isset($header->from[$it]->personal)) $html_from .= "<br>";
-                                                                        $html_from .= "<a href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$tmp_from_email."\" target=\"_blank\">";
-                                                                        if (isset($header->from[$it]->personal))
-                                                                            {
-                                                                                $html_from .= $tmp_from_name."</a>";
-                                                                                if ($firs_email == "") $firs_email = $tmp_from_name;
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                $html_from .= $tmp_from_email."</a>";
-                                                                            }
-                                                                        if ($firs_email == "") $firs_email = $tmp_from_email;
-                                                                    }
-                                                                if (isset($header->subject))
-                                                                    {
-                                                                        $html_subj = imap_utf8($header->subject);
-                                                                        if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $html_subj, $utf8)) $html_subj = base64_decode($utf8[1]);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        $html_subj = "{LANG_IMAP_SUBJECT_EMPTY}";
-                                                                    }
-                                                                $html_mail_date = strtotime(imap_utf8($header->MailDate));
-                                                                $jurnal_in_ep_imap .= "
-                                                                <tr valign=\"top\" align=\"center\">
-                                                                    <td valign=\"top\" align=\"center\"><a onclick=\"insert('".date('d.m.Y', $html_mail_date)."','".$firs_email."','".$html_subj."','".$inbox[$i]."');\"><strong>".$inbox[$i]."</strong></a></td>
-                                                                    <td valign=\"top\" align=\"center\">".date('d.m.Y H:i', $html_mail_date)."</td>
-                                                                    <td valign=\"top\" align=\"left\">".$html_from."</td>
-                                                                    <td valign=\"top\" align=\"left\">".$html_subj."</td>
-                                                                    <td valign=\"top\" align=\"left\">".$html_to."</td>
-                                                                    <td valign=\"top\" align=\"right\"><a href=\"?do=add&use=imap&download=".$inbox[$i]."\"><span class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$header->Size." байт\"></span></a></td>
-                                                                </tr>";
-                                                            }
-                                                        $last_imap_id = $inbox[$i];
-                                                    }
-                                                @imap_close($connect);
-                                                $page = str_replace("{JURNAL_IN_EP_IMAP}", $jurnal_in_ep_imap, $page);
-                                            }
-                                            else
-                                            {
-                                                $page.= file_get_contents("templates/information_danger.html");
-                                                $page = str_replace("{INFORMATION}", "{LANG_IMAP_NOT_CONNECTED}<br>".imap_last_error(), $page);
-                                            }
+										if(extension_loaded('imap'))
+											{
+												$connect = @imap_open('{'.$db_connect[7].':143/imap/novalidate-cert}INBOX', $db_connect[11], base64_decode($db_connect[9]), OP_READONLY);
+												if ($connect)
+													{
+														$page.= file_get_contents("templates/information_success.html");
+														$page = str_replace("{INFORMATION}", "{LANG_IMAP_LAST_MAILS}<br>", $page);
+														$inbox = @imap_search($connect, 'UNDELETED');
+														if (isset($_GET['download']) AND preg_match("/^[1-9][0-9]*$/", $_GET['download']))
+															{
+																if (in_array($_GET['download'], $inbox))
+																{
+																	$headers = imap_fetchheader($connect, $_GET['download'], FT_PREFETCHTEXT);
+																	$body = imap_body($connect, $_GET['download']);
+																	@imap_close($connect);
+																	if (ob_get_level()) ob_end_clean();
+																	header('Content-Description: File Transfer');
+																	header('Content-Type: application/octet-stream');
+																	header('Content-Disposition: attachment; filename='.$_GET['download'].'.eml');
+																	header('Content-Transfer-Encoding: binary');
+																	header('Expires: 0');
+																	header('Cache-Control: must-revalidate');
+																	header('Pragma: public');
+																	echo $headers."\n".$body;
+																	exit;
+																	die();
+																}
+															}
+														@rsort($inbox);
+														$page .= file_get_contents("templates/jurnal_in_ep_imap.html");
+														$jurnal_in_ep_imap = "";
+														for ($i = 0; $i <= count($inbox); $i++)
+															{
+																if (isset($_GET['next']) and preg_match("/^[1-9][0-9]*$/", $_GET['next']) and $inbox[$i] >= $_GET['next']) continue;
+																if ((time() - $date_start) >= 5 AND $i >=3)
+																	{
+																		$page.= file_get_contents("templates/information_warning.html");
+																		$page = str_replace("{INFORMATION}", "{LANG_IMAP_BREAK_N} ".$last_imap_id."<br><a onclick=\"skm_LockScreen()\" href=\"?do=add&use=imap&next=".$last_imap_id."\">{LANG_IMAP_SHOW_NEXT}</a>", $page);
+																		break;
+																	}
+																if (isset($inbox[$i]))
+																	{
+																		$header = @imap_headerinfo($connect, $inbox[$i]);
+																		$html_to = "";
+																		for ($it = 0; $it<=4; $it++)
+																			{
+																				if (!isset($header->to[$it]->mailbox)) break;
+																				$tmp_to_name = imap_utf8($header->to[$it]->personal);
+																				if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $tmp_to_name, $utf8)) $tmp_to_name = base64_decode($utf8[1]);
+																				$tmp_to_email = imap_utf8($header->to[$it]->mailbox)."@".imap_utf8($header->to[$it]->host);
+																				if ($html_to != "" AND isset($header->to[$it]->personal)) $html_to .= "<br>";
+																				$html_to .= "<a href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$tmp_to_email."\" target=\"_blank\">";
+																				if (isset($header->to[$it]->personal))
+																					{
+																						$html_to .= $tmp_to_name."</a>";
+																					}
+																					else
+																					{
+																						$html_to .= $tmp_to_email."</a>";
+																					}
+																			}
+																		$html_from = "";
+																		$firs_email = "";
+																		for ($it = 0; $it<=4; $it++)
+																			{
+																				if (!isset($header->from[$it]->mailbox)) break;
+																				$tmp_from_name = imap_utf8($header->from[$it]->personal);
+																				if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $tmp_from_name, $utf8)) $tmp_from_name = base64_decode($utf8[1]);
+																				$tmp_from_email = imap_utf8($header->from[$it]->mailbox)."@".imap_utf8($header->from[$it]->host);
+																				if ($html_from != "" AND isset($header->from[$it]->personal)) $html_from .= "<br>";
+																				$html_from .= "<a href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$tmp_from_email."\" target=\"_blank\">";
+																				if (isset($header->from[$it]->personal))
+																					{
+																						$html_from .= $tmp_from_name."</a>";
+																						if ($firs_email == "") $firs_email = $tmp_from_name;
+																					}
+																					else
+																					{
+																						$html_from .= $tmp_from_email."</a>";
+																					}
+																				if ($firs_email == "") $firs_email = $tmp_from_email;
+																			}
+																		if (isset($header->subject))
+																			{
+																				$html_subj = imap_utf8($header->subject);
+																				if (preg_match("/^=\?utf-8\?B\?(.*)\?=$/i", $html_subj, $utf8)) $html_subj = base64_decode($utf8[1]);
+																			}
+																			else
+																			{
+																				$html_subj = "{LANG_IMAP_SUBJECT_EMPTY}";
+																			}
+																		$html_mail_date = strtotime(imap_utf8($header->MailDate));
+																		$jurnal_in_ep_imap .= "
+																		<tr valign=\"top\" align=\"center\">
+																			<td valign=\"top\" align=\"center\"><a onclick=\"insert('".date('d.m.Y', $html_mail_date)."','".$firs_email."','".$html_subj."','".$inbox[$i]."');\"><strong>".$inbox[$i]."</strong></a></td>
+																			<td valign=\"top\" align=\"center\">".date('d.m.Y H:i', $html_mail_date)."</td>
+																			<td valign=\"top\" align=\"left\">".$html_from."</td>
+																			<td valign=\"top\" align=\"left\">".$html_subj."</td>
+																			<td valign=\"top\" align=\"left\">".$html_to."</td>
+																			<td valign=\"top\" align=\"right\"><a href=\"?do=add&use=imap&download=".$inbox[$i]."\"><span class=\"glyphicon glyphicon-floppy-disk\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$header->Size." байт\"></span></a></td>
+																		</tr>";
+																	}
+																$last_imap_id = $inbox[$i];
+															}
+														@imap_close($connect);
+														$page = str_replace("{JURNAL_IN_EP_IMAP}", $jurnal_in_ep_imap, $page);
+													}
+													else
+													{
+														$page.= file_get_contents("templates/information_danger.html");
+														$page = str_replace("{INFORMATION}", "{LANG_IMAP_NOT_CONNECTED}<br>".imap_last_error(), $page);
+													}
+											}
+											else
+											{
+												$page.= file_get_contents("templates/information_danger.html");
+												$page = str_replace("{INFORMATION}", "{LANG_IMAP_EXT_NOT_LOADED}", $page);
+											}
                                     }
 
                                 $page.= file_get_contents("templates/jurnal_in_ep_add.html");
