@@ -3,6 +3,8 @@
 // Українська мова
 $lang = array (
 
+'LANG_CONFIG_BACKUP_ON_EMAIL_TIMEOUT_IS_ZERO' => "Архів не створено. Періодичність Відправки БД на e-mail повинно бути більше ноля, рекомендується: 36000",
+'LANG_CONFIG_BACKUP_TIMEOUT_IS_ZERO' => "Архів не створено. Періодичність копіювання БД повинно бути більше ноля, рекомендується: 3600",
 'LANG_IMAP_EXT_NOT_LOADED' => "Розширення IMAP не підключене в PHP.",
 'LANG_CHAT_MODER_BAN' => "Модератор Вас забанив",
 'LANG_CHAT_SMILES_DO_ON' => "Показати смайлики",

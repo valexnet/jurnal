@@ -4,21 +4,56 @@ session_start();
 include ('inc/config.php');
 $page.= file_get_contents("templates/header.html");
 
+$query = "SELECT * FROM `cron` WHERE `name`='backup' LIMIT 1 ;";
+$res = mysql_query($query) or die(mysql_error());
+$queryes_num++;
+while ($row=mysql_fetch_array($res))
+    {
+        $backup_timeout = $row['time'];
+        $backup_last = $row['last'];
+    }
+
+$query = "SELECT * FROM `cron` WHERE `name`='backup_on_email' LIMIT 1 ;";
+$res = mysql_query($query) or die(mysql_error());
+$queryes_num++;
+while ($row=mysql_fetch_array($res))
+    {
+        $backup_on_email_timeout = $row['time'];
+        $backup_on_email_last = $row['last'];
+    }
+            
 if ($user_p_config == 1)
     {
         if (isset($_GET['backup']) AND $_GET['backup'] == "do")
             {
-                mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup' LIMIT 1 ;");
-                if (isset($_GET['send']) AND $_GET['send'] == "email")
+                if ($backup_timeout != 0)
                     {
-                        mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup_on_email' LIMIT 1 ;");
-                        header('Location: config.php?backup=ok&mail=send');
+                        mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup' LIMIT 1 ;");
+                        if (isset($_GET['send']) AND $_GET['send'] == "email")
+                            {
+                                if ($backup_on_email_timeout != 0)
+									{
+									    mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup_on_email' LIMIT 1 ;");
+                                        header('Location: config.php?backup=ok&mail=send');
+										exit;
+									}
+									else
+									{
+                                        $page.= file_get_contents("templates/information.html");
+                                        $page = str_replace("{INFORMATION}", "{LANG_CONFIG_BACKUP_ON_EMAIL_TIMEOUT_IS_ZERO}", $page);
+									}
+                            }
+                            else
+                            {
+                                header('Location: config.php?backup=ok');
+								exit;
+                            }
                     }
                     else
                     {
-                        header('Location: config.php?backup=ok');
+                        $page.= file_get_contents("templates/information.html");
+                        $page = str_replace("{INFORMATION}", "{LANG_CONFIG_BACKUP_TIMEOUT_IS_ZERO}", $page);
                     }
-                exit;
             }
         if (isset($_GET['backup']) AND $_GET['backup'] == "ok")
             {
@@ -201,23 +236,7 @@ if ($user_p_config == 1)
                     }
             }
 
-        $query = "SELECT * FROM `cron` WHERE `name`='backup' LIMIT 1 ;";
-        $res = mysql_query($query) or die(mysql_error());
-        $queryes_num++;
-        while ($row=mysql_fetch_array($res))
-            {
-                $backup_timeout = $row['time'];
-                $backup_last = $row['last'];
-            }
 
-        $query = "SELECT * FROM `cron` WHERE `name`='backup_on_email' LIMIT 1 ;";
-        $res = mysql_query($query) or die(mysql_error());
-        $queryes_num++;
-        while ($row=mysql_fetch_array($res))
-            {
-                $backup_on_email_timeout = $row['time'];
-                $backup_on_email_last = $row['last'];
-            }
 
         $page = str_replace("{CRON_BACKUP_TIMEOUT}", $backup_timeout, $page);
         $page = str_replace("{CRON_BACKUP_LAST}", date('Y.m.d H:i:s', $backup_last), $page);
