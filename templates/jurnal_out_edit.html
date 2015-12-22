@@ -1,157 +1,157 @@
 <div class="container">
-	<h3><p class="text-center">{LANG_JURNAL_OUT_EDIT_FORM} {JURNAL_OUT_NUM_TO_EDIT}</p></h3>
-	
-	<FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_out.php?edit={JURNAL_OUT_NUM_TO_EDIT}" METHOD="POST" enctype="multipart/form-data">
-		
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="LANG_DATA">{LANG_DATA}:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" id="LANG_DATA" NAME="data" value="{FORM_DATA}">
-			</div>
-		</div>
+    <h3><p class="text-center">{LANG_JURNAL_OUT_EDIT_FORM} {JURNAL_OUT_NUM_TO_EDIT}</p></h3>
+    
+    <FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_out.php?edit={JURNAL_OUT_NUM_TO_EDIT}" METHOD="POST" enctype="multipart/form-data">
+        
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="LANG_DATA">{LANG_DATA}:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="LANG_DATA" NAME="data" value="{FORM_DATA}">
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="user">{LANG_MODERATOR}:</label>
-			<div class="col-sm-10">
-				<input type="text" NAME="user" class="form-control" id="user" value="{USER_NAME}" disabled>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="user">{LANG_MODERATOR}:</label>
+            <div class="col-sm-10">
+                <input type="text" NAME="user" class="form-control" id="user" value="{USER_NAME}" disabled>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="to">{LANG_OUT_ADD_TO}:</label>
-			<div class="col-sm-5 has-feedback">
-				<input onkeyup="loadHelp('help_to', 'to', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="to" class="form-control" id="to" value="{FORM_TO}" placeholder="{LANG_TO_MORE}" data-error="{LANG_FORM_NO_TO}" required >
-				<div class="hidden" id="help_to"></div>
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="to_num">{LANG_OUT_ADD_TO_N}:</label>
-			<div class="col-sm-10">
-				<input onkeyup="loadHelp('help_to_num', 'to_num', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="to_num" class="form-control" id="to_num" value="{FORM_TO_N}" placeholder="{LANG_TO_N_MORE}">
-				<div class="hidden" id="help_to_num"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="to">{LANG_OUT_ADD_TO}:</label>
+            <div class="col-sm-5 has-feedback">
+                <input onkeyup="loadHelp('help_to', 'to', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="to" class="form-control" id="to" value="{FORM_TO}" placeholder="{LANG_TO_MORE}" data-error="{LANG_FORM_NO_TO}" required >
+                <div class="hidden" id="help_to"></div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="to_num">{LANG_OUT_ADD_TO_N}:</label>
+            <div class="col-sm-10">
+                <input onkeyup="loadHelp('help_to_num', 'to_num', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="to_num" class="form-control" id="to_num" value="{FORM_TO_N}" placeholder="{LANG_TO_N_MORE}">
+                <div class="hidden" id="help_to_num"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="subj">{LANG_OUT_TEMA}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input onkeyup="loadHelp('help_subj', 'subj', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="subj" class="form-control" id="subj" value="{FORM_SUBJ}" placeholder="{LANG_SUBJ_PLACEHOLDER}" data-error="{LANG_FORM_NO_TEMA}" required >
-				<div class="hidden" id="help_subj"></div>
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="nom">{LANG_NOMENCLATURA}:</label>
-			<div class="col-sm-10 has-feedback">
-				<SELECT NAME="nom" class="form-control" id="nom" data-error="{LANG_FORM_NO_NOM}" required >
-					{NOMENCLATURA}
-				</SELECT>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
-		
-		<script>
-			<!--
-			function show_and_hide_money(a)
-				{
-					if (a == 3)
-						{
-							$('#input-money').show();
-							$('#zero-money').hide();
-						}
-						else
-						{
-							if (document.getElementById('money').value != '0')
-								{
-									$('#zero-money').show();
-									document.getElementById('money').value = '0'; 
-								}
-							$('#input-money').hide();
-						} 
-				}
-			//-->
-		</script>
-		
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<label class="btn btn-success">
-						<input onclick = "show_and_hide_money(1);" type="radio" name="how" value="1" id="option1" autocomplete="off" {FORM_HOW_1} > {LANG_HOW_1}
-				</label>
-				<label class="btn btn-info">
-						<input onclick = "show_and_hide_money(2);" type="radio" name="how" value="2" id="option2" autocomplete="off" {FORM_HOW_2} > {LANG_HOW_2}
-				</label>
-				<label class="btn btn-danger">
-						<input onclick = "show_and_hide_money(3);" type="radio" name="how" value="3" id="option3" autocomplete="off" {FORM_HOW_3} > {LANG_HOW_3}
-				</label>
-			</div>
-		</div>
-		
-		<div class="form-group" id="input-money" >
-			<label class="control-label col-sm-2" for="money">{LANG_SEND_MONEY}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="money" class="form-control" id="money" value="{FORM_MONEY}" >
-			</div>
-		</div>
-		
-		<div class="form-group" style="display: none;" id="zero-money" >
-			<div class="col-sm-offset-2 col-sm-10">
-				<button type="submit" class="btn btn-info btn-lg btn-block" disabled >{LANG_MONEY_IS_ZERO_NOW}</button>
-			</div>
-		</div>
-		
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<label class="btn btn-default {CHANGE_BLANK_STATUS}">
-					<input type="checkbox" NAME="blank_n" value="1" id="option4" autocomplete="off" {FORM_BLANK_N} {CHANGE_BLANK_STATUS} /> {LANG_REGISTER_BLANK}
-				</label>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="subj">{LANG_OUT_TEMA}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input onkeyup="loadHelp('help_subj', 'subj', {USER_YEAR}, 'jurnal_out', this.value)" autocomplete="off" type="text" NAME="subj" class="form-control" id="subj" value="{FORM_SUBJ}" placeholder="{LANG_SUBJ_PLACEHOLDER}" data-error="{LANG_FORM_NO_TEMA}" required >
+                <div class="hidden" id="help_subj"></div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="nom">{LANG_NOMENCLATURA}:</label>
+            <div class="col-sm-10 has-feedback">
+                <SELECT NAME="nom" class="form-control" id="nom" data-error="{LANG_FORM_NO_NOM}" required >
+                    {NOMENCLATURA}
+                </SELECT>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
+        
+        <script>
+            <!--
+            function show_and_hide_money(a)
+                {
+                    if (a == 3)
+                        {
+                            $('#input-money').show();
+                            $('#zero-money').hide();
+                        }
+                        else
+                        {
+                            if (document.getElementById('money').value != '0')
+                                {
+                                    $('#zero-money').show();
+                                    document.getElementById('money').value = '0'; 
+                                }
+                            $('#input-money').hide();
+                        } 
+                }
+            //-->
+        </script>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <label class="btn btn-success">
+                        <input onclick = "show_and_hide_money(1);" type="radio" name="how" value="1" id="option1" autocomplete="off" {FORM_HOW_1} > {LANG_HOW_1}
+                </label>
+                <label class="btn btn-info">
+                        <input onclick = "show_and_hide_money(2);" type="radio" name="how" value="2" id="option2" autocomplete="off" {FORM_HOW_2} > {LANG_HOW_2}
+                </label>
+                <label class="btn btn-danger">
+                        <input onclick = "show_and_hide_money(3);" type="radio" name="how" value="3" id="option3" autocomplete="off" {FORM_HOW_3} > {LANG_HOW_3}
+                </label>
+            </div>
+        </div>
+        
+        <div class="form-group" id="input-money" >
+            <label class="control-label col-sm-2" for="money">{LANG_SEND_MONEY}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input type="text" NAME="money" class="form-control" id="money" value="{FORM_MONEY}" >
+            </div>
+        </div>
+        
+        <div class="form-group" style="display: none;" id="zero-money" >
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-info btn-lg btn-block" disabled >{LANG_MONEY_IS_ZERO_NOW}</button>
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <label class="btn btn-default {CHANGE_BLANK_STATUS}">
+                    <input type="checkbox" NAME="blank_n" value="1" id="option4" autocomplete="off" {FORM_BLANK_N} {CHANGE_BLANK_STATUS} /> {LANG_REGISTER_BLANK}
+                </label>
+            </div>
+        </div>
 
-		<div class="form-group">        
-			<div class="col-sm-offset-2 col-sm-10">
-				<INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
-				<button type="submit" class="btn btn-success">{LANG_SAVE_CHANGES}</button> <button type="reset" class="btn btn-info">{LANG_FORM_RESET}</button> 
-			</div>
-		</div>
+        <div class="form-group">        
+            <div class="col-sm-offset-2 col-sm-10">
+                <INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
+                <button type="submit" class="btn btn-success">{LANG_SAVE_CHANGES}</button> <button type="reset" class="btn btn-info">{LANG_FORM_RESET}</button> 
+            </div>
+        </div>
 
-	</FORM>
+    </FORM>
 </div>
 <script>
 <!--
 function loadHelp(a, b, c, d, e)
-	{
-		var xhttp;
-		if (window.XMLHttpRequest)
-			{
-				xhttp = new XMLHttpRequest();
-			}
-			else
-			{
-				xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-		xhttp.onreadystatechange = function()
-			{
-				if (xhttp.readyState == 4 && xhttp.status == 200)
-					{
-						if (xhttp.responseText.length > 100)
-							{
-								document.getElementById(a).innerHTML = xhttp.responseText;
-								document.getElementById(a).className = 'col-sm-5 text-left dropdown clearfix open';
-							}
-							else
-							{
-								document.getElementById(a).innerHTML = '';
-								document.getElementById(a).className = 'hidden';
-							}
-					}
-			}
-		xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
-		xhttp.send();
-	}
+    {
+        var xhttp;
+        if (window.XMLHttpRequest)
+            {
+                xhttp = new XMLHttpRequest();
+            }
+            else
+            {
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+        xhttp.onreadystatechange = function()
+            {
+                if (xhttp.readyState == 4 && xhttp.status == 200)
+                    {
+                        if (xhttp.responseText.length > 100)
+                            {
+                                document.getElementById(a).innerHTML = xhttp.responseText;
+                                document.getElementById(a).className = 'col-sm-5 text-left dropdown clearfix open';
+                            }
+                            else
+                            {
+                                document.getElementById(a).innerHTML = '';
+                                document.getElementById(a).className = 'hidden';
+                            }
+                    }
+            }
+        xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
+        xhttp.send();
+    }
 //-->
 </script>

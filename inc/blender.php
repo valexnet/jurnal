@@ -123,6 +123,26 @@ if ($c_ano == 0)
         $page = str_replace("{SHOW_C_ANO}", "", $page);
     }
 
+// Показуємо що мало місця на діску
+$free_giga_space = disk_free_space('/') / (1024*1024*1024);
+if ($free_giga_space < 6)
+    {
+        if ($free_giga_space < 2)
+            {
+                $page = str_replace("{ALARM_FREE_SPACE}", file_get_contents("templates/information_danger.html"), $page);
+            }
+            else
+            {
+                $page = str_replace("{ALARM_FREE_SPACE}", file_get_contents("templates/information_warning.html"), $page);
+            }
+        $page = str_replace("{INFORMATION}", "{LANG_ALARM_FREE_SPACE}: ".round($free_giga_space, 1)." GB", $page);
+    }
+    else
+    {
+        $page = str_replace("{ALARM_FREE_SPACE}", "", $page);
+    }
+////
+
 // Підключаємо мову
 if (!file_exists("inc/lang/".$c_lng.".php")) die("Language file [inc/lang/".$c_lng.".php] not exist");
 include_once ("lang/".$c_lng.".php");

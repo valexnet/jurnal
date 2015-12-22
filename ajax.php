@@ -69,7 +69,7 @@ if (isset($_SESSION['user_id']))
                                 $html .= "Для Вас є ".mysql_num_rows($res)." новий(х) запис(ів) у вхідній кореспонденції.<hr>";
                                 while ($row=mysql_fetch_array($res))
                                     {
-                                        $html .= "<strong>".$row['add_time']."</strong>, №<strong>".$row['id']."</strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
+                                        $html .= "<strong>".$row['add_time']."</strong>, №<strong><a href=\"jurnal_in.php?do=search&id=".$row['id']."\">".$row['id']."</a></strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
                                     }
                                 $html .= "<hr>";
                             }
@@ -81,11 +81,35 @@ if (isset($_SESSION['user_id']))
                                 $html .= "Для Вас є ".mysql_num_rows($res)." новий(х) запис(ів) у вхідній ел. кореспонденції.<hr>";
                                 while ($row=mysql_fetch_array($res))
                                     {
-                                        $html .= "<strong>".$row['add_time']."</strong>, №<strong>".$row['id']."</strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
+                                        $html .= "<strong>".$row['add_time']."</strong>, №<strong><a href=\"jurnal_in_ep.php?do=search&id=".$row['id']."\">".$row['id']."</a></strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
+                                    }
+                                $html .= "<hr>";
+                            }
+                            
+                        $query = "SELECT `id`, `add_time`, `org_name`, `org_subj` FROM `db_".date('Y')."_in` WHERE `inform_users` LIKE '%,".$_SESSION['user_id'].",%' ; ";
+                        $res = mysql_query($query) or die(mysql_error());
+                        if (mysql_num_rows($res) > 0)
+                            {
+                                $html .= "Для Вас є ".mysql_num_rows($res)." новий(х) запис(ів) для ознайомлення у вхідній кореспонденції.<hr>";
+                                while ($row=mysql_fetch_array($res))
+                                    {
+                                        $html .= "<strong>".$row['add_time']."</strong>, №<strong><a href=\"jurnal_in.php?do=search&id=".$row['id']."\">".$row['id']."</a></strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
                                     }
                                 $html .= "<hr>";
                             }
 
+                        $query = "SELECT `id`, `add_time`, `org_name`, `org_subj` FROM `db_".date('Y')."_in_ep` WHERE `inform_users` LIKE '%,".$_SESSION['user_id'].",%' ; ";
+                        $res = mysql_query($query) or die(mysql_error());
+                        if (mysql_num_rows($res) > 0)
+                            {
+                                $html .= "Для Вас є ".mysql_num_rows($res)." новий(х) запис(ів) для ознайомлення у вхідній електронній пошті.<hr>";
+                                while ($row=mysql_fetch_array($res))
+                                    {
+                                        $html .= "<strong>".$row['add_time']."</strong>, №<strong><a href=\"jurnal_in_ep.php?do=search&id=".$row['id']."\">".$row['id']."</a></strong>, <strong>".$row['org_name']."</strong> - <strong>".$row['org_subj']."</strong><br>";
+                                    }
+                                $html .= "<hr>";
+                            }
+                            
                         if ($html != "") echo "<div class=\"modal-header\">
                                 <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
                                 <h4 class=\"modal-title text-center\" id=\"myModalLabel\">Нове повідомлення</h4>
@@ -103,6 +127,28 @@ if (isset($_SESSION['user_id']))
                         $res = mysql_query($query) or die(mysql_error());
                         $query = "UPDATE `db_".date('Y')."_in_ep` SET `do_view`='".date('Y-m-d H:i:s')."', `do_view_ip`='".$_SERVER['REMOTE_ADDR']."' WHERE `do_user`='".$_SESSION['user_id']."' AND `do_view` IS NULL ; ";
                         $res = mysql_query($query) or die(mysql_error());
+                        $query = "SELECT `id`,`inform_users` FROM `db_".date('Y')."_in` WHERE `inform_users` LIKE '%,".$_SESSION['user_id'].",%' ; ";
+                        $res = mysql_query($query) or die(mysql_error());
+                        if (mysql_num_rows($res) > 0)
+                            {
+                                while ($row=mysql_fetch_array($res))
+                                    {
+                                        $row['inform_users'] = str_replace(",".$_SESSION['user_id'].",", ",".$_SESSION['user_id']."-".date('d.m.Y H:i:s').",", $row['inform_users']);
+                                        $query = "UPDATE `db_".date('Y')."_in` SET `inform_users`='".$row['inform_users']."' WHERE `id`='".$row['id']."' LIMIT 1 ; ";
+                                        $res = mysql_query($query) or die(mysql_error());
+                                    }
+                            }
+                        $query = "SELECT `id`,`inform_users` FROM `db_".date('Y')."_in_ep` WHERE `inform_users` LIKE '%,".$_SESSION['user_id'].",%' ; ";
+                        $res = mysql_query($query) or die(mysql_error());
+                        if (mysql_num_rows($res) > 0)
+                            {
+                                while ($row=mysql_fetch_array($res))
+                                    {
+                                        $row['inform_users'] = str_replace(",".$_SESSION['user_id'].",", ",".$_SESSION['user_id']."-".date('d.m.Y H:i:s').",", $row['inform_users']);
+                                        $query = "UPDATE `db_".date('Y')."_in_ep` SET `inform_users`='".$row['inform_users']."' WHERE `id`='".$row['id']."' LIMIT 1 ; ";
+                                        $res = mysql_query($query) or die(mysql_error());
+                                    }
+                            }
                         echo "OK";
                     }
             }

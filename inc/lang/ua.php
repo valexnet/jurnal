@@ -3,6 +3,10 @@
 // Українська мова
 $lang = array (
 
+'LANG_INFORM_USERS_IS_SELECTED' => "До відома обрано",
+'LANG_INFORM_USERS' => "Користувачі до ознайомлення",
+'LANG_INFORM_OTHER_USERS' => "Поставити до відома інших користувачів",
+'LANG_ALARM_FREE_SPACE' => "Увага! Вільного місця на на диску",
 'LANG_CONFIG_BACKUP_ON_EMAIL_TIMEOUT_IS_ZERO' => "Архів не створено. Періодичність Відправки БД на e-mail повинно бути більше ноля, рекомендується: 36000",
 'LANG_CONFIG_BACKUP_TIMEOUT_IS_ZERO' => "Архів не створено. Періодичність копіювання БД повинно бути більше ноля, рекомендується: 3600",
 'LANG_IMAP_EXT_NOT_LOADED' => "Розширення IMAP не підключене в PHP.",
@@ -106,7 +110,7 @@ $lang = array (
 'LANG_FORM_NO_GET_DATA' => "Не введено дату одержання документу!",
 'LANG_GET_DATA_MORE' => "наприклад 01.12.2015 09:40:00",
 'LANG_MAKE_DATA' => "Строк виконання",
-'LANG_DO_USER' => "Кому передано",
+'LANG_DO_USER' => "Основний виконавець",
 'LANG_MAKE_VISA' => "Вказівка / Доручення",
 'LANG_ORG_SUBJ' => "Короткий зміст док.",
 'LANG_ORG_DATA' => "Дата док.",

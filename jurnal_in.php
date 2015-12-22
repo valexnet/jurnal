@@ -67,11 +67,23 @@ if (isset($_SESSION['user_id']))
                                     {
                                         $mysql_do_made = "NULL";
                                     }
-                                if (!preg_match("/^([1-9]|[1-9][0-9]{1,})$/" ,$_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
+                                if (!preg_match("/^[1-9][0-9]*$/" ,$_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
                                 if ($_POST['org_name'] == "") $error .= "{LANG_FORM_NO_ORG_NAME}<br>";
                                 if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
                                 if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
                                 if ($_POST['make_visa'] == "") $error .= "{LANG_FORM_NO_MAKE_VISA}<br>";
+                                
+                                $inform_sql = "NULL";
+                                if (isset($_POST['inform_users']) AND !empty($_POST['inform_users']))
+                                    {
+                                        $inform_sql = "";
+                                        foreach ($_POST['inform_users'] as $inform_user_id)
+                                            {
+                                                if (preg_match("/^[1-9][0-9]*$/", $inform_user_id)) $inform_sql .= $inform_user_id.",";
+                                            }
+                                        $inform_sql = "',".$inform_sql."'";
+                                        if ($inform_sql == "','") $inform_sql = "NULL";
+                                    }
 
                                 if ($error == "")
                                     {
@@ -88,7 +100,8 @@ if (isset($_SESSION['user_id']))
                                         `org_subj`,
                                         `make_visa`,
                                         `make_data`,
-                                        `do_made`
+                                        `do_made`,
+                                        `inform_users`
                                         ) VALUES (
                                         NULL ,
                                         '".$_SESSION['user_id']."',
@@ -102,7 +115,8 @@ if (isset($_SESSION['user_id']))
                                         '".$_POST['org_subj']."',
                                         '".$_POST['make_visa']."',
                                         ".$mysql_make_data.",
-                                        ".$mysql_do_made."
+                                        ".$mysql_do_made.",
+                                        ".$inform_sql."
                                         ) ;";
                                         mysql_query($query) or die(mysql_error());
                                         $queryes_num++;
@@ -168,7 +182,6 @@ if (isset($_SESSION['user_id']))
                                             }
                                     }
 
-
                                 $select_user = 0;
                                 if (isset($_SESSION['error_in_add']) AND $_SESSION['error_in_add'] == 1)
                                     {
@@ -181,16 +194,19 @@ if (isset($_SESSION['user_id']))
                                         $page = str_replace("{FORM_MAKE_VISA}", $_SESSION['error_in_add_make_visa'], $page);
                                         $page = str_replace("{FORM_MAKE_DATA}", $_SESSION['error_in_add_make_data'], $page);
                                     }
-                                $page = str_replace("{FORM_GET_DATA}", "", $page);
+                                $page = str_replace("{FORM_GET_DATA}", date('d.m.Y H:i:s'), $page);
                                 $page = str_replace("{FORM_ORG_NAME}", "", $page);
                                 $page = str_replace("{FORM_ORG_INDEX}", "", $page);
-                                $page = str_replace("{FORM_ORG_DATA}", "", $page);
+                                $page = str_replace("{FORM_ORG_DATA}", date('d.m.Y'), $page);
                                 $page = str_replace("{FORM_ORG_SUBJ}", "", $page);
                                 $page = str_replace("{FORM_MAKE_VISA}", "", $page);
                                 $page = str_replace("{FORM_MAKE_DATA}", "", $page);
                                 $html_select_users = get_users_selection_options($select_user, 0, "name", "ASC", 0);
                                 $queryes_num++;
                                 $page = str_replace("{FORM_DO_USER}", $html_select_users, $page);
+                                $html_inform_users_list = get_inform_users_list(0);
+                                $queryes_num++;
+                                $page = str_replace("{FORM_INFORM_USERS_LIST}", $html_inform_users_list, $page);
                             }
                     }
                     else
@@ -244,6 +260,18 @@ if (isset($_SESSION['user_id']))
                                                 if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
                                                 if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
                                                 if ($_POST['make_visa'] == "") $error .= "{LANG_FORM_NO_MAKE_VISA}<br>";
+                                                
+                                                $inform_sql = "NULL";
+                                                if (isset($_POST['inform_users']) AND !empty($_POST['inform_users']))
+                                                    {
+                                                        $inform_sql = "";
+                                                        foreach ($_POST['inform_users'] as $inform_user_id)
+                                                            {
+                                                                if (preg_match("/^[1-9][0-9]*$/", $inform_user_id)) $inform_sql .= $inform_user_id.",";
+                                                            }
+                                                        $inform_sql = "',".$inform_sql."'";
+                                                        if ($inform_sql == "','") $inform_sql = "NULL";
+                                                    }
 
                                                 if ($error == "")
                                                     {
@@ -257,7 +285,8 @@ if (isset($_SESSION['user_id']))
                                                         `org_data`='".data_trans("ua", "mysql", $_POST['org_data'])."',
                                                         `org_subj`='".$_POST['org_subj']."',
                                                         `make_visa`='".$_POST['make_visa']."',
-                                                        `make_data`=".$mysql_make_data."
+                                                        `make_data`=".$mysql_make_data.",
+                                                        `inform_users`=".$inform_sql."
                                                         WHERE `id`='".$row['id']."' LIMIT 1 ; ";
                                                         mysql_query($query) or die(mysql_error());
                                                         $queryes_num++;
@@ -293,6 +322,9 @@ if (isset($_SESSION['user_id']))
                                                 $page = str_replace("{FORM_MAKE_DATA}", "", $page);
                                                 $page = str_replace("{FORM_DO_USER}", get_users_selection_options($row['do_user'], 0, "name", "ASC", 0), $page);
                                                 $queryes_num++;
+                                                $html_inform_users_list = get_inform_users_list($row['inform_users']);
+                                                $queryes_num++;
+                                                $page = str_replace("{FORM_INFORM_USERS_LIST}", $html_inform_users_list, $page);
                                             }
                                     }
                                     else
@@ -808,7 +840,26 @@ if (isset($_SESSION['user_id']))
                                 $glyphicon_search_url = "?do=search&status=1";
                                 if (!empty($row['do_view'])) { $glyphicon = "glyphicon glyphicon-eye-open"; $glyphicon_export = "{LANG_JURNAL_IN_STATUS_2}"; $glyphicon_tooltip = "{LANG_JURNAL_IN_STATUS_2} ".data_trans("mysql", "ua", $row['do_view']); $glyphicon_search_url = "?do=search&status=2"; }
                                 if (!empty($row['do_made'])) { $glyphicon = "glyphicon glyphicon-ok"; $glyphicon_export = "{LANG_JURNAL_IN_STATUS_3}"; $glyphicon_tooltip = "{LANG_JURNAL_IN_STATUS_3} ".data_trans("mysql", "ua", $row['do_made']); $glyphicon_search_url = "?do=search&status=3";}
-
+                                
+                                $html_inform_users = "";
+                                if (!empty($row['inform_users']))
+                                    {
+                                        $html_inform_users .= "<tr>
+                                                    <td colspan=\"2\"><br><strong>{LANG_INFORM_USERS}</strong></td>
+                                                </tr>";
+                                        $inform_users_array = explode(",",$row['inform_users']);
+                                        for ($i = 1; $i <= count($inform_users_array); $i++)
+                                            {
+                                                if (empty($inform_users_array[$i])) continue;
+                                                $inform_user_array = explode("-",$inform_users_array[$i]);
+                                                if ($inform_user_array[1] == "") $inform_user_array[1] = "<span class=\"glyphicon glyphicon-eye-close\"></span>";
+                                                $html_inform_users .= "<tr>
+                                                    <td align=\"right\">".$users[$inform_user_array[0]]."</td>
+                                                    <td align=\"left\">".$inform_user_array[1]."</td>
+                                                </tr>";
+                                            }
+                                    }
+                                
                                 $jurnal_in .= "
                                 <tr valign=\"top\" align=\"center\" id=\"TRn".$row['id']."\" ".$tr_color_info.">
                                     <td valign=\"top\" align=\"center\"><abbr title=\"{LANG_NUM_INFO_PLUS}\"><strong><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</strong></a></abbr></td>
@@ -860,8 +911,8 @@ if (isset($_SESSION['user_id']))
                                             </tr>
                                             <tr>
                                                 <td align=\"right\">{LANG_JURNAL_STEP_DO}</td>
-                                                <td align=\"left\"><strong><span class=\"".$glyphicon."\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$glyphicon_tooltip."\"></span> ".$glyphicon_tooltip."</td>
-                                            </tr>";
+                                                <td align=\"left\"><strong><span class=\"".$glyphicon."\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"".$glyphicon_tooltip."\"></span> ".$glyphicon_tooltip."</strong></td>
+                                            </tr>".$html_inform_users;
 
                                             if (!empty($row['out_year']))
                                                 {

@@ -127,48 +127,48 @@ if ($user_p_users == 1)
                                     }
                                     else
                                     {
-                                        $user_password = md5($_POST['user_password1']);
-                                        $user_login = $_POST['user_login'];
-                                        $user_name = $_POST['user_name'];
-                                        $user_ip = $_POST['user_ip'];
-                                        $user_lang = $_POST['user_lang'];
-                                        $user_template = $_POST['user_template'];
-                                        $user_mail1 = $_POST['user_mail1'];
-                                        $user_mail2 = $_POST['user_mail2'];
-                                        $user_tel1 = $_POST['user_tel1'];
-                                        $user_tel2 = $_POST['user_tel2'];
-                                        $user_tel3 = $_POST['user_tel3'];
-                                        $user_str = $_POST['user_str'];
+                                        $new_user_password = md5($_POST['user_password1']);
+                                        $new_user_login = $_POST['user_login'];
+                                        $new_user_name = $_POST['user_name'];
+                                        $new_user_ip = $_POST['user_ip'];
+                                        $new_user_lang = $_POST['user_lang'];
+                                        $new_user_template = $_POST['user_template'];
+                                        $new_user_mail1 = $_POST['user_mail1'];
+                                        $new_user_mail2 = $_POST['user_mail2'];
+                                        $new_user_tel1 = $_POST['user_tel1'];
+                                        $new_user_tel2 = $_POST['user_tel2'];
+                                        $new_user_tel3 = $_POST['user_tel3'];
+                                        $new_user_str = $_POST['user_str'];
 
-                                        if ($user_str)
+                                        if ($new_user_str)
                                             {
-                                                foreach ($user_str as $u_s)
+                                                foreach ($new_user_str as $u_s)
                                                     {
-                                                        $user_str_bd .= $u_s.",";
+                                                        $new_user_str_bd .= $u_s.",";
                                                     }
                                             }
 
-                                        $user_privat = $_POST['user_privat'];
+                                        $new_user_privat = $_POST['user_privat'];
 
-                                        if ($user_privat)
+                                        if ($new_user_privat)
                                             {
-                                                foreach ($user_privat as $u_p)
+                                                foreach ($new_user_privat as $u_p)
                                                     {
-                                                        $user_privat_bd .= $u_p.",";
+                                                        $new_user_privat_bd .= $u_p.",";
                                                     }
                                             }
 
-                                        if ($_POST['user_ip_c'] == 1) {$user_ip_c = 1;} else {$user_ip_c = 0;}
-                                        if ($_POST['user_a_ip'] == 1) {$user_a_ip = 1;} else {$user_a_ip = 0;}
-                                        if ($_POST['user_p_user'] == 1) {$user_p_user = 1;} else {$user_p_user = 0;}
-                                        if ($_POST['user_p_config'] == 1) {$user_p_config = 1;} else {$user_p_config = 0;}
-                                        if ($_POST['user_p_log'] == 1) {$user_p_log = 1;} else {$user_p_log = 0;}
-                                        if ($_POST['user_p_users'] == 1) {$user_p_users = 1;} else {$user_p_users = 0;}
-                                        if ($_POST['user_p_addr'] == 1) {$user_p_addr = 1;} else {$user_p_addr = 0;}
-                                        if ($_POST['user_p_ip'] == 1) {$user_p_ip = 1;} else {$user_p_ip = 0;}
-                                        if ($_POST['user_p_mod'] == 1) {$user_p_mod = 1;} else {$user_p_mod = 0;}
-                                        if ($_POST['user_work'] == 1) {$user_work = 1;} else {$user_work = 0;}
-                                        $query = "INSERT INTO `users` (`id` ,`login` ,`pass` ,`out` ,`name` ,`time` ,`ip` ,`ip_c` ,`a_ip` ,`l_ip` ,`work` ,`lang` ,`reg` ,`p_user` ,`p_config` ,`p_log` ,`p_users` ,`p_addr` ,`p_ip` ,`p_mod` ,`mail1` ,`mail2` ,`tel1` ,`tel2` ,`tel3`, `structura`, `privat`, `del` ) VALUES (NULL , '".$user_login."', '".$user_password."', '0', '".$user_name."', '0', '".$user_ip."', '".$user_ip_c."', '".$user_a_ip."', '0', '".$user_work."', '".$user_lang."', '".time()."', '".$user_p_user."', '".$user_p_config."', '".$user_p_log."', '".$user_p_users."', '".$user_p_addr."', '".$user_p_ip."', '".$user_p_mod."', '".$user_mail1."', '".$user_mail2."', '".$user_tel1."', '".$user_tel2."', '".$user_tel3."', '".$user_str_bd."', '".$user_privat_bd."', '0' );";
+                                        if ($_POST['user_ip_c'] == 1) {$new_user_ip_c = 1;} else {$new_user_ip_c = 0;}
+                                        if ($_POST['user_a_ip'] == 1) {$new_user_a_ip = 1;} else {$new_user_a_ip = 0;}
+                                        if ($_POST['user_p_user'] == 1) {$new_user_p_user = 1;} else {$new_user_p_user = 0;}
+                                        if ($_POST['user_p_config'] == 1) {$new_user_p_config = 1;} else {$new_user_p_config = 0;}
+                                        if ($_POST['user_p_log'] == 1) {$new_user_p_log = 1;} else {$new_user_p_log = 0;}
+                                        if ($_POST['user_p_users'] == 1) {$new_user_p_users = 1;} else {$new_user_p_users = 0;}
+                                        if ($_POST['user_p_addr'] == 1) {$new_user_p_addr = 1;} else {$new_user_p_addr = 0;}
+                                        if ($_POST['user_p_ip'] == 1) {$new_user_p_ip = 1;} else {$new_user_p_ip = 0;}
+                                        if ($_POST['user_p_mod'] == 1) {$new_user_p_mod = 1;} else {$new_user_p_mod = 0;}
+                                        if ($_POST['user_work'] == 1) {$new_user_work = 1;} else {$new_user_work = 0;}
+                                        $query = "INSERT INTO `users` (`id` ,`login` ,`pass` ,`out` ,`name` ,`time` ,`ip` ,`ip_c` ,`a_ip` ,`l_ip` ,`work` ,`lang` ,`reg` ,`p_user` ,`p_config` ,`p_log` ,`p_users` ,`p_addr` ,`p_ip` ,`p_mod` ,`mail1` ,`mail2` ,`tel1` ,`tel2` ,`tel3`, `structura`, `privat`, `del` ) VALUES (NULL , '".$new_user_login."', '".$new_user_password."', '0', '".$new_user_name."', '0', '".$new_user_ip."', '".$new_user_ip_c."', '".$new_user_a_ip."', '0', '".$new_user_work."', '".$new_user_lang."', '".time()."', '".$new_user_p_user."', '".$new_user_p_config."', '".$new_user_p_log."', '".$new_user_p_users."', '".$new_user_p_addr."', '".$new_user_p_ip."', '".$new_user_p_mod."', '".$new_user_mail1."', '".$new_user_mail2."', '".$new_user_tel1."', '".$new_user_tel2."', '".$new_user_tel3."', '".$new_user_str_bd."', '".$new_user_privat_bd."', '0' );";
                                         $res = mysql_query($query) or $error_save = "true";
                                         $queryes_num++;
                                         if ($error_save == "true")
@@ -178,7 +178,8 @@ if ($user_p_users == 1)
                                             }
                                             else
                                             {
-                                                $loging_do = "{LANG_LOG_USERS_ADD} ".$user_login;
+                                                $adress = "false";
+                                                $loging_do = "{LANG_LOG_USERS_ADD} ".$new_user_login;
                                                 include ('inc/loging.php');
                                                 $page.= file_get_contents("templates/information_success.html");
                                                 $page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_OK}", $page);
@@ -216,11 +217,11 @@ if ($user_p_users == 1)
         if (isset($_GET['user_edit']))
             {
                 $adress = "true";
-                $user_edit = $_GET['user_edit'];
+                $new_user_edit = $_GET['user_edit'];
                 if (isset($_GET['save']))
                     {
                         $save = "true";
-                        $query = "SELECT * FROM `users` WHERE `id`='".$user_edit."' AND `del`='0' LIMIT 1;";
+                        $query = "SELECT * FROM `users` WHERE `id`='".$new_user_edit."' AND `del`='0' LIMIT 1;";
                         $res = mysql_query($query) or die(mysql_error());
                         $queryes_num++;
                         $numberall = mysql_num_rows($res);
@@ -330,7 +331,7 @@ if ($user_p_users == 1)
                                         $page.= file_get_contents("templates/information_danger.html");
                                         $page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_STR}", $page);
                                     }
-                                $query = "SELECT `login` FROM `users` WHERE `login`='".$_POST['user_login']."' AND `id`<>'".$user_edit."';";
+                                $query = "SELECT `login` FROM `users` WHERE `login`='".$_POST['user_login']."' AND `id`<>'".$new_user_edit."';";
                                 $res = mysql_query($query) or die(mysql_error());
                                 $queryes_num++;
                                 $numberall = mysql_num_rows($res);
@@ -340,7 +341,7 @@ if ($user_p_users == 1)
                                         $page.= file_get_contents("templates/information_danger.html");
                                         $page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_DOUBLE_LOGIN}", $page);
                                     }
-                                $query = "SELECT `name` FROM `users` WHERE `name`='".$_POST['user_name']."' AND `id`<>'".$user_edit."';";
+                                $query = "SELECT `name` FROM `users` WHERE `name`='".$_POST['user_name']."' AND `id`<>'".$new_user_edit."';";
                                 $res = mysql_query($query) or die(mysql_error());
                                 $queryes_num++;
                                 $numberall = mysql_num_rows($res);
@@ -352,99 +353,99 @@ if ($user_p_users == 1)
                                     }
                                 if ($error_save <> "true")
                                     {
-                                        $user_login = $_POST['user_login'];
-                                        $user_name = $_POST['user_name'];
-                                        $user_ip = $_POST['user_ip'];
-                                        $user_lang = $_POST['user_lang'];
-                                        $user_template = $_POST['user_template'];
-                                        $user_mail1 = $_POST['user_mail1'];
-                                        $user_mail2 = $_POST['user_mail2'];
-                                        $user_tel1 = $_POST['user_tel1'];
-                                        $user_tel2 = $_POST['user_tel2'];
-                                        $user_tel3 = $_POST['user_tel3'];
-                                        $user_str = $_POST['user_str'];
+                                        $new_user_login = $_POST['user_login'];
+                                        $new_user_name = $_POST['user_name'];
+                                        $new_user_ip = $_POST['user_ip'];
+                                        $new_user_lang = $_POST['user_lang'];
+                                        $new_user_template = $_POST['user_template'];
+                                        $new_user_mail1 = $_POST['user_mail1'];
+                                        $new_user_mail2 = $_POST['user_mail2'];
+                                        $new_user_tel1 = $_POST['user_tel1'];
+                                        $new_user_tel2 = $_POST['user_tel2'];
+                                        $new_user_tel3 = $_POST['user_tel3'];
+                                        $new_user_str = $_POST['user_str'];
 
-                                        if ($user_str)
+                                        if ($new_user_str)
                                             {
-                                                foreach ($user_str as $u_s)
+                                                foreach ($new_user_str as $u_s)
                                                     {
-                                                        $user_str_bd .= $u_s.",";
+                                                        $new_user_str_bd .= $u_s.",";
                                                     }
                                             }
 
-                                        $user_privat = $_POST['user_privat'];
+                                        $new_user_privat = $_POST['user_privat'];
 
-                                        if ($user_privat)
+                                        if ($new_user_privat)
                                             {
-                                                foreach ($user_privat as $u_p)
+                                                foreach ($new_user_privat as $u_p)
                                                     {
-                                                        $user_privat_bd .= $u_p.",";
+                                                        $new_user_privat_bd .= $u_p.",";
                                                     }
                                             }
 
-                                        if ($_POST['user_ip_c'] == 1) {$user_ip_c = 1;} else {$user_ip_c = 0;}
-                                        if ($_POST['user_a_ip'] == 1) {$user_a_ip = 1;} else {$user_a_ip = 0;}
-                                        if ($_POST['user_p_user'] == 1) {$user_p_user = 1;} else {$user_p_user = 0;}
-                                        if ($_POST['user_p_config'] == 1) {$user_p_config = 1;} else {$user_p_config = 0;}
-                                        if ($_POST['user_p_log'] == 1) {$user_p_log = 1;} else {$user_p_log = 0;}
-                                        if ($_POST['user_p_users'] == 1) {$user_p_users = 1;} else {$user_p_users = 0;}
-                                        if ($_POST['user_p_addr'] == 1) {$user_p_addr = 1;} else {$user_p_addr = 0;}
-                                        if ($_POST['user_p_ip'] == 1) {$user_p_ip = 1;} else {$user_p_ip = 0;}
-                                        if ($_POST['user_p_mod'] == 1) {$user_p_mod = 1;} else {$user_p_mod = 0;}
-                                        if ($_POST['user_work'] == 1) {$user_work = 1;} else {$user_work = 0;}
+                                        if ($_POST['user_ip_c'] == 1) {$new_user_ip_c = 1;} else {$new_user_ip_c = 0;}
+                                        if ($_POST['user_a_ip'] == 1) {$new_user_a_ip = 1;} else {$new_user_a_ip = 0;}
+                                        if ($_POST['user_p_user'] == 1) {$new_user_p_user = 1;} else {$new_user_p_user = 0;}
+                                        if ($_POST['user_p_config'] == 1) {$new_user_p_config = 1;} else {$new_user_p_config = 0;}
+                                        if ($_POST['user_p_log'] == 1) {$new_user_p_log = 1;} else {$new_user_p_log = 0;}
+                                        if ($_POST['user_p_users'] == 1) {$new_user_p_users = 1;} else {$new_user_p_users = 0;}
+                                        if ($_POST['user_p_addr'] == 1) {$new_user_p_addr = 1;} else {$new_user_p_addr = 0;}
+                                        if ($_POST['user_p_ip'] == 1) {$new_user_p_ip = 1;} else {$new_user_p_ip = 0;}
+                                        if ($_POST['user_p_mod'] == 1) {$new_user_p_mod = 1;} else {$new_user_p_mod = 0;}
+                                        if ($_POST['user_work'] == 1) {$new_user_work = 1;} else {$new_user_work = 0;}
                                         if ($pass_change == "true")
                                             {
-                                                $user_password = md5($_POST['user_password1']);
+                                                $new_user_password = md5($_POST['user_password1']);
                                                 $query = "UPDATE `users` SET
-                                                `login`='".$user_login."',
-                                                `pass`='".$user_password."',
-                                                `name`='".$user_name."',
-                                                `ip`='".$user_ip."',
-                                                `ip_c`='".$user_ip_c."',
-                                                `a_ip`='".$user_a_ip."',
-                                                `work`='".$user_work."',
-                                                `lang`='".$user_lang."',
-                                                `p_user`='".$user_p_user."',
-                                                `p_config`='".$user_p_config."',
-                                                `p_log`='".$user_p_log."',
-                                                `p_users`='".$user_p_users."',
-                                                `p_addr`='".$user_p_addr."',
-                                                `p_ip`='".$user_p_ip."',
-                                                `p_mod`='".$user_p_mod."',
-                                                `mail1`='".$user_mail1."',
-                                                `mail2`='".$user_mail2."',
-                                                `tel1`='".$user_tel1."',
-                                                `tel2`='".$user_tel2."',
-                                                `tel3`='".$user_tel3."',
-                                                `structura`='".$user_str_bd."',
-                                                `privat`='".$user_privat_bd."'
-                                                WHERE `id`='".$user_edit."' LIMIT 1;";
+                                                `login`='".$new_user_login."',
+                                                `pass`='".$new_user_password."',
+                                                `name`='".$new_user_name."',
+                                                `ip`='".$new_user_ip."',
+                                                `ip_c`='".$new_user_ip_c."',
+                                                `a_ip`='".$new_user_a_ip."',
+                                                `work`='".$new_user_work."',
+                                                `lang`='".$new_user_lang."',
+                                                `p_user`='".$new_user_p_user."',
+                                                `p_config`='".$new_user_p_config."',
+                                                `p_log`='".$new_user_p_log."',
+                                                `p_users`='".$new_user_p_users."',
+                                                `p_addr`='".$new_user_p_addr."',
+                                                `p_ip`='".$new_user_p_ip."',
+                                                `p_mod`='".$new_user_p_mod."',
+                                                `mail1`='".$new_user_mail1."',
+                                                `mail2`='".$new_user_mail2."',
+                                                `tel1`='".$new_user_tel1."',
+                                                `tel2`='".$new_user_tel2."',
+                                                `tel3`='".$new_user_tel3."',
+                                                `structura`='".$new_user_str_bd."',
+                                                `privat`='".$new_user_privat_bd."'
+                                                WHERE `id`='".$new_user_edit."' LIMIT 1;";
                                             }
                                             else
                                             {
                                                 $query = "UPDATE `users` SET
-                                                `login`='".$user_login."',
-                                                `name`='".$user_name."',
-                                                `ip`='".$user_ip."',
-                                                `ip_c`='".$user_ip_c."',
-                                                `a_ip`='".$user_a_ip."',
-                                                `work`='".$user_work."',
-                                                `lang`='".$user_lang."',
-                                                `p_user`='".$user_p_user."',
-                                                `p_config`='".$user_p_config."',
-                                                `p_log`='".$user_p_log."',
-                                                `p_users`='".$user_p_users."',
-                                                `p_addr`='".$user_p_addr."',
-                                                `p_ip`='".$user_p_ip."',
-                                                `p_mod`='".$user_p_mod."',
-                                                `mail1`='".$user_mail1."',
-                                                `mail2`='".$user_mail2."',
-                                                `tel1`='".$user_tel1."',
-                                                `tel2`='".$user_tel2."',
-                                                `tel3`='".$user_tel3."',
-                                                `structura`='".$user_str_bd."',
-                                                `privat`='".$user_privat_bd."'
-                                                WHERE `id`='".$user_edit."' LIMIT 1;";
+                                                `login`='".$new_user_login."',
+                                                `name`='".$new_user_name."',
+                                                `ip`='".$new_user_ip."',
+                                                `ip_c`='".$new_user_ip_c."',
+                                                `a_ip`='".$new_user_a_ip."',
+                                                `work`='".$new_user_work."',
+                                                `lang`='".$new_user_lang."',
+                                                `p_user`='".$new_user_p_user."',
+                                                `p_config`='".$new_user_p_config."',
+                                                `p_log`='".$new_user_p_log."',
+                                                `p_users`='".$new_user_p_users."',
+                                                `p_addr`='".$new_user_p_addr."',
+                                                `p_ip`='".$new_user_p_ip."',
+                                                `p_mod`='".$new_user_p_mod."',
+                                                `mail1`='".$new_user_mail1."',
+                                                `mail2`='".$new_user_mail2."',
+                                                `tel1`='".$new_user_tel1."',
+                                                `tel2`='".$new_user_tel2."',
+                                                `tel3`='".$new_user_tel3."',
+                                                `structura`='".$new_user_str_bd."',
+                                                `privat`='".$new_user_privat_bd."'
+                                                WHERE `id`='".$new_user_edit."' LIMIT 1;";
                                             }
                                         $res = mysql_query($query) or $error_save = "true";
                                         $queryes_num++;
@@ -455,7 +456,8 @@ if ($user_p_users == 1)
                                             }
                                             else
                                             {
-                                                $loging_do = "{LANG_LOG_USERS_EDIT} ".$user_login;
+                                                $adress = "false";
+                                                $loging_do = "{LANG_LOG_USERS_EDIT} ".$new_user_login;
                                                 include ('inc/loging.php');
                                                 $page.= file_get_contents("templates/information_success.html");
                                                 $page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_EDIT_OK}", $page);
@@ -465,7 +467,7 @@ if ($user_p_users == 1)
                     }
                     else
                     {
-                        $query = "SELECT * FROM `users` WHERE `id`='".$user_edit."' AND `del`='0' LIMIT 1;";
+                        $query = "SELECT * FROM `users` WHERE `id`='".$new_user_edit."' AND `del`='0' LIMIT 1;";
                         $res = mysql_query($query) or die(mysql_error());
                         $queryes_num++;
                         $numberall = mysql_num_rows($res);
@@ -548,18 +550,20 @@ if ($user_p_users == 1)
             {
                 if ($_GET['user_turn'] == "on") $turn=1;
                 if ($_GET['user_turn'] == "off") $turn=0;
-                $user_id = $_GET['user_id'];
-                if ($turn<>1 AND $turn<>0 OR $user_id < 0)
+                $new_user_id = $_GET['user_id'];
+                if ($turn<>1 AND $turn<>0 OR $new_user_id < 0)
                     {
                         DIE ("ERROR #1 USERS.PHP (USER_TURN)");
                     }
                 else
                     {
-                        if ($turn == 1) $loging_do = "{LANG_LOG_USERS_EDIT_TURN_ON} ".$user_id;
-                        if ($turn == 0) $loging_do = "{LANG_LOG_USERS_EDIT_TURN_OFF} ".$user_id;
+                        if ($turn == 1) $loging_do = "{LANG_LOG_USERS_EDIT_TURN_ON} ".$new_user_id;
+                        if ($turn == 0) $loging_do = "{LANG_LOG_USERS_EDIT_TURN_OFF} ".$new_user_id;
                         include ('inc/loging.php');
-                        mysql_query("UPDATE `users` SET `work`='".$turn."' WHERE `id`='".$user_id."' LIMIT 1;") or die(mysql_error());
+                        mysql_query("UPDATE `users` SET `work`='".$turn."' WHERE `id`='".$new_user_id."' LIMIT 1;") or die(mysql_error());
                         $queryes_num++;
+                        $page.= file_get_contents("templates/information.html");
+                        $page = str_replace("{INFORMATION}", $loging_do, $page);
                     }
             }
         if (isset($_GET['user_del']))
@@ -570,11 +574,11 @@ if ($user_p_users == 1)
                     }
                     else
                     {
-                        $user_id = $_GET['user_del'];
-                        $loging_do = "{LANG_LOG_USERS_DEL} ".$user_id;
+                        $new_user_id = $_GET['user_del'];
+                        $loging_do = "{LANG_LOG_USERS_DEL} ".$new_user_id;
                         include ('inc/loging.php');
-                        //mysql_query("DELETE FROM `users` WHERE `id` = '".$user_id."' LIMIT 1;") or die(mysql_error());
-                        $query = "UPDATE `users` SET `del`='1' WHERE `id`='".$user_id."' LIMIT 1;";
+                        //mysql_query("DELETE FROM `users` WHERE `id` = '".$new_user_id."' LIMIT 1;") or die(mysql_error());
+                        $query = "UPDATE `users` SET `del`='1' WHERE `id`='".$new_user_id."' LIMIT 1;";
                         @mysql_query($query);
                         $queryes_num++;
                         $page.= file_get_contents("templates/information_success.html");

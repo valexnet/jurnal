@@ -32,21 +32,21 @@ if ($user_p_config == 1)
                         if (isset($_GET['send']) AND $_GET['send'] == "email")
                             {
                                 if ($backup_on_email_timeout != 0)
-									{
-									    mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup_on_email' LIMIT 1 ;");
+                                    {
+                                        mysql_query("UPDATE `cron` SET `last`='0' WHERE `name`='backup_on_email' LIMIT 1 ;");
                                         header('Location: config.php?backup=ok&mail=send');
-										exit;
-									}
-									else
-									{
+                                        exit;
+                                    }
+                                    else
+                                    {
                                         $page.= file_get_contents("templates/information.html");
                                         $page = str_replace("{INFORMATION}", "{LANG_CONFIG_BACKUP_ON_EMAIL_TIMEOUT_IS_ZERO}", $page);
-									}
+                                    }
                             }
                             else
                             {
                                 header('Location: config.php?backup=ok');
-								exit;
+                                exit;
                             }
                     }
                     else

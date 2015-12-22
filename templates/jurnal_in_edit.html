@@ -1,139 +1,190 @@
 <div class="container">
-	<h3><p class="text-center">{LANG_JURNAL_IN_EDIT_FORM} {FORM_ID}</p></h3>
+    <h3><p class="text-center">{LANG_JURNAL_IN_EDIT_FORM} {FORM_ID}</p></h3>
 
-	<FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_in.php?edit={FORM_ID}" METHOD="POST" enctype="multipart/form-data">
+    <FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_in.php?edit={FORM_ID}" METHOD="POST" enctype="multipart/form-data">
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="add_time">{LANG_DATA}:</label>
-			<div class="col-sm-10">
-				<input type="text" class="form-control" id="add_time" NAME="add_time" value="{FORM_DATA}" disabled>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="add_time">{LANG_DATA}:</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="add_time" NAME="add_time" value="{FORM_DATA}" disabled>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="add_user">{LANG_MODERATOR}:</label>
-			<div class="col-sm-10">
-				<input type="text" NAME="add_user" class="form-control" id="add_user" value="{USER_NAME}" disabled>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="add_user">{LANG_MODERATOR}:</label>
+            <div class="col-sm-10">
+                <input type="text" NAME="add_user" class="form-control" id="add_user" value="{USER_NAME}" disabled>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="get_data">{LANG_GET_DATA}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="get_data" class="form-control" id="get_data" value="{FORM_GET_DATA}" placeholder="{LANG_GET_DATA_MORE}" data-error="{LANG_FORM_NO_GET_DATA}" required >
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="get_data">{LANG_GET_DATA}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input type="text" NAME="get_data" class="form-control" id="get_data" value="{FORM_GET_DATA}" placeholder="{LANG_GET_DATA_MORE}" data-error="{LANG_FORM_NO_GET_DATA}" required >
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="org_name">{LANG_ORG_NAME}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input onkeyup="loadHelp('help_org_name', 'org_name', {USER_YEAR}, 'jurnal_in', this.value)" autocomplete="off" type="text" NAME="org_name" class="form-control" id="org_name" value="{FORM_ORG_NAME}" placeholder="{LANG_ORG_NAME_MORE}" data-error="{LANG_FORM_NO_ORG_NAME}" required >
-				<div class="hidden" id="help_org_name"></div>
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="org_name">{LANG_ORG_NAME}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input onkeyup="loadHelp('help_org_name', 'org_name', {USER_YEAR}, 'jurnal_in', this.value)" autocomplete="off" type="text" NAME="org_name" class="form-control" id="org_name" value="{FORM_ORG_NAME}" placeholder="{LANG_ORG_NAME_MORE}" data-error="{LANG_FORM_NO_ORG_NAME}" required >
+                <div class="hidden" id="help_org_name"></div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="org_index">{LANG_ORG_INDEX}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="org_index" class="form-control" id="org_index" value="{FORM_ORG_INDEX}" placeholder="{LANG_ORG_INDEX_MORE}" data-error="{LANG_FORM_NO_ORG_INDEX}" required >
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="org_index">{LANG_ORG_INDEX}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input type="text" NAME="org_index" class="form-control" id="org_index" value="{FORM_ORG_INDEX}" placeholder="{LANG_ORG_INDEX_MORE}" data-error="{LANG_FORM_NO_ORG_INDEX}" required >
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="org_data">{LANG_ORG_DATA}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="org_data" class="form-control" id="org_data" value="{FORM_ORG_DATA}" placeholder="{LANG_ORG_DATA_MORE}" data-error="{LANG_FORM_NO_ORG_DATA}" required >
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="org_data">{LANG_ORG_DATA}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input type="text" NAME="org_data" class="form-control" id="org_data" value="{FORM_ORG_DATA}" placeholder="{LANG_ORG_DATA_MORE}" data-error="{LANG_FORM_NO_ORG_DATA}" required >
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="org_subj">{LANG_ORG_SUBJ}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input onkeyup="loadHelp('help_org_subj', 'org_subj', {USER_YEAR}, 'jurnal_in', this.value)" autocomplete="off" type="text" NAME="org_subj" class="form-control" id="org_subj" value="{FORM_ORG_SUBJ}" placeholder="{LANG_ORG_SUBJ_MORE}" data-error="{LANG_FORM_NO_ORG_SUBJ}" required >
-				<div class="hidden" id="help_org_subj"></div>
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="org_subj">{LANG_ORG_SUBJ}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input onkeyup="loadHelp('help_org_subj', 'org_subj', {USER_YEAR}, 'jurnal_in', this.value)" autocomplete="off" type="text" NAME="org_subj" class="form-control" id="org_subj" value="{FORM_ORG_SUBJ}" placeholder="{LANG_ORG_SUBJ_MORE}" data-error="{LANG_FORM_NO_ORG_SUBJ}" required >
+                <div class="hidden" id="help_org_subj"></div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="make_visa">{LANG_MAKE_VISA}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input onkeyup="loadHelp('help_make_visa', 'make_visa', {USER_YEAR}, 'jurnal_in', this.value)" autocomplete="off" type="text" NAME="make_visa" class="form-control" id="make_visa" value="{FORM_MAKE_VISA}" placeholder="{LANG_MAKE_VISA_MORE}" data-error="{LANG_FORM_NO_MAKE_VISA}" required >
-				<div class="hidden" id="help_make_visa"></div>
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="make_visa">{LANG_MAKE_VISA}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input onkeyup="loadHelp('help_make_visa', 'make_visa', {USER_YEAR}, 'jurnal_in', this.value)" autocomplete="off" type="text" NAME="make_visa" class="form-control" id="make_visa" value="{FORM_MAKE_VISA}" placeholder="{LANG_MAKE_VISA_MORE}" data-error="{LANG_FORM_NO_MAKE_VISA}" required >
+                <div class="hidden" id="help_make_visa"></div>
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="do_user">{LANG_DO_USER}:</label>
-			<div class="col-sm-10 has-feedback">
-				<SELECT NAME="do_user" class="form-control" id="do_user" data-error="{LANG_FORM_NO_DO_USER}" required >
-					<option>{LANG_DO_USER}</option>
-					{FORM_DO_USER}
-				</SELECT>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="do_user">{LANG_DO_USER}:</label>
+            <div class="col-sm-10 has-feedback">
+                <SELECT NAME="do_user" class="form-control" id="do_user" data-error="{LANG_FORM_NO_DO_USER}" required >
+                    <option>{LANG_DO_USER}</option>
+                    {FORM_DO_USER}
+                </SELECT>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="make_data">{LANG_MAKE_DATA}:</label>
-			<div class="col-sm-10 has-feedback">
-				<input type="text" NAME="make_data" class="form-control" id="make_data" value="{FORM_MAKE_DATA}" placeholder="{LANG_MAKE_DATA_MORE}">
-				<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-				<div class="help-block with-errors"></div>
-			</div>
-		</div>
+        <div class="form-group" id="inform_users_div">
+            <label class="control-label col-sm-2" for="inform_users"></label>
+            <div class="col-sm-10 has-feedback">
+                <a class="btn btn-primary" role="button" data-toggle="collapse" onclick="$('#inform_users').modal('show');" aria-expanded="false" aria-controls="inform_users">{LANG_INFORM_OTHER_USERS}</a>
+            </div>
+        </div>
+        
+        <div class="form-group" id="inform_users_select_div">
+            <label class="control-label col-sm-2" id="count_inform_users">{LANG_INFORM_USERS_IS_SELECTED} :</label>
+            <div class="col-sm-10" id="show_list_selected_inform_users">
+                
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label class="control-label col-sm-2" for="make_data">{LANG_MAKE_DATA}:</label>
+            <div class="col-sm-10 has-feedback">
+                <input type="text" NAME="make_data" class="form-control" id="make_data" value="{FORM_MAKE_DATA}" placeholder="{LANG_MAKE_DATA_MORE}">
+                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+                <div class="help-block with-errors"></div>
+            </div>
+        </div>
 
-		<div class="form-group">
-			<div class="col-sm-offset-2 col-sm-10">
-				<INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
-				<button type="submit" class="btn btn-success" onclick="skm_LockScreen()" >{LANG_SAVE_CHANGES}</button> <button type="reset" class="btn btn-info">{LANG_FORM_RESET}</button> 
-			</div>
-		</div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
+                <button type="submit" class="btn btn-success">{LANG_SAVE_CHANGES}</button> <button type="reset" class="btn btn-info">{LANG_FORM_RESET}</button> 
+            </div>
+        </div>
+        
+        <div class="modal fade" id="inform_users" tabindex="-1" role="dialog" aria-labelledby="inform_users_Label">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{LANG_JURN_OUT_NUM_CLOSE}"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center" id="myModalLabel">{LANG_ALL_USERS}</h4>
+                </div>
+                <div class="modal-body text-center">
+                    {FORM_INFORM_USERS_LIST}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
+                </div>
+            </div>
+          </div>
+        </div>
 
-	</FORM>
+    </FORM>
 </div>
 <script>
 <!--
 function loadHelp(a, b, c, d, e)
-	{
-		var xhttp;
-		if (window.XMLHttpRequest)
-			{
-				xhttp = new XMLHttpRequest();
-			}
-			else
-			{
-				xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			}
-		xhttp.onreadystatechange = function()
-			{
-				if (xhttp.readyState == 4 && xhttp.status == 200)
-					{
-						if (xhttp.responseText.length > 100)
-							{
-								document.getElementById(a).innerHTML = xhttp.responseText;
-								document.getElementById(a).className = 'col-sm-5 text-left dropdown clearfix open';
-							}
-							else
-							{
-								document.getElementById(a).innerHTML = '';
-								document.getElementById(a).className = 'hidden';
-							}
-					}
-			}
-		xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
-		xhttp.send();
-	}
+    {
+        var xhttp;
+        if (window.XMLHttpRequest)
+            {
+                xhttp = new XMLHttpRequest();
+            }
+            else
+            {
+                xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+        xhttp.onreadystatechange = function()
+            {
+                if (xhttp.readyState == 4 && xhttp.status == 200)
+                    {
+                        if (xhttp.responseText.length > 100)
+                            {
+                                document.getElementById(a).innerHTML = xhttp.responseText;
+                                document.getElementById(a).className = 'col-sm-5 text-left dropdown clearfix open';
+                            }
+                            else
+                            {
+                                document.getElementById(a).innerHTML = '';
+                                document.getElementById(a).className = 'hidden';
+                            }
+                    }
+            }
+        xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
+        xhttp.send();
+    }
+function show_inform_users()
+    {
+        document.getElementById('inform_users_div').className = 'form-group';
+        document.getElementById('inform_users_select_div').className = 'form-group';
+    }
+function ccu(a)
+    {
+        var x = document.getElementById('cb_' + a);
+        if (x.checked == true)
+            {
+                document.getElementById('l_' + a).className = 'btn btn-info btn-block';
+                document.getElementById('show_list_selected_inform_users').innerHTML += '<div id="sh_' + a + '">' + document.getElementById('name_' + a).outerHTML + '</div>';
+            }
+            else
+            {
+                document.getElementById('l_' + a).className = 'btn btn-default btn-block';
+                document.getElementById('sh_' + a).remove();
+            }
+        document.getElementById('count_inform_users').innerHTML = '{LANG_INFORM_USERS_IS_SELECTED} :';
+    }
 //-->
 </script>
