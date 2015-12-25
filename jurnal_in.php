@@ -732,7 +732,6 @@ if (isset($_SESSION['user_id']))
         if ($adres <> 'true')
             {
                 $page = str_replace("{JURNAL_IN_TOP_STAT}", file_get_contents("templates/jurnal_in_top_stat.html"), $page);
-                $page = str_replace("{JURNAL_IN_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
 
                 if (isset($_GET['page_num']) AND preg_match('/^[1-9][0-9]*$/', $_GET['page_num']))
                     {
@@ -789,7 +788,8 @@ if (isset($_SESSION['user_id']))
                 $is_first = "";
                 if (mysql_num_rows($res) > 0)
                     {
-                        $users = get_users_names(0);
+                        if (mysql_num_rows($res) > 20) $page = str_replace("{JURNAL_IN_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
+						$users = get_users_names(0);
                         $queryes_num++;
                         while ($row=mysql_fetch_array($res))
                             {
@@ -941,6 +941,7 @@ if (isset($_SESSION['user_id']))
                         $page.= file_get_contents("templates/information.html");
                         $page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_EMPTY}", $page);
                     }
+                $page = str_replace("{JURNAL_IN_AFFIX}", "", $page);
                 $page = str_replace("{JURNAL_IN}", $jurnal_in, $page);
                 $page .= $modals;
             }

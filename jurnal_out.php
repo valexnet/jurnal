@@ -244,7 +244,8 @@ if (isset($_SESSION['user_id']))
                                                                     }
                                                             }
                                                         $print_nomer = "<b>".$nomer."</b> / ".$nom_str."-".$nom_index."";
-                                                        $print_regular = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer."</b>";
+                                                        $print_regular_nt = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer." (".$FORM_TO_SUBJ.")</b>";
+                                                        $print_regular_nf = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer.".zip</b>";
                                                     }
 
                                                 $page.= file_get_contents("templates/information_success.html");
@@ -255,9 +256,10 @@ if (isset($_SESSION['user_id']))
                                                         $page.= file_get_contents("templates/information.html");
                                                         $page = str_replace("{INFORMATION}", "{RETURN_BLANK_N}: <kbd>".$blank."</kbd>", $page);
                                                     }
-
                                                 $page.= file_get_contents("templates/information.html");
-                                                $page = str_replace("{INFORMATION}", "{RETURN_REGULAR_N}: <kbd>".$print_regular."</kbd>", $page);
+                                                $page = str_replace("{INFORMATION}", "{RETURN_REGULAR_NT}: <kbd>".$print_regular_nt."</kbd>", $page);
+                                                $page.= file_get_contents("templates/information.html");
+                                                $page = str_replace("{INFORMATION}", "{RETURN_REGULAR_NF}: <kbd>".$print_regular_nf."</kbd>", $page);
 
                                                 if ($from_update == 1)
                                                     {
@@ -1000,7 +1002,6 @@ if (isset($_SESSION['user_id']))
         if ($adres <> 'true')
             {
                 $page = str_replace("{JURNAL_OUT_TOP_STAT}", file_get_contents("templates/jurnal_out_top_stat.html"), $page);
-                $page = str_replace("{JURNAL_OUT_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
 
                 if (isset($_GET['page_num']) AND preg_match('/^[1-9][0-9]*$/', $_GET['page_num']))
                     {
@@ -1095,7 +1096,7 @@ if (isset($_SESSION['user_id']))
                                 $export .= "\"{LANG_SEARCH_RESULTS} :\";\n";
                                 $export .=  "\"{LANG_INDEX_DOC}\";\"{LANG_JURNAL_OUT_BLANK_NUM} №\";\"{LANG_OUT_ADD_TO_N}\";\"{LANG_LOG_TIME}\";\"{LANG_OUT_TEMA}\";\"{LANG_OUT_ADD_FROM}\";\"{LANG_OUT_ADD_TO}\";\"{LANG_HOW}\";\"{LANG_SEND_MONEY}\";\n";
                             }
-
+						if (mysql_num_rows($res) > 20) $page = str_replace("{JURNAL_OUT_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
                         while ($row=mysql_fetch_array($res))
                             {
                                 $admin_links_do = "";
@@ -1202,6 +1203,7 @@ if (isset($_SESSION['user_id']))
                                 $is_first = "true";
                                 if (isset($_GET['export']) AND $_GET['export'] == "do") $export .=  "\"".$row['id']." \\ ".$nomenclatura[$row['nom']]."\";\"".$blank_num."\";\"".$row['to_num']."\";\"".$row['data']."\";\"".$row['subj']."\";\"".$users[$row['user']]."\";\"".$row['to']."\";\"{LANG_HOW_".$row['how']."}\";\"".$row['money']."\";\n";
                             }
+						$page = str_replace("{JURNAL_OUT_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
                         $page .= $modals;
                         $page = str_replace("{JURNAL_OUT}", $jurnal_out, $page);
                         $page = str_replace("{JURNAL_OUT_STAT}", "{JURNAL_OUT_NUM_ON_PAGE}: ".$list." / ".mysql_num_rows($res)." / ".($b[0] - mysql_num_rows($res) - $list), $page);
