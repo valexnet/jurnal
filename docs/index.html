@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>АС Журнал - Розділ Допомоги.</title>
+	<meta name="Resource-type" content="Document" />
+	<link rel="stylesheet" type="text/css" href="jquery.fullPage.css" />
+	<link rel="stylesheet" type="text/css" href="examples.css" />
+	<link rel="stylesheet" type="text/css" href="bootstrap-theme.min.css" />
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+	<script src="jquery.1.8.3.min.js"></script>
+	<script src="jquery-ui.1.9.1.min.js"></script>
+	<script src="jquery.slimscroll.min.js"></script>
+	<script src="jquery.fullPage.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#fullpage').fullpage({
+				anchors: ['hello', 'navy', 'install', 'ndi', 'users', 'log', 'ban', 'jurnal_in', 'jurnal_in_ep', 'jurnal_out'],
+				sectionsColor: ['#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA'],
+				css3: true,
+				menu: '#menu',
+				responsiveHeight: 700,
+				responsiveWidth: 1000
+			});
+		});
+	</script>
+</head>
+<body>
+
+<ul id="menu">
+	<li data-menuanchor="hello" class="active"><a href="#hello">Допомога</a></li>
+	<li data-menuanchor="navy"><a href="#navy">Навігація</a></li>
+	<li><a href="../">Повернутись до АС Журнал</a></li>
+</ul>
+
+<div id="fullpage">
+	<div class="section" id="section0">
+		<div class="row">
+			<h1>Розділ допомоги користувачу АС Журналу</h1>
+			<p>Використовуйте скрулер (колесико) мишки для вертикальної навігації.</p>
+			<p>Стрілки "На ліво" та "На право" для горизонтальної навігації.</p>
+			<p><br><br><br></p>
+			<p align="left">
+				Веріся Допомоги: 1.<br>
+				Розробник:<br>
+				Хлівнюк Валерій Олександрович<br>
+				УДКСУ у Тальнівському районі Черкаської області<br>
+				тел. (04731) 30093, ip. 3427003
+			</p>
+		</div>
+	</div>
+
+	<div class="section" id="section1">
+		<div class="row">
+			<h1>Навігація</h1>
+			<div class="row">
+				<div class="col-md-4"><h3><a href="#install">Перший вхід та глобальні налаштування</a></h3></div>
+				<div class="col-md-4"><h3><a href="#ndi">Управління довідниками</a></h3></div>
+				<div class="col-md-4"><h3><a href="#users">Управління користувачами</a></h3></div>
+			</div>
+			<div class="row">
+				<div class="col-md-4"><h3><a href="#log">Перегляд журналу роботи</a></h3></div>
+				<div class="col-md-4"><h3><a href="#ban">Управління доступом</a></h3></div>
+			</div>
+			<div class="row">
+				<div class="col-md-4"><h3><a href="#jurnal_in">Вхідна кореспонденція</a></h3></div>
+				<div class="col-md-4"><h3><a href="#jurnal_in_ep">Вхідна ел. пошта</a></h3></div>
+				<div class="col-md-4"><h3><a href="#jurnal_out">Вихідна кореспонденція + Журнал зареєстрованих бланків</a></h3></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="section" id="section2">
+	    <div class="slide" id="slide1">
+			<div class="row">
+				<h1>Перший вхід в систему</h1>
+				<p>Після установки АС Журналу, він вимкнений. Авторизуватись може тільки Адміністратор з паролем: admin</p>
+				<p>Після авторизації перейдіть до меню "<strong>Адміністрування</strong>" - "<strong>Глобальні налаштування</strong>"</p>
+				<p><img src="img/ps_install_01.png"></img></p>
+			</div>
+		</div>
+	    <div class="slide" id="slide2">
+			<div class="row">
+				<h1>Глобальні Налаштування</h1>
+				<p>Натисніть кнопку "<strong>Редагувати настройки</strong>", щоб перейти до... ви не повірете... до редагування настройок.</p>
+				<p><img src="img/ps_install_02.png"></img></p>
+				<p></p>
+			</div>
+		</div>
+	    <div class="slide" id="slide3">
+			<div class="row">
+				<h1>Опис всіх налаштувань стр.1</h1>
+				<p><img src="img/ps_install_03.png"></img></p>
+				<p>1. <strong>Доступ до АС Журнал</strong> - Якщо доступ вимкнений, авторизуватись може тільки користувач з правами адміністратора.</p>
+				<p>2. <strong>Назва сайту</strong> - назва вашого УДКСУ, або організації.</p>
+				<p>3. <strong>Код району</strong> - використовується для генерації імені файлів та теми листа.</p>
+				<p>4. <strong>Додаткова директорія для архівів</strong> - Папка, на яку не діє правило ліміту резервних файлів БД, може бути мережевою.</p>
+				<p>5. <strong>Ліміт копій БД (шт.)</strong> - К-ть копій БД, які зберігаються в папці <kbd>inc/backups/</kbd></p>
+			</div>
+		</div>
+	    <div class="slide" id="slide4">
+			<div class="row">
+				<h1>Опис всіх налаштувань стр.2</h1>
+				<p><img src="img/ps_install_04.png"></img></p>
+				<p>6. <strong>Архіватор ZIP</strong> - Авто-перевірка підключення розширення ZIP в PHP.ini <kbd>extension=php_zip.dll</kbd>. Якщо присутне розширення, архівування БД та вхідної кореспонденції по IMAP буде в заархівованому виді zip.</p>
+				<p>7. <strong>Таймаут для авторизації (сек.)</strong> - Після закінчення терміну авторизації, користувачу потрібно авторизуватись ще раз. 0 - для відключення.</p>
+				<p>8. <strong>К-ть номерів на сторінку</strong> - К-ть записів що будуть показуватись користувачу на одній сторінці, якщо він не вказав іншу к-ть.</p>
+				<p>9. <strong>Макс. к-ть записів на одну сторінку</strong> - Максимально допустиме значення, яке буде переписане користувачеві в разі збільшення.</p>
+				<p>10. <strong>Вибір прізвища при авторизації</strong> - Якщо дозволено, користувачеві не потрібно вводити свій логін при авторизації, просто обрати своє прізвище із списку.</p>
+			</div>
+		</div>
+	    <div class="slide" id="slide5">
+			<div class="row">
+				<h1>Опис всіх налаштувань стр.3</h1>
+				<p><img src="img/ps_install_05.png"></img></p>
+				<p>11. <strong>Рік запуску АС Журнал</strong> - Рік, з якого почав працювати АС Журнал. Користувачі не матимуть змоги перейти до меньшо року ніж цей.</p>
+				<p>12. <strong>Дозволені типи файлів</strong> - Розширення файлів, які дозволені до зберігання.</p>
+				<p>13. <strong>Максимальний розмір файлу (МБ)</strong> - Файли більшого розміру не будуть збережені.</p>
+				<p>14. <strong>Періодичність копіювання БД (сек.)</strong> - Резервне копіювання БД. Рекомендовано 3600 (раз на годину).</p>
+				<p>15. <strong>Періодичність Відправки БД на e-mail (сек.)</strong> - Періодичність відправлення свіжої копії БД на пошту адміністратора. Рекомендовано 36000 (раз на десять годин).</p>
+			</div>
+		</div>
+	    <div class="slide" id="slide6">
+			<div class="row">
+				<h1>Збереження налаштувань</h1>
+				<p>Для збереження налаштувань, натисніть "<strong>Відправити</strong>"</p>
+				<p><img src="img/ps_install_06.png"></img></p>
+				<p>Якщо всі записи вірні, отримаєте повідомлення про успішне зберігання.</p>
+				<p><img src="img/ps_install_07.png"></img></p>
+				<p>Зачейкайте переадресації (не обовязково)</p>
+			</div>
+		</div>
+	    <div class="slide" id="slide7">
+			<div class="row">
+				<h1>PhpInfo + Створення архіву + Відправка архіву</h1>
+				<p><img src="img/ps_install_08.png"></img></p>
+				<p>Для перегляду інформації по PHP натисніть "<strong>PhpInfo</strong>"</p>
+				<p>Щоб не чекати таймауту операції по архівуванню та відправці копії Бази Даних, можете ініціалізувати вручну шляхом натискання "<strong>Створити архів</strong>" чи "<strong>Створити архів БД та відправити на пошту</strong>".</p>
+			</div>
+		</div>
+
+	</div>
+
+	<div class="section" id="section3">
+		<div class="slide" id="slide1">
+			<div class="row">
+				<h1>Управління довідниками</h1>
+				<p>Якщо у користувача є права модератора йому доступне меню "<strong>Адміністрування</strong>" / "<strong>Довідники</strong>"</p>
+				<p><img src="img/ps_ndi_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Управління довідниками - Структура</h1>
+				<p>Є можливість додавати нові записи, редагувати та вилучати записи. Будьте уважні при редагуванні структури, краще вилучіть не вірні дані, а введіть вірні через форму додавання. Редагування приведе до змін по всій базі даних.</p>
+				<p><img src="img/ps_ndi_01.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Управління довідниками - Номенклатура</h1>
+				<p>Є можливість додавати нові записи, редагувати та вилучати записи. Будьте уважні при редагуванні номенклатури, краще вилучіть не вірні дані, а введіть вірні через форму додавання. Редагування приведе до змін по всій базі даних.</p>
+				<p><img src="img/ps_ndi_02.png"></img></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="section" id="section4">
+		<div class="slide" id="slide1">
+			<div class="row">
+				<h1>Управління Користувачами</h1>
+				<p>Якщо у користувача є права на управління користувачами, йому доступне меню "<strong>Адміністрування</strong>" / "<strong>Управління користувачами</strong>"</p>
+				<p><img src="img/ps_users_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Дії з користувачами</h1>
+				<p>В даному розділі, можна додавати нових, редагувати, вилучати та активувати/деактивувати користувачів</p>
+				<p><img src="img/ps_users_01.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Введення нового користувача стр.1</h1>
+				<p><img src="img/ps_users_02.png"></img></p>
+				<p>1. <strong>Логін</strong>* - Рекомендуеться продублювати логін домена (AD).</p>
+				<p>2. <strong>Введіть новий пароль</strong>* - Майбутній пароль користувача.</p>
+				<p>3. <strong>Повторіть новий пароль</strong>* - Повторіть пароль користувача.</p>
+				<p>4. <strong>Прізвище І.П.</strong>* - Ім'я користувача в системі, рекомендується по масці: Прізвище І.П.</p>
+				<p><br>* - Можна використувувати будь-які символи, латиниці, кирилиці, знаки, цифри, єрогліфи, спецсимволи... взагалі будь-які.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Введення нового користувача стр.2</h1>
+				<p><img src="img/ps_users_03.png"></img></p>
+				<p>5. <strong>Структура</strong>* - Оберіть стуктуру для користувача.</p>
+				<p><br>* - Для вибору кількох - зажміть <kbd>CTRL</kbd> на клавіатурі та клікайте мишкою, повторний клік зніме виділення.</p>
+				<p>** - Перед додаванням користувача, потрібно заповнити довідники Структури та Номенклатури, якщо дане поле буде порожнім, додавання користувача не відбудеться.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide5">
+			<div class="row">
+				<h1>Введення нового користувача стр.3</h1>
+				<p><img src="img/ps_users_04.png"></img></p>
+				<p>6. <strong>Присвоєний IP</strong>* - Дане поле буде звірятись, з даними "<strong>Авторизація по IP</strong>" та "<strong>Авторизація з іншого IP</strong>".</p>
+				<p>7. <strong>Внутрішня ел. адреса</strong>* - E-mail в організації.</p>
+				<p>8. <strong>Зовнішня ел. адреса</strong>* - Особистий E-mail.</p>
+				<p>9. <strong>№ IP телефону</strong>* - Прямий номер телефону.</p>
+				<p>10. <strong>№ Стаціонарного тел.</strong>* - Міський номер телефону.</p>
+				<p>11. <strong>№ Моб. телефону</strong>* - Мобільний номер телефону.</p>
+				<p><br>* - Не обов'язкове до заповнення.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide6">
+			<div class="row">
+				<h1>Введення нового користувача стр.4</h1>
+				<p><img src="img/ps_users_05.png"></img></p>
+				<p>6. <strong>Авторизація з іншого IP</strong> - Дозволити користувачу авторизуватись з іншої IP-адреси, ніж вказана в полі "<strong>Присвоєний IP</strong>".</p>
+				<p>7. <strong>Авторизація по IP</strong> - Якщо користувач відкриває АС Журнал з IP-адреси вказаної в полі "<strong>Присвоєний IP</strong>", відбуває автоматичне розпізнавання користувача.</p>
+				<p>8. <strong>Мова на сайті</strong> - мовний файл, який знаходиться в папці <kbd>inc/lang/*.php</kbd>, де * - це ініціали мови.</p>
+				<p>9. <strong>Права користувача</strong> - Право на зміну особистого паролю.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide7">
+			<div class="row">
+				<h1>Введення нового користувача стр.5</h1>
+				<p><img src="img/ps_users_06.png"></img></p>
+				<p>6. <strong>Зміна глобальних налаштувань</strong> - Дозволити користувачу доступ до меню "<strong>Глобальні налаштування</strong>".</p>
+				<p>7. <strong>Перегляд журналу роботи</strong> - Дозволити користувачу доступ до меню "<strong>Перегляд журналу роботи</strong>". Технічна інформація про роботу АС Журнал.</p>
+				<p>8. <strong>Управління користувачами</strong> - Дозволити користувачу доступ до меню "<strong>Управління користувачами</strong>".</p>
+				<p>9. <strong>Управління доступом</strong> - Дозволити користувачу доступ до меню "<strong>Управління доступом</strong>". Можливість блокування/розблокування IP адрес.</p>
+				<p>10. <strong>Права модератора</strong> - Дає доступ до: "<strong>Довідників</strong>", можливіть редагувати всі введені номери в журналах (при цьому доступна вся номенклатура та управління файлами), вилучати останній введений номер, використовувати модераторскі команди в чаті.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide8">
+			<div class="row">
+				<h1>Введення нового користувача стр.6</h1>
+				<p><img src="img/ps_users_07.png"></img></p>
+				<p>11. <strong>Активувати</strong> - Дозволити працювати в системі, якщо користувач де-активований - він не може авторизуватись.</p>
+				<p>12. <strong>Настройки приватності</strong>* - Оберіть, які права в журналах буде мати користувач. Якщо відсутні права "<strong>Бачити всю...</strong>" - користувачу будуть доступні тільки його записи.</p>
+				<p>Для збереження даних натисніть "<strong>Відправити</strong>". Якщо відсутні помилки, зміни будуть збережені.</p>
+				<p><br>* - Для вибору кількох - зажміть <kbd>CTRL</kbd> на клавіатурі та клікайте мишкою, повторний клік зніме виділення.</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="section" id="section5">
+		<div class="row">
+			<h1>Перегляд журналу роботи</h1>
+			<p><img src="img/ps_log_00.png"></img></p>
+			<p>Якщо у користувач є права на "<strong>Перегляд журналу роботи</strong>" йому доступне відповідне меню в "<strong>Адміністрування</strong>".</p>
+			<p><br>В даному меню користувач може ознайомитись з технічною інформацією, яка наповнюється автоматично. Вилучення даних не можливе. Дані не потрапляють в резервну копію.</p>
+		</div>
+	</div>
+
+	<div class="section" id="section6">
+		<div class="row">
+			<h1>Управління доступом</h1>
+			<p><img src="img/ps_ban_00.png"></img></p>
+			<p>Якщо у користувач є права на "<strong>Управління доступом</strong>" йому доступне відповідне меню в "<strong>Адміністрування</strong>".</p>
+			<p><br>В даному меню користувач може заблокувати доступ по IP до журналу, або відновити його вилучивши блокування.</p>
+		</div>
+	</div>
+
+	<div class="section" id="section7">
+		<div class="slide" id="slide1">
+			<div class="row">
+				<h1>Віхідна кореспонденція</h1>
+				<p><img src="img/ps_in_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Вхідна кореспонденція - Опис</h1>
+				<p><img src="img/ps_in_01.png"></img></p>
+				<p><img src="../templates/images/home2.png"></img> - Перша сторінка.</p>
+				<p><img src="../templates/images/add.png"></img> - Додати новий запис.</p>
+				<p><img src="../templates/images/search2.png"></img> - Форма пошуку.</p>
+				<p><img src="img/ps_in_02.png"></img> - Перехід між роками.</p>
+				<p><img src="img/ps_in_03.png"></img> - Показано X із Y, де X - к-ть записів на сторінці, Y - К-ть записів в БД.</p>
+				<p><img src="img/ps_in_04.png"></img> - Користувач може змінити к-ть номерів, які будуть йому показані, для цього треба змінити цифру і нітиснути <kbd>Enter</kbd>.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Форма додавання вхідного документу</h1>
+				<p>У даній формі поле "<strong>Строк виконання</strong>" не обов'язкове до заповнення.</p>
+				<p>Поля "<strong>Строк виконання</strong>"* та "<strong>Дата, час одержання</strong>"* Мають бути у форматі: <kbd>DD.MM.YYYY HH:II:SS</kbd></p>
+				<p>Де DD - день (01, 02, ... 31), MM - місяць (01, 02, ... 12), YYYY - рік (4 цифри), HH - години (01, 02, ... 23), II - хвилини (01, 02, ... 59), SS - секунди (01, 02, ... 59).</p>
+				<p>* Час не обв'язково вказувати.</p>
+				<p>При потребі можна обрати не тільки основного виконавця, а додатково користувачів, яких потрібно також проінформувати. Для цього після вибору основного виконавця натисніть "<strong>Поставити до відома інших користувачів</strong>" та відмітьте необхідних.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Розширена інформація по номеру</h1>
+				<p><img src="img/ps_in_05.png"></img></p>
+				<p>Натисніть на номер документу, для перегляду розширеної інформації.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide5">
+			<div class="row">
+				<img src="img/ps_in_06.png"></img>
+			</div>
+		</div>
+		<div class="slide" id="slide6">
+			<div class="row">
+				<h1>Дії з номером, опис кнопок</h1>
+				<p><img src="img/ps_in_07.png"></img></p>
+				<p><a role="button" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-original-title="Закрити"></span></a> Закрити дане вікно.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-ok" aria-hidden="true" data-toggle="tooltip" data-original-title="Відмітити як виконаний"></span></a> Відмітити як виконаний - Поставити відмітку про виконання, якщо користувач є основним виконавцем чи модератором.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-send" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити вихідний номер"></span></a> Створити вихідний номер - Відкрити форму додавання вихідного номеру та підставити дані, після додавання відмітити номер як виконаний.</p>
+				<p><a role="button" class="btn btn-info"><span class="glyphicon glyphicon-random" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити по шаблону"></span></a> Створити по шаблону - перехід у форму додавання нового номеру та авто-вставка даних із цього номеру.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true" data-toggle="tooltip" data-original-title="Управління файлами"></span></a> Управління файлами - перехід до перегляду/редагування файлів по цьому номеру.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-original-title="Редагувати"></span></a> Редагування номеру - перехід до форми редагування номеру.</p>
+				<p><a role="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" data-toggle="tooltip" data-original-title="Удалити"></span></a> Вилучення номеру - Вилучити номер з Бази Даних, можливе вилучення тільки останього номеру.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide7">
+			<div class="row">
+				<h1>Пошук номерів</h1>
+				<p><img src="img/ps_in_08.png"></img></p>
+				<p>Для швидкого пошуку, введіть номер документу та натисніть кнопку "<strong>Шукати номер</strong>".</p>
+				<p>Для більш детального пошуку, оберіть інші критерії пошуку згідно форми.</p>
+				<p>Якщо потрібно щоб результати пошуку збереглись у файл, поставте галочку на "<strong>Результати отримати файлом</strong>".</p>
+				<p><img src="img/ps_in_09.png"></img></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="section" id="section8">
+		<div class="slide" id="slide1">
+			<div class="row">
+				<h1>Вхідна ел. пошта</h1>
+				<p><img src="img/ps_in_ep_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Вхідна ел. пошта - Опис</h1>
+				<p><img src="img/ps_in_ep_01.png"></img></p>
+				<p><a class="btn btn-default" role="button"><span class="glyphicon glyphicon-home" aria-hidden="true" data-toggle="tooltip" data-original-title="Перша сторінка"></span></a> - Перша сторінка.</p>
+				<p><a class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" data-original-title="Додати запис"></span></a> - Додати запис.</p>
+				<p><a class="btn btn-warning" role="button"><span class="glyphicon glyphicon-envelope" aria-hidden="true" data-toggle="tooltip" data-original-title="Додати із Поштового Сервера"></span></a> - Додати із Поштового Сервера. Якщо підключене розшерення IMAP в PHP.ini <kbd>extension=php_imap.dll</kbd>, можна скористатись імпортом листа із поштового сервера ДКСУ.</p>
+				<p><a class="btn btn-info" role="button"><span class="glyphicon glyphicon-search" aria-hidden="true" data-toggle="tooltip" data-original-title="Розширений пошук"></span></a> - Розширений пошук документу.</p>
+				<p><img src="img/ps_in_02.png"></img> - Перехід між роками.</p>
+				<p><img src="img/ps_in_03.png"></img> - Показано X із Y, де X - к-ть записів на сторінці, Y - К-ть записів в БД.</p>
+				<p><img src="img/ps_in_04.png"></img> - Користувач може змінити к-ть номерів, які будуть йому показані, для цього треба змінити цифру і нітиснути <kbd>Enter</kbd>.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Форма додавання вхідного ел. документу</h1>
+				<p>У даній формі поле "<strong>Строк виконання</strong>" не обов'язкове до заповнення.</p>
+				<p>Поля "<strong>Строк виконання</strong>"* та "<strong>Дата, час одержання</strong>"* Мають бути у форматі: <kbd>DD.MM.YYYY HH:II:SS</kbd></p>
+				<p>Де DD - день (01, 02, ... 31), MM - місяць (01, 02, ... 12), YYYY - рік (4 цифри), HH - години (01, 02, ... 23), II - хвилини (01, 02, ... 59), SS - секунди (01, 02, ... 59).</p>
+				<p>* Час не обв'язково вказувати.</p>
+				<p>При потребі можна обрати не тільки основного виконавця, а додатково користувачів, яких потрібно також проінформувати. Для цього після вибору основного виконавця натисніть "<strong>Поставити до відома інших користувачів</strong>" та відмітьте необхідних.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Додавання із поштового сервера стр.1</h1>
+				<p><img src="img/ps_in_ep_02.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide5">
+			<div class="row">
+				<h1>Додавання із поштового сервера стр.2</h1>
+				<p>Натисніть на номер "<strong>IMAP №</strong>" для імпорту даних в форму, файл-лист EML буде додано до файлів нового номеру.</p>
+				<p><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> - натисніть для скачування файл-листа EML, для перегляду.</p>
+				<p>Для перегляду старіших листів, натисніть "<strong>Показати старіші</strong>".</p>
+				<p><br>Зверніть увагу, що функція "Додавання із поштового сервера" напряму залежить від кількості листів в папці "Вхідні", швидкості каналів зв'язку та навантаження в даний момент на поштовий сервер. Рекомендований термін зберігання листів у папці "Вхідні" 60 днів.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide6">
+			<div class="row">
+				<h1>Розширена інформація по номеру</h1>
+				<p><img src="img/ps_in_ep_03.png"></img></p>
+				<p>Натисніть на номер документу, для перегляду розширеної інформації.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide7">
+			<div class="row">
+				<img src="img/ps_in_ep_04.png"></img>
+			</div>
+		</div>
+		<div class="slide" id="slide8">
+			<div class="row">
+				<h1>Дії з номером, опис кнопок</h1>
+				<p><img src="img/ps_in_ep_05.png"></img></p>
+				<p><a role="button" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-original-title="Закрити"></span></a> Закрити дане вікно.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-ok" aria-hidden="true" data-toggle="tooltip" data-original-title="Відмітити як виконаний"></span></a> Відмітити як виконаний - Поставити відмітку про виконання, якщо користувач є основним виконавцем чи модератором.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-send" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити вихідний номер"></span></a> Створити вихідний номер - Відкрити форму додавання вихідного номеру та підставити дані, після додавання відмітити номер як виконаний.</p>
+				<p><a role="button" class="btn btn-info"><span class="glyphicon glyphicon-random" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити по шаблону"></span></a> Створити по шаблону - перехід у форму додавання нового номеру та авто-вставка даних із цього номеру.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true" data-toggle="tooltip" data-original-title="Управління файлами"></span></a> Управління файлами - перехід до перегляду/редагування файлів по цьому номеру.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-original-title="Редагувати"></span></a> Редагування номеру - перехід до форми редагування номеру.</p>
+				<p><a role="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" data-toggle="tooltip" data-original-title="Удалити"></span></a> Вилучення номеру - Вилучити номер з Бази Даних, можливе вилучення тільки останього номеру.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide9">
+			<div class="row">
+				<h1>Пошук номерів</h1>
+				<p><img src="img/ps_in_08.png"></img></p>
+				<p>Для швидкого пошуку, введіть номер документу та натисніть кнопку "<strong>Шукати номер</strong>".</p>
+				<p>Для більш детального пошуку, оберіть інші критерії пошуку згідно форми.</p>
+				<p>Якщо потрібно щоб результати пошуку збереглись у файл, поставте галочку на "<strong>Результати отримати файлом</strong>".</p>
+				<p><img src="img/ps_in_09.png"></img></p>
+			</div>
+		</div>
+	</div>
+
+	<div class="section" id="section9">
+		<div class="slide" id="slide1">
+			<div class="row">
+				<h1>Вихідна кореспонденція + бланки</h1>
+				<p><img src="img/ps_out_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Вхідна кореспонденція - Опис</h1>
+				<p><img src="img/ps_out_01.png"></img></p>
+				<p><img src="../templates/images/home2.png"></img> - Перша сторінка.</p>
+				<p><img src="../templates/images/add.png"></img> - Додати новий запис.</p>
+				<p><img src="../templates/images/search2.png"></img> - Форма пошуку.</p>
+				<p><img src="img/ps_in_02.png"></img> - Перехід між роками.</p>
+				<p><img src="img/ps_out_03.png"></img> - Навігація по сторінкам.</p>
+				<p><img src="img/ps_out_02.png"></img> - Показано X із Y, де X - к-ть записів на сторінці, Y - К-ть записів в БД.</p>
+				<p><img src="img/ps_in_04.png"></img> - Користувач може змінити к-ть номерів, які будуть йому показані, для цього треба змінити цифру і нітиснути <kbd>Enter</kbd>.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Форма додавання вихідної кореспонденції</h1>
+				<p>У даній формі поле "<strong>Відповідь на №</strong>" не обов'язкове до заповнення.</p>
+				<p>Якщо потрібно зареєструвати бланк, ставте відмітку "<strong>Зареєструвати бланк</strong>". Після введення нового номеру, додатково буде показаний номер зареєстрованого бланку.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Розширена інформація по номеру</h1>
+				<p><img src="img/ps_out_04.png"></img></p>
+				<p>Натисніть на номер документу, для перегляду розширеної інформації.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide5">
+			<div class="row">
+				<img src="img/ps_out_05.png"></img>
+			</div>
+		</div>
+		<div class="slide" id="slide6">
+			<div class="row">
+				<h1>Дії з номером, опис кнопок</h1>
+				<p><img src="img/ps_out_06.png"></img></p>
+				<p><a role="button" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-original-title="Закрити"></span></a> Закрити дане вікно.</p>
+				<p><a role="button" class="btn btn-info"><span class="glyphicon glyphicon-random" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити по шаблону"></span></a> Створити по шаблону - перехід у форму додавання нового номеру та авто-вставка даних із цього номеру.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true" data-toggle="tooltip" data-original-title="Управління файлами"></span></a> Управління файлами - перехід до перегляду/редагування файлів по цьому номеру.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-original-title="Редагувати"></span></a> Редагування номеру - перехід до форми редагування номеру.</p>
+				<p><a role="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" data-toggle="tooltip" data-original-title="Удалити"></span></a> Вилучення номеру - Вилучити номер з Бази Даних, можливе вилучення тільки останього номеру.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide7">
+			<div class="row">
+				<h1>Пошук номерів</h1>
+				<p><img src="img/ps_in_08.png"></img></p>
+				<p>Для швидкого пошуку, введіть номер документу та натисніть кнопку "<strong>Шукати номер</strong>".</p>
+				<p>Для більш детального пошуку, оберіть інші критерії пошуку згідно форми.</p>
+				<p>Якщо потрібно щоб результати пошуку збереглись у файл, поставте галочку на "<strong>Результати отримати файлом</strong>".</p>
+				<p><img src="img/ps_in_09.png"></img></p>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+</body>
+</html>
