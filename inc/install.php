@@ -17,13 +17,13 @@ if (isset($_POST['install_type']))
 	{
 		if ($_POST['install_type'] == "new" OR $_POST['install_type'] == "config" OR $_POST['install_type'] == "backup" ) $post_install_type = 1;
 	}
-if (preg_match("/^([a-z0-9_\.-]+)@([a-z0-9_\.-]+)\.([a-z\.]{2,6})$/", $_POST['email']))
+if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL) === FALSE)
 	{
-		$post_email = 1;
+		$post_email = 0;
 	}
 	else
 	{
-		$post_email = 0;
+		$post_email = 1;
 	}
 if ($post_mysql <> 1) $error .= "Не вказаний сервер MySQL<hr>";
 if ($post_login <> 1) $error .= "Не вказаний логін MySQL<hr>";
