@@ -138,9 +138,9 @@ if ($error == "")
 						$query = explode(";",file_get_contents($_FILES['backup_file']['tmp_name']));
 						foreach ($query as $q)
 							{
-								if (strlen($q) > 10) @mysql_query($q);
+								if (strlen($q) > 20) @mysql_query($q);
 							}
-						echo $page."</head><body>Журнал успішно відновлено із резервної копії, файл налаштувань створено, перейдіть до <a href=\"index.php\">Головної сторінки</a>. Пароль Адміністратора: admin<hr></body></html>";
+						echo $page."</head><body>Журнал успішно відновлено із резервної копії, файл налаштувань створено, перейдіть до <a href=\"index.php\">Головної сторінки</a>.<hr></body></html>";
 					}
 			}
 			else
