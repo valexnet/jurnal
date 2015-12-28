@@ -245,7 +245,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="section" id="section5">
 		<div class="row">
 			<h1>Перегляд журналу роботи</h1>
@@ -263,34 +263,217 @@
 			<p><br>В даному меню користувач може заблокувати доступ по IP до журналу, або відновити його вилучивши блокування.</p>
 		</div>
 	</div>
-	
+
 	<div class="section" id="section7">
 		<div class="slide" id="slide1">
 			<div class="row">
-				<h1>Вхідна кореспонденція</h1>
-				<p>В розробці...</p>
+				<h1>Віхідна кореспонденція</h1>
+				<p><img src="img/ps_in_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Вхідна кореспонденція - Опис</h1>
+				<p><img src="img/ps_in_01.png"></img></p>
+				<p><img src="../templates/images/home2.png"></img> - Перша сторінка.</p>
+				<p><img src="../templates/images/add.png"></img> - Додати новий запис.</p>
+				<p><img src="../templates/images/search2.png"></img> - Форма пошуку.</p>
+				<p><img src="img/ps_in_02.png"></img> - Перехід між роками.</p>
+				<p><img src="img/ps_in_03.png"></img> - Показано X із Y, де X - к-ть записів на сторінці, Y - К-ть записів в БД.</p>
+				<p><img src="img/ps_in_04.png"></img> - Користувач може змінити к-ть номерів, які будуть йому показані, для цього треба змінити цифру і нітиснути <kbd>Enter</kbd>.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Форма додавання вхідного документу</h1>
+				<p>У даній формі поле "<strong>Строк виконання</strong>" не обов'язкове до заповнення.</p>
+				<p>Поля "<strong>Строк виконання</strong>"* та "<strong>Дата, час одержання</strong>"* Мають бути у форматі: <kbd>DD.MM.YYYY HH:II:SS</kbd></p>
+				<p>Де DD - день (01, 02, ... 31), MM - місяць (01, 02, ... 12), YYYY - рік (4 цифри), HH - години (01, 02, ... 23), II - хвилини (01, 02, ... 59), SS - секунди (01, 02, ... 59).</p>
+				<p>* Час не обв'язково вказувати.</p>
+				<p>При потребі можна обрати не тільки основного виконавця, а додатково користувачів, яких потрібно також проінформувати. Для цього після вибору основного виконавця натисніть "<strong>Поставити до відома інших користувачів</strong>" та відмітьте необхідних.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Розширена інформація по номеру</h1>
+				<p><img src="img/ps_in_05.png"></img></p>
+				<p>Натисніть на номер документу, для перегляду розширеної інформації.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide5">
+			<div class="row">
+				<img src="img/ps_in_06.png"></img>
+			</div>
+		</div>
+		<div class="slide" id="slide6">
+			<div class="row">
+				<h1>Дії з номером, опис кнопок</h1>
+				<p><img src="img/ps_in_07.png"></img></p>
+				<p><a role="button" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-original-title="Закрити"></span></a> Закрити дане вікно.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-ok" aria-hidden="true" data-toggle="tooltip" data-original-title="Відмітити як виконаний"></span></a> Відмітити як виконаний - Поставити відмітку про виконання, якщо користувач є основним виконавцем чи модератором.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-send" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити вихідний номер"></span></a> Створити вихідний номер - Відкрити форму додавання вихідного номеру та підставити дані, після додавання відмітити номер як виконаний.</p>
+				<p><a role="button" class="btn btn-info"><span class="glyphicon glyphicon-random" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити по шаблону"></span></a> Створити по шаблону - перехід у форму додавання нового номеру та авто-вставка даних із цього номеру.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true" data-toggle="tooltip" data-original-title="Управління файлами"></span></a> Управління файлами - перехід до перегляду/редагування файлів по цьому номеру.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-original-title="Редагувати"></span></a> Редагування номеру - перехід до форми редагування номеру.</p>
+				<p><a role="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" data-toggle="tooltip" data-original-title="Удалити"></span></a> Вилучення номеру - Вилучити номер з Бази Даних, можливе вилучення тільки останього номеру.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide7">
+			<div class="row">
+				<h1>Пошук номерів</h1>
+				<p><img src="img/ps_in_08.png"></img></p>
+				<p>Для швидкого пошуку, введіть номер документу та натисніть кнопку "<strong>Шукати номер</strong>".</p>
+				<p>Для більш детального пошуку, оберіть інші критерії пошуку згідно форми.</p>
+				<p>Якщо потрібно щоб результати пошуку збереглись у файл, поставте галочку на "<strong>Результати отримати файлом</strong>".</p>
+				<p><img src="img/ps_in_09.png"></img></p>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="section" id="section8">
 		<div class="slide" id="slide1">
 			<div class="row">
 				<h1>Вхідна ел. пошта</h1>
-				<p>В розробці...</p>
+				<p><img src="img/ps_in_ep_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Вхідна ел. пошта - Опис</h1>
+				<p><img src="img/ps_in_ep_01.png"></img></p>
+				<p><a class="btn btn-default" role="button"><span class="glyphicon glyphicon-home" aria-hidden="true" data-toggle="tooltip" data-original-title="Перша сторінка"></span></a> - Перша сторінка.</p>
+				<p><a class="btn btn-success" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" data-original-title="Додати запис"></span></a> - Додати запис.</p>
+				<p><a class="btn btn-warning" role="button"><span class="glyphicon glyphicon-envelope" aria-hidden="true" data-toggle="tooltip" data-original-title="Додати із Поштового Сервера"></span></a> - Додати із Поштового Сервера. Якщо підключене розшерення IMAP в PHP.ini <kbd>extension=php_imap.dll</kbd>, можна скористатись імпортом листа із поштового сервера ДКСУ.</p>
+				<p><a class="btn btn-info" role="button"><span class="glyphicon glyphicon-search" aria-hidden="true" data-toggle="tooltip" data-original-title="Розширений пошук"></span></a> - Розширений пошук документу.</p>
+				<p><img src="img/ps_in_02.png"></img> - Перехід між роками.</p>
+				<p><img src="img/ps_in_03.png"></img> - Показано X із Y, де X - к-ть записів на сторінці, Y - К-ть записів в БД.</p>
+				<p><img src="img/ps_in_04.png"></img> - Користувач може змінити к-ть номерів, які будуть йому показані, для цього треба змінити цифру і нітиснути <kbd>Enter</kbd>.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Форма додавання вхідного ел. документу</h1>
+				<p>У даній формі поле "<strong>Строк виконання</strong>" не обов'язкове до заповнення.</p>
+				<p>Поля "<strong>Строк виконання</strong>"* та "<strong>Дата, час одержання</strong>"* Мають бути у форматі: <kbd>DD.MM.YYYY HH:II:SS</kbd></p>
+				<p>Де DD - день (01, 02, ... 31), MM - місяць (01, 02, ... 12), YYYY - рік (4 цифри), HH - години (01, 02, ... 23), II - хвилини (01, 02, ... 59), SS - секунди (01, 02, ... 59).</p>
+				<p>* Час не обв'язково вказувати.</p>
+				<p>При потребі можна обрати не тільки основного виконавця, а додатково користувачів, яких потрібно також проінформувати. Для цього після вибору основного виконавця натисніть "<strong>Поставити до відома інших користувачів</strong>" та відмітьте необхідних.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Додавання із поштового сервера стр.1</h1>
+				<p><img src="img/ps_in_ep_02.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide5">
+			<div class="row">
+				<h1>Додавання із поштового сервера стр.2</h1>
+				<p>Натисніть на номер "<strong>IMAP №</strong>" для імпорту даних в форму, файл-лист EML буде додано до файлів нового номеру.</p>
+				<p><span class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span> - натисніть для скачування файл-листа EML, для перегляду.</p>
+				<p>Для перегляду старіших листів, натисніть "<strong>Показати старіші</strong>".</p>
+				<p><br>Зверніть увагу, що функція "Додавання із поштового сервера" напряму залежить від кількості листів в папці "Вхідні", швидкості каналів зв'язку та навантаження в даний момент на поштовий сервер. Рекомендований термін зберігання листів у папці "Вхідні" 60 днів.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide6">
+			<div class="row">
+				<h1>Розширена інформація по номеру</h1>
+				<p><img src="img/ps_in_ep_03.png"></img></p>
+				<p>Натисніть на номер документу, для перегляду розширеної інформації.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide7">
+			<div class="row">
+				<img src="img/ps_in_ep_04.png"></img>
+			</div>
+		</div>
+		<div class="slide" id="slide8">
+			<div class="row">
+				<h1>Дії з номером, опис кнопок</h1>
+				<p><img src="img/ps_in_ep_05.png"></img></p>
+				<p><a role="button" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-original-title="Закрити"></span></a> Закрити дане вікно.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-ok" aria-hidden="true" data-toggle="tooltip" data-original-title="Відмітити як виконаний"></span></a> Відмітити як виконаний - Поставити відмітку про виконання, якщо користувач є основним виконавцем чи модератором.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-send" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити вихідний номер"></span></a> Створити вихідний номер - Відкрити форму додавання вихідного номеру та підставити дані, після додавання відмітити номер як виконаний.</p>
+				<p><a role="button" class="btn btn-info"><span class="glyphicon glyphicon-random" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити по шаблону"></span></a> Створити по шаблону - перехід у форму додавання нового номеру та авто-вставка даних із цього номеру.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true" data-toggle="tooltip" data-original-title="Управління файлами"></span></a> Управління файлами - перехід до перегляду/редагування файлів по цьому номеру.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-original-title="Редагувати"></span></a> Редагування номеру - перехід до форми редагування номеру.</p>
+				<p><a role="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" data-toggle="tooltip" data-original-title="Удалити"></span></a> Вилучення номеру - Вилучити номер з Бази Даних, можливе вилучення тільки останього номеру.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide9">
+			<div class="row">
+				<h1>Пошук номерів</h1>
+				<p><img src="img/ps_in_08.png"></img></p>
+				<p>Для швидкого пошуку, введіть номер документу та натисніть кнопку "<strong>Шукати номер</strong>".</p>
+				<p>Для більш детального пошуку, оберіть інші критерії пошуку згідно форми.</p>
+				<p>Якщо потрібно щоб результати пошуку збереглись у файл, поставте галочку на "<strong>Результати отримати файлом</strong>".</p>
+				<p><img src="img/ps_in_09.png"></img></p>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="section" id="section9">
 		<div class="slide" id="slide1">
 			<div class="row">
 				<h1>Вихідна кореспонденція + бланки</h1>
-				<p>В розробці...</p>
+				<p><img src="img/ps_out_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Вхідна кореспонденція - Опис</h1>
+				<p><img src="img/ps_out_01.png"></img></p>
+				<p><img src="../templates/images/home2.png"></img> - Перша сторінка.</p>
+				<p><img src="../templates/images/add.png"></img> - Додати новий запис.</p>
+				<p><img src="../templates/images/search2.png"></img> - Форма пошуку.</p>
+				<p><img src="img/ps_in_02.png"></img> - Перехід між роками.</p>
+				<p><img src="img/ps_out_03.png"></img> - Навігація по сторінкам.</p>
+				<p><img src="img/ps_out_02.png"></img> - Показано X із Y, де X - к-ть записів на сторінці, Y - К-ть записів в БД.</p>
+				<p><img src="img/ps_in_04.png"></img> - Користувач може змінити к-ть номерів, які будуть йому показані, для цього треба змінити цифру і нітиснути <kbd>Enter</kbd>.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Форма додавання вихідної кореспонденції</h1>
+				<p>У даній формі поле "<strong>Відповідь на №</strong>" не обов'язкове до заповнення.</p>
+				<p>Якщо потрібно зареєструвати бланк, ставте відмітку "<strong>Зареєструвати бланк</strong>". Після введення нового номеру, додатково буде показаний номер зареєстрованого бланку.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Розширена інформація по номеру</h1>
+				<p><img src="img/ps_out_04.png"></img></p>
+				<p>Натисніть на номер документу, для перегляду розширеної інформації.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide5">
+			<div class="row">
+				<img src="img/ps_out_05.png"></img>
+			</div>
+		</div>
+		<div class="slide" id="slide6">
+			<div class="row">
+				<h1>Дії з номером, опис кнопок</h1>
+				<p><img src="img/ps_out_06.png"></img></p>
+				<p><a role="button" class="btn btn-default"><span class="glyphicon glyphicon-remove" aria-hidden="true" data-toggle="tooltip" data-original-title="Закрити"></span></a> Закрити дане вікно.</p>
+				<p><a role="button" class="btn btn-info"><span class="glyphicon glyphicon-random" aria-hidden="true" data-toggle="tooltip" data-original-title="Створити по шаблону"></span></a> Створити по шаблону - перехід у форму додавання нового номеру та авто-вставка даних із цього номеру.</p>
+				<p><a role="button" class="btn btn-success"><span class="glyphicon glyphicon-floppy-save" aria-hidden="true" data-toggle="tooltip" data-original-title="Управління файлами"></span></a> Управління файлами - перехід до перегляду/редагування файлів по цьому номеру.</p>
+				<p><a role="button" class="btn btn-warning"><span class="glyphicon glyphicon-edit" aria-hidden="true" data-toggle="tooltip" data-original-title="Редагувати"></span></a> Редагування номеру - перехід до форми редагування номеру.</p>
+				<p><a role="button" class="btn btn-danger"><span class="glyphicon glyphicon-remove-circle" aria-hidden="true" data-toggle="tooltip" data-original-title="Удалити"></span></a> Вилучення номеру - Вилучити номер з Бази Даних, можливе вилучення тільки останього номеру.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide7">
+			<div class="row">
+				<h1>Пошук номерів</h1>
+				<p><img src="img/ps_in_08.png"></img></p>
+				<p>Для швидкого пошуку, введіть номер документу та натисніть кнопку "<strong>Шукати номер</strong>".</p>
+				<p>Для більш детального пошуку, оберіть інші критерії пошуку згідно форми.</p>
+				<p>Якщо потрібно щоб результати пошуку збереглись у файл, поставте галочку на "<strong>Результати отримати файлом</strong>".</p>
+				<p><img src="img/ps_in_09.png"></img></p>
 			</div>
 		</div>
 	</div>
-	
+
 </div>
 
 </body>

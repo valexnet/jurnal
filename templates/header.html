@@ -33,14 +33,14 @@
 				}, 500);
 		}
 	// ]]>
-</script>
-<style>
-	.LockOff { display: none; visibility: hidden; }
-	.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 105%; height: 105%; background-color: #fff; text-align: center; padding-top: 15%; }
+	</script>
+	<style>
+		.LockOff { display: none; visibility: hidden; }
+		.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 105%; height: 105%; background-color: #fff; text-align: center; padding-top: 15%; }
 
-	.affix { top: 0; width: 100%; }
-	.affix + .container-fluid { padding-top: 70px; }
-</style>
+		.affix { top: 0; width: 100%; }
+		.affix + .container-fluid { padding-top: 70px; }
+	</style>
 </head>
 <body>
 <div class="container text-center" style="margin-top: 10px;">
@@ -59,6 +59,7 @@
 					<p>
 						<div class="dropdown">
 							<a class="btn btn-default btn-sm" href="index.php" onclick="skm_LockScreen()">{LANG_HOME}</a>
+							<a class="btn btn-info btn-sm" href="docs/" onclick="skm_LockScreen()" data-toggle="tooltip" data-placement="bottom" data-original-title="{LANG_DOCS}">?</a>
 							{PRE_MENU}
 							{MENU}
 							{AFT_MENU}
