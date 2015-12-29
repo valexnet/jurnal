@@ -3,6 +3,8 @@
 // Українська мова
 $lang = array (
 
+'LANG_JURNAL_OUT_HOW_FULL' => "Спосіб відправки листа",
+'LANG_DOCS' => "Допомога",
 'LANG_INFORM_USERS_IS_SELECTED' => "До відома обрано",
 'LANG_INFORM_USERS' => "Користувачі до ознайомлення",
 'LANG_INFORM_OTHER_USERS' => "Поставити до відома інших користувачів",
@@ -634,7 +636,8 @@ $lang = array (
 'LANG_FORM_NO_TEMA' => "Тема листа не вказана!",
 'LANG_FORM_NO_NOM' => "Не вказано номенклатуру!",
 'RETURN_N' => "Ваш вихідний номер",
-'RETURN_REGULAR_N' => "Рекомендована назва файлу та теми листа",
+'RETURN_REGULAR_NF' => "Рекомендована назва файлу",
+'RETURN_REGULAR_NT' => "Рекомендована назва теми листа",
 'LANG_JURNAL_OUT_FORM_ERROR_DATE' => "Дата Форми не співпадає з сьогоднішньою",
 'LANG_JURNAL_OUT_FORM_ERROR_FORM_ID' => "Ви намагаєтесь відправити Форму двічі.",
 'LANG_JURNAL_OUT_FORM_ERROR_NOM' => "Номенклатура вказана не вірно",

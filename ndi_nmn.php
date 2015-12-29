@@ -193,33 +193,11 @@ if ($user_p_mod == 1)
                 $numberall = mysql_num_rows($res);
                 if ($numberall > 0)
                     {
-                        $page .= file_get_contents("templates/ndi_nmn.html");
+                        $users = get_users_names(0);
+                        $queryes_num++;
+						$page .= file_get_contents("templates/ndi_nmn.html");
                         while ($row=mysql_fetch_array($res))
                             {
-                                if ($old_admin_id <> $row['user'])
-                                    {
-                                        $query2 = "SELECT `name` FROM `users` WHERE `id`='".$row['user']."' LIMIT 1 ;";
-                                        $res2 = mysql_query($query2) or die(mysql_error());
-                                        $queryes_num++;
-                                        if (mysql_num_rows($res2) > 0)
-                                            {
-                                                while ($row2=mysql_fetch_array($res2))
-                                                    {
-                                                        $user = $row2['name'];
-                                                        $old_admin_id = $row['user'];
-                                                        $old_admin_name = $user;
-                                                    }
-                                            }
-                                            else
-                                            {
-                                                $user = "{LANG_USERS_ADMIN_DELETED}";
-                                            }
-                                    }
-                                    else
-                                    {
-                                        $user = $old_admin_name;
-                                    }
-
                                 if ($old_structura_id <> $row['structura'])
                                     {
                                         $query3 = "SELECT `index` FROM `structura` WHERE `id`='".$row['structura']."' AND `work`='1' LIMIT 1 ;";
@@ -250,7 +228,7 @@ if ($user_p_mod == 1)
                                 $page_tmp .= "<tr valign=\"middle\" align=\"center\">
                                     <td".$bgcolor." height=\"20\">".$structura."-".$row['index']."</td>
                                     <td".$bgcolor." align=\"left\">".$row['name']."</td>
-                                    <td".$bgcolor.">".$user."</td>
+                                    <td".$bgcolor.">".$users[$row['user']]."</td>
                                     <td".$bgcolor.">".date('d.m.Y H:i:s', $row['time'])."</td>
                                     <td".$bgcolor.">".$row['do']."</td>
                                     <td".$bgcolor." valign=\"bottom\">

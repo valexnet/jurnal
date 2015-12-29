@@ -93,12 +93,6 @@ function Send($user_nick,$moder)
                         mysql_query("INSERT INTO `messages` (`ip`, `time`, `name`, `text`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$user_nick."', '<img src=\"".$a[1]."\" />')");
                     }
 
-                if (preg_match("/(http:\/\/|https:\/\/)img:(.*)/", $text, $a))
-                    {
-                        $do = 1;
-                        mysql_query("INSERT INTO `messages` (`ip`, `time`, `name`, `text`) VALUES ('".$_SERVER['REMOTE_ADDR']."', '".time()."', '".$user_nick."', '<img src=\"".$a[1]."\" />')");
-                    }
-
                 if (preg_match_all("~(http://[^ ]+|https://[^ ]+|ftp://[^ ]+)~", $text, $urls))
                     {
                         for ($i=0; $i< count($urls[0]); $i++)
@@ -106,7 +100,6 @@ function Send($user_nick,$moder)
                                 $text = str_replace($urls[0][$i], '<a href="'.$urls[0][$i].'" target="_blank"><b>'.$urls[0][$i].'</b></a>' , $text);
                             }
                     }
-
 
                 if ($do == 0)
                     {

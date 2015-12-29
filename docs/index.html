@@ -15,8 +15,8 @@
 	<script type="text/javascript">
 		$(document).ready(function() {
 			$('#fullpage').fullpage({
-				anchors: ['hello', 'navy', 'install', 'ndi', 'users', 'log', 'ban', 'jurnal_in', 'jurnal_in_ep', 'jurnal_out'],
-				sectionsColor: ['#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA'],
+				anchors: ['hello', 'navy', 'install', 'ndi', 'users', 'log', 'ban', 'jurnal_in', 'jurnal_in_ep', 'jurnal_out', 'chat'],
+				sectionsColor: ['#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC', '#FAFAFA', '#E1E5EC'],
 				css3: true,
 				menu: '#menu',
 				responsiveHeight: 700,
@@ -61,6 +61,7 @@
 			<div class="row">
 				<div class="col-md-4"><h3><a href="#log">Перегляд журналу роботи</a></h3></div>
 				<div class="col-md-4"><h3><a href="#ban">Управління доступом</a></h3></div>
+				<div class="col-md-4"><h3><a href="#chat">Чат</a></h3></div>
 			</div>
 			<div class="row">
 				<div class="col-md-4"><h3><a href="#jurnal_in">Вхідна кореспонденція</a></h3></div>
@@ -267,7 +268,7 @@
 	<div class="section" id="section7">
 		<div class="slide" id="slide1">
 			<div class="row">
-				<h1>Віхідна кореспонденція</h1>
+				<h1>Вхідна кореспонденція</h1>
 				<p><img src="img/ps_in_00.png"></img></p>
 			</div>
 		</div>
@@ -470,6 +471,55 @@
 				<p>Для більш детального пошуку, оберіть інші критерії пошуку згідно форми.</p>
 				<p>Якщо потрібно щоб результати пошуку збереглись у файл, поставте галочку на "<strong>Результати отримати файлом</strong>".</p>
 				<p><img src="img/ps_in_09.png"></img></p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="section" id="section10">
+		<div class="slide" id="slide1">
+			<div class="row">
+				<h1>Чат</h1>
+				<p><img src="img/ps_chat_00.png"></img></p>
+			</div>
+		</div>
+		<div class="slide" id="slide2">
+			<div class="row">
+				<h1>Чат - Опис</h1>
+				<p><img src="img/ps_chat_01.png"></img></p>
+				<p>"<strong>Очистити чат</strong>" - Очистити чат на стороні клієнта.</p>
+				<p>"<strong>Показати смайлики</strong>" - Показати/приховати набір самайликів.</p>
+				<p>"<strong>Звуки увімкнені</strong>" - Вкл/Викл звуки.</p>
+				<p>"<strong>Чат працює</strong>" - Можна зупинити/відновити Чат на стороні клієнта, наприклад якщо потрібно знайти потрібне повідомлення.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide3">
+			<div class="row">
+				<h1>Чат - Учасники</h1>
+				<p><img src="img/ps_chat_02.png"></img></p>
+				<p>Якщо користувач з правами адміна, він бачить IP адресу біля Імені.</p>
+				<p>Якщо натиснути на кнопку з іменем, імя користувача вставиться в чат виділеним жирним.</p>
+				<p>Якщо натиснути на кнопку "<strong>Всього: X</strong>" - оновиться список користувачів.</p>
+			</div>
+		</div>
+		<div class="slide" id="slide4">
+			<div class="row">
+				<h1>Чат - Команди</h1>
+				<p><img src="img/ps_chat_03.png"></img></p>
+				<p>Команди користувача:
+					<ul align="left">
+						<li><kbd>nick NewNick</kbd> - Зміна ніку на NewNick</li>
+						<li><kbd>me Текст повідомлення</kbd> - напис в чат жирним шрифтом від імені користувача.</li>
+						<li><kbd>img:http://treasury.gov.ua/images/img23.jpg</kbd> - Вставити малюнок в повідомлення.</li>
+					</ul>
+				</p>
+				<p>Команди модератора:
+					<ul align="left">
+						<li><kbd>red Текст повідомлення</kbd> - напис в чат червоним-жирним шрифтом від імені користувача</li>
+						<li><kbd>admin Текст повідомлення</kbd> - напис в чат червоним-жирним шрифтом.</li>
+						<li><kbd>admin clean</kbd> - Очистити чат від повідомлень в БД + у всіх клієнтів у браузерах.</li>
+						<li><kbd>admin ban 10.20.30.40</kbd> - Забанити IP-адресу. Вилучити блокування можна із "Адміністрування" - "Управління доступом".</li>
+					</ul>
+				</p>
 			</div>
 		</div>
 	</div>

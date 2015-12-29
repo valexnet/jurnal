@@ -346,7 +346,7 @@ if (isset($_SESSION['user_id']))
                                                                         $structura = $old_nom_index;
                                                                     }
 
-                                                                $ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row['name'],70,'<br>',false)),0,1));
+                                                                $ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row['name'],200,'<br>',false)),0,1));
                                                                 if($ndi_nom_name_tmp!=$row['name']) $ndi_nom_name_tmp .= "...";
 
                                                                 if ($_SESSION['error'] == 'true' AND $_SESSION['form_nom'] == $row['id'])
@@ -561,7 +561,7 @@ if (isset($_SESSION['user_id']))
                                                                                 $structura = $old_nom_index;
                                                                             }
 
-                                                                        $ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row5['name'],70,'<br>',false)),0,1));
+                                                                        $ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row5['name'],200,'<br>',false)),0,1));
                                                                         if($ndi_nom_name_tmp!=$row5['name']) $ndi_nom_name_tmp .= "...";
 
                                                                         if ($row['nom'] == $row5['id'])
@@ -642,7 +642,7 @@ if (isset($_SESSION['user_id']))
                                     {
                                         $structura = $old_nom_index;
                                     }
-                                $ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row['name'],70,'<br>',false)),0,1));
+                                $ndi_nom_name_tmp = implode(array_slice(explode('<br>',wordwrap($row['name'],200,'<br>',false)),0,1));
                                 if($ndi_nom_name_tmp!=$row['name']) $ndi_nom_name_tmp .= "...";
                                 $nom_tmp .= "<OPTION value = \"".$row['id']."\" >(".$structura."-".$row['index'].") ".$ndi_nom_name_tmp."</OPTION>";
                             }
@@ -1125,9 +1125,9 @@ if (isset($_SESSION['user_id']))
                                 $blank_num = "-";
                                 if (!empty($row['blank'])) $blank_num = $row['blank'];
 
-                                $how_img = "<img title=\"{LANG_HOW_1}\" alt=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
-                                if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_2}\" alt=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
-                                if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_3}\" alt=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
+                                $how_img = "<img data-toggle=\"tooltip\" data-original-title=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
+                                if ($row['how'] == 2) $how_img = "<img data-toggle=\"tooltip\" data-original-title=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
+                                if ($row['how'] == 3) $how_img = "<img data-toggle=\"tooltip\" data-original-title=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
 
                                 $need_serch_blank = "";
                                 if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
