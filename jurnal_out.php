@@ -1125,9 +1125,9 @@ if (isset($_SESSION['user_id']))
                                 $blank_num = "-";
                                 if (!empty($row['blank'])) $blank_num = $row['blank'];
 
-                                $how_img = "<img title=\"{LANG_HOW_1}\" alt=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
-                                if ($row['how'] == 2) $how_img = "<img title=\"{LANG_HOW_2}\" alt=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
-                                if ($row['how'] == 3) $how_img = "<img title=\"{LANG_HOW_3}\" alt=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
+                                $how_img = "<img data-toggle=\"tooltip\" data-original-title=\"{LANG_HOW_1}\" src=\"templates/images/book_addresses.png\">";
+                                if ($row['how'] == 2) $how_img = "<img data-toggle=\"tooltip\" data-original-title=\"{LANG_HOW_2}\" src=\"templates/images/user_business_boss.png\">";
+                                if ($row['how'] == 3) $how_img = "<img data-toggle=\"tooltip\" data-original-title=\"{LANG_HOW_3}\" src=\"templates/images/email_open.png\">";
 
                                 $need_serch_blank = "";
                                 if ($_GET['blank'] == "do") $need_serch_blank = "&blank=do&";
