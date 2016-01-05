@@ -32,6 +32,18 @@
 					document.getElementById('skm_LockPane').innerHTML = '<h2><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND} <h2>' + timer + '<h2></font></h2>';
 				}, 500);
 		}
+	function show_admin_menu()
+		{
+			var menu = document.getElementById('dropdown_admin_menu');
+			if (menu.className == "dropdown")
+				{
+					menu.className = 'dropdown open';
+				}
+				else
+				{
+					menu.className = 'dropdown';
+				}
+		}
 	// ]]>
 	</script>
 	<style>
@@ -57,7 +69,7 @@
 					</p>
 					{SHOW_C_ANO}
 					<p>
-						<div class="dropdown">
+						<div class="dropdown" id="dropdown_admin_menu">
 							<a class="btn btn-default btn-sm" href="index.php" onclick="skm_LockScreen()">{LANG_HOME}</a>
 							<a class="btn btn-info btn-sm" href="docs/" onclick="skm_LockScreen()" data-toggle="tooltip" data-placement="bottom" data-original-title="{LANG_DOCS}">?</a>
 							{PRE_MENU}

@@ -70,7 +70,7 @@ if (isset($_SESSION['user_id']))
                                     }
                                 if (!preg_match("/^[1-9][0-9]*$/", $_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
                                 if ($_POST['org_name'] == "") $error .= "{LANG_FORM_NO_ORG_NAME}<br>";
-                                if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
+                                if ($_POST['org_index'] == "") $_POST['org_index'] = "б/н";
                                 if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
                                 if ($_POST['make_visa'] == "") $error .= "{LANG_FORM_NO_MAKE_VISA}<br>";
 
@@ -449,7 +449,7 @@ if (isset($_SESSION['user_id']))
                                                     }
                                                 if (!preg_match("/^[1-9][0-9]*$/", $_POST['do_user'])) $error .= "{LANG_FORM_NO_DO_USER}<br>";
                                                 if ($_POST['org_name'] == "") $error .= "{LANG_FORM_NO_ORG_NAME}<br>";
-                                                if ($_POST['org_index'] == "") $error .= "{LANG_FORM_NO_ORG_INDEX}<br>";
+                                                if ($_POST['org_index'] == "") $_POST['org_index'] = "б/н";
                                                 if ($_POST['org_subj'] == "") $error .= "{LANG_FORM_NO_ORG_SUBJ}<br>";
                                                 if ($_POST['make_visa'] == "") $error .= "{LANG_FORM_NO_MAKE_VISA}<br>";
 
@@ -586,7 +586,7 @@ if (isset($_SESSION['user_id']))
                                                                         if (is_uploaded_file($FILE['tmp_name'][$i]))
                                                                             {
                                                                                 $file_new_name = $c_n_ray."_".$row['id']."_".$FILE['name'][$i];
-                                                                                if (preg_match("/^".$c_n_ray."_".$row['id']."_.*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
+                                                                                if (preg_match("/^".$c_n_ray."_".$row['id'].".*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
                                                                                 $file_name = "uploads/".$_SESSION['user_year']."/IN_EP/".$file_new_name;
                                                                                 $file_name = iconv('UTF-8', 'windows-1251', $file_name);
                                                                                 if (!file_exists($file_name))

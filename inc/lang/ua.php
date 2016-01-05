@@ -3,6 +3,7 @@
 // Українська мова
 $lang = array (
 
+'LANG_FORM_NO_MAKE_DATA' => "Не вірно вказане поле Строк Виконання. Шаблон: 20.01.2016 16:54:45",
 'LANG_JURNAL_OUT_HOW_FULL' => "Спосіб відправки листа",
 'LANG_DOCS' => "Допомога",
 'LANG_INFORM_USERS_IS_SELECTED' => "До відома обрано",

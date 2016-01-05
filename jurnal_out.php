@@ -761,7 +761,7 @@ if (isset($_SESSION['user_id']))
                                                                                 if (is_uploaded_file($FILE['tmp_name'][$i]))
                                                                                     {
                                                                                         $file_new_name = $c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_".$FILE['name'][$i];
-                                                                                        if (preg_match("/^".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_.*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
+                                                                                        if (preg_match("/^".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."\..*/i", $FILE['name'][$i])) $file_new_name = $FILE['name'][$i];
                                                                                         $file_name = "uploads\\".$_SESSION['user_year']."\\OUT\\".$file_new_name;
                                                                                         $file_name = iconv('UTF-8', 'windows-1251', $file_name);
                                                                                         if (!file_exists($file_name))
@@ -799,7 +799,7 @@ if (isset($_SESSION['user_id']))
                                                     }
                                             }
                                         $page.= file_get_contents("templates/jurnal_out_add_file.html");
-                                        $page = str_replace("{FILE_PRE_NAME}", "<b>".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."_</b>", $page);
+                                        $page = str_replace("{FILE_PRE_NAME}", "<b>".$c_n_ray."_".$row_structura['index']."-".$row_numenclatura['index']."_".$row['id']."</b>", $page);
 
                                     }
 
@@ -812,7 +812,7 @@ if (isset($_SESSION['user_id']))
                                                         if ($file != "." && $file != "..")
                                                             {
                                                                 $file_utf8 = iconv('windows-1251', 'UTF-8', $file);
-                                                                if (preg_match("/^".$c_n_ray."_[0-9]{1,5}\-[0-9]{1,5}_".$_GET['attach']."_.*\.(?=".$c_reg_file.")/i", $file))
+                                                                if (preg_match("/^".$c_n_ray."_[0-9]{1,5}\-[0-9]{1,5}_".$_GET['attach'].".*\.(?=".$c_reg_file.")/i", $file))
                                                                     {
                                                                         $tmp_do = 0;
                                                                         if (isset($_GET['delete']) AND $_GET['delete'] == $file_utf8 AND $manage_files == 1 AND $tmp_add_new_file == 0)
