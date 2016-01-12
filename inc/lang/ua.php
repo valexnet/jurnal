@@ -3,6 +3,9 @@
 // Українська мова
 $lang = array (
 
+'LANG_CONFIG_ERROR_INDEX_MODULE' => "Пусте значення шаблону номера документа",
+'LANG_INDEX_MODULE_HELP' => "[index] - № документу.<br>[str] - № структури.<br>[nom] - № номенклатури.<br>[usr-id] - № користувача.<br>[year] - рік.",
+'LANG_INDEX_MODULE_OUT' => "Шаблон індексу вихідного документу",
 'LANG_FORM_NO_MAKE_DATA' => "Не вірно вказане поле Строк Виконання. Шаблон: 20.01.2016 16:54:45",
 'LANG_JURNAL_OUT_HOW_FULL' => "Спосіб відправки листа",
 'LANG_DOCS' => "Допомога",

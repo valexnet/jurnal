@@ -21,7 +21,7 @@ while ($row=mysql_fetch_array($res))
         $backup_on_email_timeout = $row['time'];
         $backup_on_email_last = $row['last'];
     }
-            
+
 if ($user_p_config == 1)
     {
         if (isset($_GET['backup']) AND $_GET['backup'] == "do")
@@ -79,6 +79,7 @@ if ($user_p_config == 1)
                         $_POST['n_ray'] = str_replace($srch, $rpls, $_POST['n_ray']);
                         $_POST['reg_file'] = str_replace($srch, $rpls, $_POST['reg_file']);
                         $_POST['file_size'] = str_replace($srch, $rpls, $_POST['file_size']);
+                        $_POST['index_module'] = str_replace($srch, $rpls, $_POST['index_module']);
 
                         if ($_POST['backup_plus'] != "")
                             {
@@ -172,6 +173,12 @@ if ($user_p_config == 1)
                                 $page.= file_get_contents("templates/information_danger.html");
                                 $page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_REG_FILE}", $page);
                             }
+                        if ($_POST['index_module'] == "")
+                            {
+                                $error = "true";
+                                $page.= file_get_contents("templates/information_danger.html");
+                                $page = str_replace("{INFORMATION}", "{LANG_CONFIG_ERROR_INDEX_MODULE}", $page);
+                            }
                         if ($error <> "true")
                             {
                                 if ($_POST['anonymous_allow'] == 1) {$anonymous_allow = 1;} else {$anonymous_allow = 0;}
@@ -188,7 +195,8 @@ if ($user_p_config == 1)
                                 `year_start`='".$_POST['year_start']."',
                                 `n_ray`='".$_POST['n_ray']."',
                                 `reg_file`='".$_POST['reg_file']."',
-                                `file_size`='".$_POST['file_size']."'
+                                `file_size`='".$_POST['file_size']."',
+                                `index_module`='".$_POST['index_module']."'
                                 WHERE `id`='1' LIMIT 1;";
                                 $sql = mysql_query($query) or die(mysql_error());
                                 $queryes_num++;
@@ -204,6 +212,10 @@ if ($user_p_config == 1)
                                 $page = str_replace("{INFORMATION}", "{LANG_CONFIG_SAVED}", $page);
                                 $timeout = "config.php";
                             }
+							else
+							{
+								$edit = "false";
+							}
                     }
                 if ($edit != "true")
                     {

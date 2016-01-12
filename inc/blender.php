@@ -55,6 +55,7 @@ $page = str_replace("{YEAR_START}", $c_y_s, $page);
 $page = str_replace("{N_RAY}", $c_n_ray, $page);
 $page = str_replace("{REG_FILE}", $c_reg_file, $page);
 $page = str_replace("{FILE_SIZE}", $c_file_size, $page);
+$page = str_replace("{INDEX_MODULE}", $c_index_module, $page);
 
 if ($user_name) $page = str_replace("{USER_NAME}", $user_name, $page);
 if (!$user_name) $page = str_replace("{USER_NAME}", "{LANG_GUEST}", $page);

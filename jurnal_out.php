@@ -243,7 +243,7 @@ if (isset($_SESSION['user_id']))
                                                                         $nom_str = $row_srt['index'];
                                                                     }
                                                             }
-                                                        $print_nomer = "<b>".$nomer."</b> / ".$nom_str."-".$nom_index."";
+                                                        $print_nomer = "<b>".get_index_module($_SESSION['user_year'],"out",$nomer,$nom_str,$nom_index,$_SESSION['user_id'],$c_index_module)."</b>";
                                                         $print_regular_nt = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer." (".$FORM_TO_SUBJ.")</b>";
                                                         $print_regular_nf = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer.".zip</b>";
                                                     }
@@ -1059,12 +1059,15 @@ if (isset($_SESSION['user_id']))
                                 $structura[$row_structura['id']] = $row_structura['index'];
                             }
                         $nomenclatura = array();
+						$index_module = array();
                         $query_nomenclatura = "SELECT `id`,`structura`,`index`,`name` FROM `nomenclatura` ORDER BY `id` ; ";
                         $res_nomenclatura = mysql_query($query_nomenclatura) or die(mysql_error());
                         $queryes_num++;
                         while ($row_nomenclatura=mysql_fetch_array($res_nomenclatura))
                             {
                                 $nomenclatura[$row_nomenclatura['id']] = $structura[$row_nomenclatura['structura']]."-".$row_nomenclatura['index'];
+								$index_module[$row_nomenclatura['id']]['str'] = $structura[$row_nomenclatura['structura']];
+								$index_module[$row_nomenclatura['id']]['nom'] = $row_nomenclatura['index'];
                                 if ($where_lang != "") $where_lang = str_replace("{GET_NAME_NOM_".$row_nomenclatura['id']."}", $structura[$row_nomenclatura['structura']]."-".$row_nomenclatura['index']." ".$row_nomenclatura['name'], $where_lang);
                             }
                         ////////////////////////
@@ -1139,7 +1142,7 @@ if (isset($_SESSION['user_id']))
 
                                 $jurnal_out .= "
                                 <tr valign=\"top\" align=\"center\">
-                                    <td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$row['id']."</a></abbr> / <a href=\"jurnal_out.php?".$need_serch_blank."find=nom&do=".$row['nom']."\">".$nomenclatura[$row['nom']]."</a></td>
+                                    <td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".get_index_module($_SESSION['user_year'],"out",$row['id'],$index_module[$row['nom']]['str'],$index_module[$row['nom']]['nom'],$row['user'],$c_index_module)."</a></abbr></td>
                                     <td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".data_trans("mysql", "ua", $row_data[0])."</a></td>
                                     <td valign=\"top\" align=\"left\" >".$row['to']."</td>
                                     <td valign=\"top\" align=\"left\" >".$row['subj']."</td>
@@ -1154,7 +1157,7 @@ if (isset($_SESSION['user_id']))
                                     <div class=\"modal-content\">
                                       <div class=\"modal-header\">
                                         <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
-                                        <h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".$row['id']." / ".$nomenclatura[$row['nom']]."</h4>
+                                        <h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".get_index_module($_SESSION['user_year'],"out",$row['id'],$index_module[$row['nom']]['str'],$index_module[$row['nom']]['nom'],$row['user'],$c_index_module)."</h4>
                                       </div>
                                       <div class=\"modal-body text-center\">
                                         <table class=\"table table-hover\">

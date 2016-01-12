@@ -66,6 +66,9 @@ if ($user_p_mod == 1)
         if (isset($_GET['edit']))
             {
                 $ndi_do = "true";
+		        $page.= file_get_contents("templates/information_danger.html");
+				$page = str_replace("{INFORMATION}", "{LANG_403}", $page);
+				/*
                 if (isset($_GET['save']))
                     {
                         if ($_POST['index'] <> "" AND $_POST['name'] <> "" AND $_POST['ndi_str'] <> "")
@@ -158,7 +161,9 @@ if ($user_p_mod == 1)
                                 $page = str_replace("{INFORMATION}", "{LANG_STR_DEL_NOT_EXIST}", $page);
                             }
                     }
+				*/
             }
+			
 
         if (isset($_GET['del']))
             {
@@ -232,7 +237,7 @@ if ($user_p_mod == 1)
                                     <td".$bgcolor.">".date('d.m.Y H:i:s', $row['time'])."</td>
                                     <td".$bgcolor.">".$row['do']."</td>
                                     <td".$bgcolor." valign=\"bottom\">
-                                        &nbsp;<a href=\"?edit=".$row['id']."\"><img src=\"templates/images/hammer_screwdriver.png\" border=\"0\" alt=\"{LANG_USERS_ADMIN_EDIT}\" title=\"{LANG_USERS_ADMIN_EDIT}\"></a>
+                                        <!-- &nbsp;<a href=\"?edit=".$row['id']."\"><img src=\"templates/images/hammer_screwdriver.png\" border=\"0\" alt=\"{LANG_USERS_ADMIN_EDIT}\" title=\"{LANG_USERS_ADMIN_EDIT}\"></a> //-->
                                         &nbsp;<a href=\"?del=".$row['id']."\" onClick=\"if(confirm('{LANG_STR_ADMIN_DEL_CONFIRM} ".$row['index'].", ".$row['name']." ?')) {return true;} return false;\"><img src=\"templates/images/cross_octagon.png\" border=\"0\" alt=\"{LANG_USERS_ADMIN_DEL}\" title=\"{LANG_USERS_ADMIN_DEL}\"></a>
                                     </td>
                                 </tr>
