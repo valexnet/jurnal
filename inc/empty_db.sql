@@ -29,10 +29,11 @@ CREATE TABLE `config` (
   `file_size` int(9) NOT NULL,
   `ver` int(9) NOT NULL,
   `max_page_limit` int(6) NOT NULL,
+  `index_module` varchar(500) NOT NULL,
   PRIMARY KEY  (`id`)
 ) ;
 
-INSERT INTO `config` VALUES (1, 'Назва УДКСУ', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|eml|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 10, 250);
+INSERT INTO `config` VALUES (1, 'Назва УДКСУ', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|eml|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 11, 250, "[index]/[str]-[nom]");
 
 
 DROP TABLE IF EXISTS `cron`;
