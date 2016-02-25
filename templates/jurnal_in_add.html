@@ -1,7 +1,7 @@
 <div class="container">
     <h3><p class="text-center">{LANG_JURNAL_IN_ADD_FORM}</p></h3>
 
-    <FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_in.php?do=add" METHOD="POST" enctype="multipart/form-data">
+    <FORM onclick="myBlurFunction();" role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_in.php?do=add" METHOD="POST" enctype="multipart/form-data">
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="add_time">{LANG_ADD_TIME}:</label>
@@ -17,17 +17,30 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="get_data">{LANG_GET_DATA}:</label>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_data">{LANG_GET_DATA}:</label>
             <div class="col-sm-10 has-feedback">
-                <input type="text" NAME="get_data" class="form-control" id="get_data" value="{FORM_GET_DATA}" placeholder="{LANG_GET_DATA_MORE}" data-error="{LANG_FORM_NO_GET_DATA}" required >
-                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                <div class="help-block with-errors"></div>
-            </div>
+				<div class="input-group date" id='datetimepicker_get_data'>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					<input type="text" NAME="get_data" class="form-control" id="get_data" value="{FORM_GET_DATA}" placeholder="{LANG_GET_DATA_MORE}" data-error="{LANG_FORM_NO_GET_DATA}" required >
+					<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					<div class="help-block with-errors"></div>
+				</div>
+			</div>
         </div>
-
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker_get_data').datetimepicker({
+                    locale: 'uk',
+					format: 'L LTS'
+                });
+            });
+        </script>
+		
         <div class="form-group">
-            <label class="control-label col-sm-2" for="org_name">{LANG_ORG_NAME}:</label>
+            <label class="control-label col-sm-2" for="org_name">{LANG_ORG_NAME}:<br><a onclick="ion('ДКСУ')">ДКСУ</a>, <a onclick="ion('ГУДКСУ')">ГУДКСУ</a></label>
             <div class="col-sm-10 has-feedback">
                 <input onkeyup="loadHelp('help_org_name', 'org_name', {USER_YEAR}, 'jurnal_in', this.value)" autocomplete="off" type="text" NAME="org_name" class="form-control" id="org_name" value="{FORM_ORG_NAME}" placeholder="{LANG_ORG_NAME_MORE}" data-error="{LANG_FORM_NO_ORG_NAME}" required >
                 <div class="hidden" id="help_org_name"></div>
@@ -38,22 +51,33 @@
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="org_index">{LANG_ORG_INDEX}:</label>
-            <div class="col-sm-10 has-feedback">
+            <div class="col-sm-10">
                 <input type="text" NAME="org_index" class="form-control" id="org_index" value="{FORM_ORG_INDEX}" placeholder="{LANG_ORG_INDEX_MORE}" >
-                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                <div class="help-block with-errors"></div>
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="org_data">{LANG_ORG_DATA}:</label>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_data">{LANG_ORG_DATA}:</label>
             <div class="col-sm-10 has-feedback">
-                <input type="text" NAME="org_data" class="form-control" id="org_data" value="{FORM_ORG_DATA}" placeholder="{LANG_ORG_DATA_MORE}" data-error="{LANG_FORM_NO_ORG_DATA}" required >
-                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                <div class="help-block with-errors"></div>
-            </div>
+				<div class="input-group date" id='datetimepicker_org_data'>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					<input type="text" NAME="org_data" class="form-control" id="org_data" value="{FORM_ORG_DATA}" placeholder="{LANG_ORG_DATA_MORE}" data-error="{LANG_FORM_NO_ORG_DATA}" required >
+					<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					<div class="help-block with-errors"></div>
+				</div>
+			</div>
         </div>
-
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker_org_data').datetimepicker({
+                    locale: 'uk',
+					format: 'L'
+                });
+            });
+        </script>
+		
         <div class="form-group">
             <label class="control-label col-sm-2" for="org_subj">{LANG_ORG_SUBJ}:</label>
             <div class="col-sm-10 has-feedback">
@@ -73,38 +97,49 @@
                 <div class="help-block with-errors"></div>
             </div>
         </div>
+		
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_data">{LANG_MAKE_DATA}:</label>
+			<div class="col-sm-10">
+				<div class="input-group date" id='datetimepicker_make_data'>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					<input type="text" NAME="make_data" class="form-control" id="make_data" value="{FORM_MAKE_DATA}" placeholder="{LANG_MAKE_DATA_MORE}">
+				</div>
+			</div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker_make_data').datetimepicker({
+                    locale: 'uk',
+					format: 'L LTS'
+                });
+            });
+        </script>
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="do_user">{LANG_DO_USER}:</label>
             <div class="col-sm-10 has-feedback">
-                <SELECT NAME="do_user" class="form-control" id="do_user" data-error="{LANG_FORM_NO_DO_USER}" required onchange="show_inform_users()">
+                <SELECT NAME="do_user" class="form-control" id="do_user" data-error="{LANG_FORM_NO_DO_USER}" required>
                     <option>{LANG_DO_USER}</option>
                     {FORM_DO_USER}
                 </SELECT>
                 <div class="help-block with-errors"></div>
             </div>
         </div>
-        
-        <div class="form-group hidden" id="inform_users_div">
+		
+        <div class="form-group" id="inform_users_div">
             <label class="control-label col-sm-2" for="inform_users"></label>
             <div class="col-sm-10 has-feedback">
                 <a class="btn btn-primary" role="button" data-toggle="collapse" onclick="$('#inform_users').modal('show');" aria-expanded="false" aria-controls="inform_users">{LANG_INFORM_OTHER_USERS}</a>
             </div>
         </div>
-        
-        <div class="form-group hidden" id="inform_users_select_div">
+
+        <div class="form-group" id="inform_users_select_div">
             <label class="control-label col-sm-2" id="count_inform_users"></label>
             <div class="col-sm-10" id="show_list_selected_inform_users">
-                
-            </div>
-        </div>
-        
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="make_data">{LANG_MAKE_DATA}:</label>
-            <div class="col-sm-10 has-feedback">
-                <input type="text" NAME="make_data" class="form-control" id="make_data" value="{FORM_MAKE_DATA}" placeholder="{LANG_MAKE_DATA_MORE}">
-                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                <div class="help-block with-errors"></div>
+
             </div>
         </div>
 
@@ -122,7 +157,7 @@
                 <button type="submit" class="btn btn-success">{LANG_ADD_NEW}</button>
             </div>
         </div>
-        
+		
         <div class="modal fade" id="inform_users" tabindex="-1" role="dialog" aria-labelledby="inform_users_Label">
           <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -174,11 +209,16 @@ function loadHelp(a, b, c, d, e)
         xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
         xhttp.send();
     }
-function show_inform_users()
-    {
-        document.getElementById('inform_users_div').className = 'form-group';
-        document.getElementById('inform_users_select_div').className = 'form-group';
-    }
+function myBlurFunction()
+	{
+		document.getElementById("help_org_name").innerHTML = '';
+		document.getElementById("help_org_name").className = 'hidden';
+		document.getElementById("help_org_subj").innerHTML = '';
+		document.getElementById("help_org_subj").className = 'hidden';
+		document.getElementById("help_make_visa").innerHTML = '';
+		document.getElementById("help_make_visa").className = 'hidden';
+	}
+
 var count_selected_users = 0;
 function ccu(a)
     {
@@ -197,5 +237,9 @@ function ccu(a)
             }
         document.getElementById('count_inform_users').innerHTML = '{LANG_INFORM_USERS_IS_SELECTED} ' + count_selected_users + ':';
     }
+function ion(a)
+    {
+		document.getElementById('org_name').value = a;
+	}
 //-->
 </script>

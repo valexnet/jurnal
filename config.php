@@ -246,6 +246,22 @@ if ($user_p_config == 1)
                     {
                         $page = str_replace("{ZIP_EXTENSION}", "<font color=\"red\">{LANG_DISABLE}</font>", $page);
                     }
+                if(extension_loaded('imap'))
+                    {
+                        $page = str_replace("{IMAP_EXTENSION}", "<font color=\"green\">{LANG_ENABLE}</font>", $page);
+                    }
+                    else
+                    {
+                        $page = str_replace("{IMAP_EXTENSION}", "<font color=\"red\">{LANG_DISABLE}</font>", $page);
+                    }
+				if (ini_get('register_globals') == '' OR ini_get('register_globals') == 0)
+					{
+						$page = str_replace("{REGISTER_GLOBALS}", "<font color=\"green\">OFF</font>", $page);
+					}
+					else
+					{
+						$page = str_replace("{REGISTER_GLOBALS}", "<font color=\"red\">ON</font>", $page);
+					}
             }
 
 

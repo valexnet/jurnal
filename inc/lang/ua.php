@@ -3,6 +3,8 @@
 // Українська мова
 $lang = array (
 
+'LANG_IMAP_EXTENSION' => "PHP розширення IMAP",
+'LANG_REGISTER_GLOBALS' => "PHP register_globals",
 'LANG_CONFIG_ERROR_INDEX_MODULE' => "Пусте значення шаблону номера документа",
 'LANG_INDEX_MODULE_HELP' => "[index] - № документу.<br>[str] - № структури.<br>[nom] - № номенклатури.<br>[usr-id] - № користувача.<br>[year] - рік.",
 'LANG_INDEX_MODULE_OUT' => "Шаблон індексу вихідного документу",
@@ -89,7 +91,7 @@ $lang = array (
 'LANG_NEW_WITH_TEMPLATE' => "Створити по шаблону",
 'LANG_ENABLE' => "Підключено",
 'LANG_DISABLE' => "Не підключено",
-'LANG_ZIP_EXTENSION' => "Архіватор ZIP",
+'LANG_ZIP_EXTENSION' => "PHP Розширення ZIP",
 'LANG_JURNAL_IN_DELETE_LAST' => "Успішно вилучений Вхідний №",
 'LANG_LOG_JURNAL_IN_DELETE_LAST' => "Вилучено вхідний №",
 'LANG_JURNAL_IN_INFO_N' => "Інформація по вхідному №",

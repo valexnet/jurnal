@@ -123,11 +123,13 @@ if (isset($_SESSION['user_id']))
                                         $error = 1;
                                     }
                             }
-                        if ($error == '')
+                        
+						if ($error == '')
                             {
+								$show_form = "true";
                                 if (isset($_POST['to']) && isset($_POST['subj']) && isset($_POST['nom']))
                                     {
-                                        $error = '';
+                                        $show_form = "false";
                                         $FORM_TO = str_replace($srch, $rpls, $_POST['to']);
                                         $FORM_TO_NUM = str_replace($srch, $rpls, $_POST['to_num']);
                                         $FORM_TO_SUBJ = str_replace($srch, $rpls, $_POST['subj']);
@@ -269,10 +271,16 @@ if (isset($_SESSION['user_id']))
                                                         $page.= file_get_contents("templates/information.html");
                                                         $page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_UPDATED}: <strong>".$from_id."</strong><br><kbd>{LANG_JURNAL_IN_STATUS_3} ".date('d.m.Y H:i:s')."</kbd>", $page);
                                                     }
-                                            }
+												
+												$mailtobody = "%0A".$c_nam."%0A%0AВихідний%20номер:%20".$print_nomer.".%0AЗареєстрував:%20".$user_name."%0AДата,%20час:%20".date('Y.m.d')."%20".date('H:i:s').".%0A%0A----------%0AПiдготовлено%20АС%20Журнал%0AВерсiя: ".$c_ver.".".$c_ver_alt;
+                                                $page.= file_get_contents("templates/information_success.html");
+                                                $page = str_replace("{INFORMATION}", "<a href=\"mailto:?subject=".$print_regular_nt."&body=".$mailtobody."\">Підготувати лист для поштового клієнта</a>", $page);
+
+												}
                                             else
                                             {
-                                                $_SESSION['error'] = 'true';
+                                                $show_form = "true";
+												$_SESSION['error'] = 'true';
                                                 $_SESSION['form_to'] = $FORM_TO;
                                                 $_SESSION['form_to_num'] = $FORM_TO_NUM;
                                                 $_SESSION['form_subj'] = $FORM_TO_SUBJ;
@@ -282,13 +290,11 @@ if (isset($_SESSION['user_id']))
                                                 $_SESSION['form_blank_n'] = $_POST['blank_n'];
                                                 $page.= file_get_contents("templates/information_danger.html");
                                                 $page = str_replace("{INFORMATION}", $error, $page);
-                                                $page.= file_get_contents("templates/information.html");
-                                                $page = str_replace("{INFORMATION}", "<a href=\"jurnal_out.php?add=do\">{LANG_RETURN_AND_GO}</a>", $page);
                                                 $loging_do = "{LANG_LOG_JURNAL_OUT_ADD_ERROR}:<br />".$error;
                                                 include ('inc/loging.php');
                                             }
                                     }
-                                    else
+                                if ($show_form == "true")
                                     {
                                         $page.= file_get_contents("templates/jurnal_out_add.html");
 

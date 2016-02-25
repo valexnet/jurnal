@@ -32,9 +32,11 @@ if (isset($_SESSION['user_id']))
                 $adres = 'true';
                 if ($privat4 == 1)
                     {
+						$show_form = "true";
                         if (isset($_POST['get_data']) and !empty($_POST['get_data']))
                             {
-                                // Убераєм з даних лишне
+                                $show_form = "false";
+								// Убераєм з даних лишне
                                 $_POST['org_name'] = str_replace($srch, $rpls, $_POST['org_name']);
                                 $_POST['org_index'] = str_replace($srch, $rpls, $_POST['org_index']);
                                 $_POST['org_subj'] = str_replace($srch, $rpls, $_POST['org_subj']);
@@ -144,6 +146,7 @@ if (isset($_SESSION['user_id']))
                                     {
                                         $page.= file_get_contents("templates/information_danger.html");
                                         $page = str_replace("{INFORMATION}", $error, $page);
+										$show_form = "true";
 
                                         $_SESSION['error_in_add'] = 1;
                                         $_SESSION['error_in_add_get_data'] = $_POST['get_data'];
@@ -156,7 +159,7 @@ if (isset($_SESSION['user_id']))
                                         $_SESSION['error_in_add_do_user'] = $_POST['do_user'];
                                     }
                             }
-                            else
+                        if ($show_form == "true")
                             {
                                 $page.= file_get_contents("templates/jurnal_in_add.html");
 

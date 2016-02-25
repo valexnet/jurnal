@@ -1,7 +1,7 @@
 <div class="container">
     <h3><p class="text-center">{LANG_JURNAL_IN_EDIT_FORM} {FORM_ID}</p></h3>
 
-    <FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_in.php?edit={FORM_ID}" METHOD="POST" enctype="multipart/form-data">
+    <FORM onclick="myBlurFunction();" role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" ACTION="jurnal_in.php?edit={FORM_ID}" METHOD="POST" enctype="multipart/form-data">
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="add_time">{LANG_DATA}:</label>
@@ -17,14 +17,27 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="get_data">{LANG_GET_DATA}:</label>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_data">{LANG_GET_DATA}:</label>
             <div class="col-sm-10 has-feedback">
-                <input type="text" NAME="get_data" class="form-control" id="get_data" value="{FORM_GET_DATA}" placeholder="{LANG_GET_DATA_MORE}" data-error="{LANG_FORM_NO_GET_DATA}" required >
-                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                <div class="help-block with-errors"></div>
-            </div>
+				<div class="input-group date" id='datetimepicker_get_data'>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					<input type="text" NAME="get_data" class="form-control" id="get_data" value="{FORM_GET_DATA}" placeholder="{LANG_GET_DATA_MORE}" data-error="{LANG_FORM_NO_GET_DATA}" required >
+					<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					<div class="help-block with-errors"></div>
+				</div>
+			</div>
         </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker_get_data').datetimepicker({
+                    locale: 'uk',
+					format: 'L LTS'
+                });
+            });
+        </script>
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="org_name">{LANG_ORG_NAME}:</label>
@@ -45,14 +58,27 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="org_data">{LANG_ORG_DATA}:</label>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_data">{LANG_ORG_DATA}:</label>
             <div class="col-sm-10 has-feedback">
-                <input type="text" NAME="org_data" class="form-control" id="org_data" value="{FORM_ORG_DATA}" placeholder="{LANG_ORG_DATA_MORE}" data-error="{LANG_FORM_NO_ORG_DATA}" required >
-                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                <div class="help-block with-errors"></div>
-            </div>
+				<div class="input-group date" id='datetimepicker_org_data'>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					<input type="text" NAME="org_data" class="form-control" id="org_data" value="{FORM_ORG_DATA}" placeholder="{LANG_ORG_DATA_MORE}" data-error="{LANG_FORM_NO_ORG_DATA}" required >
+					<span class="glyphicon form-control-feedback" aria-hidden="true"></span>
+					<div class="help-block with-errors"></div>
+				</div>
+			</div>
         </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker_org_data').datetimepicker({
+                    locale: 'uk',
+					format: 'L'
+                });
+            });
+        </script>
 
         <div class="form-group">
             <label class="control-label col-sm-2" for="org_subj">{LANG_ORG_SUBJ}:</label>
@@ -73,7 +99,27 @@
                 <div class="help-block with-errors"></div>
             </div>
         </div>
-
+		
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="make_data">{LANG_MAKE_DATA}:</label>
+			<div class="col-sm-10">
+				<div class="input-group date" id='datetimepicker_make_data'>
+					<span class="input-group-addon">
+						<span class="glyphicon glyphicon-calendar"></span>
+					</span>
+					<input type="text" NAME="make_data" class="form-control" id="make_data" value="{FORM_MAKE_DATA}" placeholder="{LANG_MAKE_DATA_MORE}">
+				</div>
+			</div>
+        </div>
+        <script type="text/javascript">
+            $(function () {
+                $('#datetimepicker_make_data').datetimepicker({
+                    locale: 'uk',
+					format: 'L LTS'
+                });
+            });
+        </script>
+		
         <div class="form-group">
             <label class="control-label col-sm-2" for="do_user">{LANG_DO_USER}:</label>
             <div class="col-sm-10 has-feedback">
@@ -99,15 +145,6 @@
             </div>
         </div>
         
-        <div class="form-group">
-            <label class="control-label col-sm-2" for="make_data">{LANG_MAKE_DATA}:</label>
-            <div class="col-sm-10 has-feedback">
-                <input type="text" NAME="make_data" class="form-control" id="make_data" value="{FORM_MAKE_DATA}" placeholder="{LANG_MAKE_DATA_MORE}">
-                <span class="glyphicon form-control-feedback" aria-hidden="true"></span>
-                <div class="help-block with-errors"></div>
-            </div>
-        </div>
-
         <div class="form-group">
             <div class="col-sm-offset-2 col-sm-10">
                 <INPUT TYPE="hidden" name="form_id" VALUE="{TIME_MD5}" />
@@ -166,6 +203,15 @@ function loadHelp(a, b, c, d, e)
         xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
         xhttp.send();
     }
+function myBlurFunction()
+	{
+		document.getElementById("help_org_name").innerHTML = '';
+		document.getElementById("help_org_name").className = 'hidden';
+		document.getElementById("help_org_subj").innerHTML = '';
+		document.getElementById("help_org_subj").className = 'hidden';
+		document.getElementById("help_make_visa").innerHTML = '';
+		document.getElementById("help_make_visa").className = 'hidden';
+	}
 function show_inform_users()
     {
         document.getElementById('inform_users_div').className = 'form-group';

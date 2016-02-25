@@ -1,7 +1,7 @@
 <div class="container">
     <h3><p class="text-center">{LANG_JURNAL_OUT_ADD_FORM}</p></h3>
     
-    <FORM role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" METHOD="POST" enctype="multipart/form-data">
+    <FORM onclick="myBlurFunction();" role="form" data-toggle="validator" NAME="form" id="form" class="form-horizontal" METHOD="POST" enctype="multipart/form-data">
         
         <div class="form-group">
             <label class="control-label col-sm-2" for="LANG_DATA">{LANG_DATA}:</label>
@@ -157,5 +157,14 @@ function loadHelp(a, b, c, d, e)
         xhttp.open("GET", "ajax.php?help=" + a + "&for=" + b + "&year=" + c + "&where=" + d + "&input=" + encodeURI(e), true);
         xhttp.send();
     }
+function myBlurFunction()
+	{
+		document.getElementById("help_to").innerHTML = '';
+		document.getElementById("help_to").className = 'hidden';
+		document.getElementById("help_to_num").innerHTML = '';
+		document.getElementById("help_to_num").className = 'hidden';
+		document.getElementById("help_subj").innerHTML = '';
+		document.getElementById("help_subj").className = 'hidden';
+	}
 //-->
 </script>
