@@ -232,7 +232,8 @@ function ccu(a)
             else
             {
                 document.getElementById('l_' + a).className = 'btn btn-default btn-block';
-                document.getElementById('sh_' + a).remove();
+				var user_name_for_del = document.getElementById('sh_' + a);
+				user_name_for_del.parentNode.removeChild(user_name_for_del);
                 count_selected_users--;
             }
         document.getElementById('count_inform_users').innerHTML = '{LANG_INFORM_USERS_IS_SELECTED} ' + count_selected_users + ':';

@@ -3,6 +3,9 @@
 // Українська мова
 $lang = array (
 
+'LANG_PRIVAT_EDIT_PRIME_USER' => "Редагування розписаних листів виконавцем",
+'LANG_MAKE_MAILTO_LOCAL_CLIENT' => "Поштовий клієнт",
+'LANG_MAKE_MAILTO' => "Підготувати лист",
 'LANG_IMAP_EXTENSION' => "PHP розширення IMAP",
 'LANG_REGISTER_GLOBALS' => "PHP register_globals",
 'LANG_CONFIG_ERROR_INDEX_MODULE' => "Пусте значення шаблону номера документа",

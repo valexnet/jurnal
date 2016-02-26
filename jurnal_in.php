@@ -229,8 +229,11 @@ if (isset($_SESSION['user_id']))
                     {
                         while ($row=mysql_fetch_array($res))
                             {
-                                if ($row['add_user'] == $_SESSION['user_id'] OR $user_p_mod == 1)
-                                    {
+								$edit_rights = 0;
+                                if ($row['add_user'] == $_SESSION['user_id'] OR $user_p_mod == 1) $edit_rights = 1;
+								if ($row['do_user'] == $_SESSION['user_id'] AND $privat7 == 1) $edit_rights = 1;
+                                if ($edit_rights == 1)    
+									{
                                         if (isset($_POST['get_data']) and !empty($_POST['get_data']))
                                             {
                                                 $_POST['org_name'] = str_replace($srch, $rpls, $_POST['org_name']);
@@ -374,6 +377,11 @@ if (isset($_SESSION['user_id']))
                                 $manage_files = 1;
                                 $view_files = 1;
                             }
+						if ($row['do_user'] == $_SESSION['user_id'] AND $privat7 == 1)
+							{
+								$manage_files = 1;
+                                $view_files = 1;
+							}
                         if ($privat1 == 1 OR $row['do_user'] == $_SESSION['user_id'])
                             {
                                 $view_files = 1;
@@ -830,6 +838,7 @@ if (isset($_SESSION['user_id']))
                                 if ($show_files == 1) $admin_links_do .= "<a onclick=\"skm_LockScreen()\" href=\"?attach=".$row['id']."\" class=\"btn btn-success btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-floppy-save\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT_FILES}\"></span></a>";
                                 $user_edit_num = 0;
                                 if ($row['add_user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y')) $user_edit_num = 1;
+								if ($row['do_user'] == $_SESSION['user_id'] AND $_SESSION['user_year'] == date('Y') AND $privat7 == 1) $user_edit_num = 1;
                                 if ($user_edit_num == 1 OR $user_p_mod == 1) $admin_links_do .= "<a onclick=\"skm_LockScreen()\" href=\"?edit=".$row['id']."\" class=\"btn btn-warning btn-lg\" role=\"button\"><span class=\"glyphicon glyphicon-edit\" aria-hidden=\"true\" data-toggle=\"tooltip\" data-original-title=\"{LANG_USERS_ADMIN_EDIT}\"></span></a>";
 
                                 $user_del_num = 0;

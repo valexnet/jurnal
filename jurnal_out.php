@@ -245,9 +245,9 @@ if (isset($_SESSION['user_id']))
                                                                         $nom_str = $row_srt['index'];
                                                                     }
                                                             }
-                                                        $print_nomer = "<b>".get_index_module($_SESSION['user_year'],"out",$nomer,$nom_str,$nom_index,$_SESSION['user_id'],$c_index_module)."</b>";
-                                                        $print_regular_nt = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer." (".$FORM_TO_SUBJ.")</b>";
-                                                        $print_regular_nf = "<b>".$c_n_ray."_".$nom_str."-".$nom_index."_".$nomer.".zip</b>";
+                                                        $print_nomer = get_index_module($_SESSION['user_year'],"out",$nomer,$nom_str,$nom_index,$_SESSION['user_id'],$c_index_module);
+                                                        $print_regular_nt = get_mailto_subject($c_n_ray, $nom_str, $nom_index, $nomer, $FORM_TO_SUBJ);
+                                                        $print_regular_nf = $c_n_ray."_".$nom_str."-".$nom_index."_".$nomer.".zip";
                                                     }
 
                                                 $page.= file_get_contents("templates/information_success.html");
@@ -272,11 +272,11 @@ if (isset($_SESSION['user_id']))
                                                         $page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_UPDATED}: <strong>".$from_id."</strong><br><kbd>{LANG_JURNAL_IN_STATUS_3} ".date('d.m.Y H:i:s')."</kbd>", $page);
                                                     }
 												
-												$mailtobody = "%0A".$c_nam."%0A%0AВихідний%20номер:%20".$print_nomer.".%0AЗареєстрував:%20".$user_name."%0AДата,%20час:%20".date('Y.m.d')."%20".date('H:i:s').".%0A%0A----------%0AПiдготовлено%20АС%20Журнал%0AВерсiя: ".$c_ver.".".$c_ver_alt;
+												$mailtobody = get_mailto_body($c_nam, $print_nomer, $user_name, date('Y.m.d'). " " .date('H:i:s'), $c_ver, $c_ver_alt);
                                                 $page.= file_get_contents("templates/information_success.html");
-                                                $page = str_replace("{INFORMATION}", "<a href=\"mailto:?subject=".$print_regular_nt."&body=".$mailtobody."\">Підготувати лист для поштового клієнта</a>", $page);
+                                                $page = str_replace("{INFORMATION}", "{LANG_MAKE_MAILTO}: <a href=\"mailto:?subject=".$print_regular_nt."&body=".$mailtobody."\">{LANG_MAKE_MAILTO_LOCAL_CLIENT}</a>, <a target=\"_blank\" href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$db_connect[4]."&SUBJECT=".$print_regular_nt."\">OWA</a>", $page);
 
-												}
+											}
                                             else
                                             {
                                                 $show_form = "true";
@@ -1145,10 +1145,15 @@ if (isset($_SESSION['user_id']))
 
                                 $num_is_edited = "";
                                 if ($row['edit'] == 1) $num_is_edited = "<tr><td class=\"bg-warning\" colspan=\"2\"><p class=\"text-danger\"><strong>{LANG_NUM_IS_EDITED}</strong><br>{LANG_MODERATOR} <strong>".$users[$row['fav']]."</strong><br>{LANG_LOG_TIME} <strong>".date('Y-m-d H:i:s', $row['time'])."</strong></p></td></tr>";
-
+								
+								$num_show_index = get_index_module($_SESSION['user_year'],"out",$row['id'],$index_module[$row['nom']]['str'],$index_module[$row['nom']]['nom'],$row['user'],$c_index_module);
+								
+								$print_regular_nt = get_mailto_subject($c_n_ray, $index_module[$row['nom']]['str'], $index_module[$row['nom']]['nom'], $row['id'], $row['subj']);
+								$mailtobody = get_mailto_body($c_nam, $num_show_index, $users[$row['user']], data_trans("mysql", "ua", $row['data']), $c_ver, $c_ver_alt);
+								
                                 $jurnal_out .= "
                                 <tr valign=\"top\" align=\"center\">
-                                    <td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".get_index_module($_SESSION['user_year'],"out",$row['id'],$index_module[$row['nom']]['str'],$index_module[$row['nom']]['nom'],$row['user'],$c_index_module)."</a></abbr></td>
+                                    <td valign=\"top\" align=\"center\" ><abbr title=\"{LANG_NUM_INFO_PLUS}\"><a data-toggle=\"modal\" href=\"#JOn".$row['id']."\" aria-expanded=\"false\" aria-controls=\"JOn".$row['id']."\">".$num_show_index."</a></abbr></td>
                                     <td valign=\"top\" align=\"center\" ><a href=\"jurnal_out.php?".$need_serch_blank."find=data&do=".$row_data[0]."\">".data_trans("mysql", "ua", $row_data[0])."</a></td>
                                     <td valign=\"top\" align=\"left\" >".$row['to']."</td>
                                     <td valign=\"top\" align=\"left\" >".$row['subj']."</td>
@@ -1163,7 +1168,8 @@ if (isset($_SESSION['user_id']))
                                     <div class=\"modal-content\">
                                       <div class=\"modal-header\">
                                         <button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"{LANG_JURN_OUT_NUM_CLOSE}\"><span aria-hidden=\"true\">&times;</span></button>
-                                        <h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".get_index_module($_SESSION['user_year'],"out",$row['id'],$index_module[$row['nom']]['str'],$index_module[$row['nom']]['nom'],$row['user'],$c_index_module)."</h4>
+                                        <h4 class=\"modal-title text-center\" id=\"myModalLabel\">{LANG_JURN_OUT_NUM_INFO} ".$num_show_index."</h4>
+										<center><p>Підготувати лист: <a href=\"mailto:?subject=".$print_regular_nt."&body=".$mailtobody."\">Поштовий клієнт</a>, <a target=\"_blank\" href=\"https://mail.dksu.gov.ua/owa/?ae=Item&a=New&t=IPM.Note&to=".$db_connect[4]."&SUBJECT=".$print_regular_nt."\">OWA</a></p></center>
                                       </div>
                                       <div class=\"modal-body text-center\">
                                         <table class=\"table table-hover\">

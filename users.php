@@ -331,7 +331,7 @@ if ($user_p_users == 1)
                                         $page.= file_get_contents("templates/information_danger.html");
                                         $page = str_replace("{INFORMATION}", "{LANG_USERS_ADMIN_ADD_EMPTY_STR}", $page);
                                     }
-                                $query = "SELECT `login` FROM `users` WHERE `login`='".$_POST['user_login']."' AND `id`<>'".$new_user_edit."';";
+                                $query = "SELECT `login` FROM `users` WHERE `login`='".$_POST['user_login']."' AND `id`<>'".$new_user_edit."' AND `del`='0' ;";
                                 $res = mysql_query($query) or die(mysql_error());
                                 $queryes_num++;
                                 $numberall = mysql_num_rows($res);
@@ -541,6 +541,7 @@ if ($user_p_users == 1)
                                         if (in_array(4, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_4}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_4}", "", $template2);}
                                         if (in_array(5, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_5}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_5}", "", $template2);}
                                         if (in_array(6, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_6}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_6}", "", $template2);}
+                                        if (in_array(7, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_7}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_7}", "", $template2);}
                                         $page.= $template2;
                                     }
                             }
