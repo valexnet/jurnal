@@ -1,0 +1,5 @@
+.LockOff { display: none; visibility: hidden; }
+.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 105%; height: 105%; background-color: #fff; text-align: center; padding-top: 15%; }
+
+.affix { top: 0; width: 100%; }
+.affix + .container-fluid { padding-top: 70px; }

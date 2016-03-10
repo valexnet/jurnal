@@ -3,5 +3,18 @@
 	<a onclick="skm_LockScreen()" class="btn btn-default btn-lg btn-block" href="jurnal_out.php?search=do&blank=do" role="button">{LANG_JURNAL_BLANK_NAME}</a>
 	<a onclick="skm_LockScreen()" class="btn btn-success btn-lg btn-block" href="jurnal_in.php" role="button">{LANG_JURNAL_IN}</a>
 	<a onclick="skm_LockScreen()" class="btn btn-info btn-lg btn-block" href="jurnal_in_ep.php" role="button">{LANG_JURNAL_IN_EP}</a>
+	<a id="oper_dox_button" onclick="show_dox()" class="btn btn-primary btn-lg btn-block" href="#" role="button">{LANG_JURNAL_DOX_BUTTON}</a>
+	<a id="oper_dox_1" onclick="skm_LockScreen()" class="btn btn-primary btn-lg btn-block hidden" href="jurnal_dox_1.php" role="button">{LANG_JOURNAL_OF_FINDINGS}</a>
+	<a id="oper_dox_2" onclick="skm_LockScreen()" class="btn btn-primary btn-lg btn-block hidden" href="jurnal_dox_2.php" role="button">{LANG_JURNAL_DOX_2}</a>
+	<a id="oper_dox_3" onclick="skm_LockScreen()" class="btn btn-primary btn-lg btn-block hidden" href="jurnal_dox_3.php" role="button">{LANG_JURNAL_DOX_3}</a>
 	<a onclick="skm_LockScreen()" class="btn btn-warning btn-lg btn-block" href="index.php?chat" role="button">{LANG_CHAT}</a>
 </div>
+<script>
+function show_dox()
+	{
+		document.getElementById('oper_dox_button').className = 'btn btn-primary btn-lg btn-block hidden';
+		document.getElementById('oper_dox_1').className = 'btn btn-primary btn-lg btn-block';
+		//document.getElementById('oper_dox_2').className = 'btn btn-primary btn-lg btn-block';
+		//document.getElementById('oper_dox_3').className = 'btn btn-primary btn-lg btn-block';
+	}
+</script>

@@ -1,0 +1,14 @@
+<div id="header_content" class="container" style="background-color: #FFF;">
+	<h3><p class="text-center">{LANG_YEAR} {USER_YEAR}. {LANG_JOURNAL_OF_FINDINGS}</p></h3>
+	<form method="POST">
+		<div class="col-sm-12 text-center">
+			<a class="btn btn-default" onclick="skm_LockScreen()" href="jurnal_dox_1.php" role="button"><span class="glyphicon glyphicon-home" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_FIRST_PAGE}"></span></a>
+			<a id="refresh_button" class="btn btn-default" role="button" herf="#" onclick="ajax_refresh()">Оновити дані</a>
+			<a id="print_link" class="btn btn-default no-print" role="button" herf="#" onclick="ajax_print()">Друк</a>
+			<a class="btn btn-success" href="#" onclick="showAdd()" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_ADD_NEW}"></span></a>
+			{LANG_YEAR}: <select NAME="show_year">{SELECT_YEARS}</select>
+			<button type="submit" class="btn btn-primary btn-xs" onclick="skm_LockScreen()">{LANG_YEAR_CHANGE}</button>
+		</div>
+	</form>
+</div>
+<div class="container" id="ajax_content" style="text-align:center;">&nbsp;</div>

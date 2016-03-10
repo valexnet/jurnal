@@ -9,21 +9,21 @@ if (isset($_SESSION['user_id']))
         $pre_link = "";
         $query_where = "";
 
-        $query = "SHOW TABLES LIKE \"DB_".date('Y')."_IN_EP\";";
+        $query = "SHOW TABLES LIKE \"DB_".$_SESSION['user_year']."_IN_EP\";";
         $res = mysql_query($query) or die(mysql_error());
         $queryes_num++;
         if (mysql_num_rows($res) == 0)
             {
-                if (@opendir("uploads/".date('Y')."/IN_EP"))
+                if (@opendir("uploads/".$_SESSION['user_year']."/IN_EP"))
                     {
-                        @closedir("uploads/".date('Y')."/IN_EP");
+                        @closedir("uploads/".$_SESSION['user_year']."/IN_EP");
                     }
                     else
                     {
-                        mkdir("uploads/".date('Y')."/IN_EP", null, true) or die("Can't create new folder - uploads/".date('Y')."/IN_EP");
+                        mkdir("uploads/".$_SESSION['user_year']."/IN_EP", null, true) or die("Can't create new folder - uploads/".$_SESSION['user_year']."/IN_EP");
                     }
                 $query = file_get_contents("inc/db_in_ep.txt");
-                $query = str_replace("{YEAR}", date('Y'), $query);
+                $query = str_replace("{YEAR}", $_SESSION['user_year'], $query);
                 mysql_query($query) or die(mysql_error());
             }
 
@@ -991,7 +991,6 @@ if (isset($_SESSION['user_id']))
                 $is_first = "";
                 if (mysql_num_rows($res) > 0)
                     {
-                        if (mysql_num_rows($res) > 20) $page = str_replace("{JURNAL_IN_EP_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
 						$users = get_users_names(0);
                         $queryes_num++;
                         while ($row=mysql_fetch_array($res))
@@ -1145,12 +1144,10 @@ if (isset($_SESSION['user_id']))
                         $page.= file_get_contents("templates/information.html");
                         $page = str_replace("{INFORMATION}", "{LANG_JURNAL_OUT_EMPTY}", $page);
                     }
-				$page = str_replace("{JURNAL_IN_EP_AFFIX}", "", $page);
                 $page = str_replace("{JURNAL_IN_EP}", $jurnal_in_ep, $page);
                 $page .= $modals;
             }
         $page = str_replace("{JURNAL_IN_EP_TOP_STAT}", "&nbsp;", $page);
-        $page = str_replace("{JURNAL_IN_EP_AFFIX}", "", $page);
     }
     else
     {

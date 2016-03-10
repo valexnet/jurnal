@@ -1,11 +1,11 @@
-<div class="container" {JURNAL_IN_EP_AFFIX} style="background-color: #FFF;">
+<div class="container" style="background-color: #FFF;">
 	<h3><p class="text-center">{LANG_YEAR} {USER_YEAR}. {LANG_JURNAL_IN_EP}</p></h3>
 	<form method="POST">
 		<div class="col-sm-12 text-center">
 			<a onclick="skm_LockScreen()" class="btn btn-default" href="jurnal_in_ep.php{JURNAL_OUT_PRE_LINK}" role="button"><span class="glyphicon glyphicon-home" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_FIRST_PAGE}"></span></a>
-			<a class="btn btn-success" href="jurnal_in_ep.php?do=add#form" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_ADD_NEW}"></span></a>
+			<a class="btn btn-success" href="jurnal_in_ep.php?do=add&md5={MD5_FORM}#form" role="button"><span class="glyphicon glyphicon-plus" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_ADD_NEW}"></span></a>
 			<a onclick="skm_LockScreen()" class="btn btn-warning" href="jurnal_in_ep.php?do=add&use=imap" role="button"><span class="glyphicon glyphicon-envelope" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_ADD_NEW_FROM_SERVER}"></span></a>
-			<a class="btn btn-info" href="jurnal_in_ep.php?do=src#form" role="button"><span class="glyphicon glyphicon-search" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_EXTRA_SEARCH}"></span></a>
+			<a class="btn btn-info" href="jurnal_in_ep.php?do=src&md5={MD5_FORM}#form" role="button"><span class="glyphicon glyphicon-search" aria-hidden="true" data-toggle="tooltip" data-original-title="{LANG_EXTRA_SEARCH}"></span></a>
 			{LANG_YEAR}: <select NAME="show_year">{SELECT_YEARS}</select>
 			<button type="submit" class="btn btn-primary btn-xs" onclick="skm_LockScreen()" >{LANG_YEAR_CHANGE}</button>
 		</div>

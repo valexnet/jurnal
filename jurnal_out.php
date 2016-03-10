@@ -9,21 +9,21 @@ if (isset($_SESSION['user_id']))
         // Заміняєм назву якщо користувач відкрив зареєстровані бланки
         if ($_GET['blank'] == "do") $page = str_replace("{LANG_JURNAL_OUT}", "{LANG_JURNAL_BLANK_NAME}", $page);
 
-        $query = "SHOW TABLES LIKE \"DB_".date('Y')."_OUT\";";
+        $query = "SHOW TABLES LIKE \"DB_".$_SESSION['user_year']."_OUT\";";
         $res = mysql_query($query) or die(mysql_error());
         $queryes_num++;
         if (mysql_num_rows($res) == 0)
             {
-                if (@opendir("uploads/".date('Y')."/OUT"))
+                if (@opendir("uploads/".$_SESSION['user_year']."/OUT"))
                     {
-                        @closedir("uploads/".date('Y')."/OUT");
+                        @closedir("uploads/".$_SESSION['user_year']."/OUT");
                     }
                     else
                     {
-                        mkdir("uploads/".date('Y')."/OUT", null, true) or die("Can't create new folder - uploads/".date('Y')."/OUT");
+                        mkdir("uploads/".$_SESSION['user_year']."/OUT", null, true) or die("Can't create new folder - uploads/".$_SESSION['user_year']."/OUT");
                     }
                 $query = file_get_contents("inc/db_out.txt");
-                $query = str_replace("{YEAR}", date('Y'), $query);
+                $query = str_replace("{YEAR}", $_SESSION['user_year'], $query);
                 mysql_query($query) or die(mysql_error());
             }
 
@@ -272,7 +272,7 @@ if (isset($_SESSION['user_id']))
                                                         $page = str_replace("{INFORMATION}", "{LANG_NEW_OUT_WITH_UPDATED}: <strong>".$from_id."</strong><br><kbd>{LANG_JURNAL_IN_STATUS_3} ".date('d.m.Y H:i:s')."</kbd>", $page);
                                                     }
 												
-												$mailtobody = get_mailto_body($c_nam, $print_nomer, $user_name, date('Y.m.d'). " " .date('H:i:s'), $c_ver, $c_ver_alt);
+												$mailtobody = get_mailto_body($c_nam, $print_nomer, $user_name, date('Y.m.d'). " " .date('H:i:s'), $c_ver, $c_ver_alt, $user_tel1);
                                                 $page.= file_get_contents("templates/information_success.html");
                                                 $page = str_replace("{INFORMATION}", "{LANG_MAKE_MAILTO}: <a href=\"mailto:?subject=".$print_regular_nt."&body=".$mailtobody."\">{LANG_MAKE_MAILTO_LOCAL_CLIENT}</a>, <a target=\"_blank\" href=\"https://".$db_connect[7]."/owa/?ae=Item&a=New&t=IPM.Note&to=".$db_connect[4]."&SUBJECT=".$print_regular_nt."\">OWA</a>", $page);
 
@@ -1105,7 +1105,6 @@ if (isset($_SESSION['user_id']))
                                 $export .= "\"{LANG_SEARCH_RESULTS} :\";\n";
                                 $export .=  "\"{LANG_INDEX_DOC}\";\"{LANG_JURNAL_OUT_BLANK_NUM} №\";\"{LANG_OUT_ADD_TO_N}\";\"{LANG_LOG_TIME}\";\"{LANG_OUT_TEMA}\";\"{LANG_OUT_ADD_FROM}\";\"{LANG_OUT_ADD_TO}\";\"{LANG_HOW}\";\"{LANG_SEND_MONEY}\";\n";
                             }
-						if (mysql_num_rows($res) > 20) $page = str_replace("{JURNAL_OUT_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
                         while ($row=mysql_fetch_array($res))
                             {
                                 $admin_links_do = "";
@@ -1149,7 +1148,7 @@ if (isset($_SESSION['user_id']))
 								$num_show_index = get_index_module($_SESSION['user_year'],"out",$row['id'],$index_module[$row['nom']]['str'],$index_module[$row['nom']]['nom'],$row['user'],$c_index_module);
 								
 								$print_regular_nt = get_mailto_subject($c_n_ray, $index_module[$row['nom']]['str'], $index_module[$row['nom']]['nom'], $row['id'], $row['subj']);
-								$mailtobody = get_mailto_body($c_nam, $num_show_index, $users[$row['user']], data_trans("mysql", "ua", $row['data']), $c_ver, $c_ver_alt);
+								$mailtobody = get_mailto_body($c_nam, $num_show_index, $users[$row['user']], data_trans("mysql", "ua", $row['data']), $c_ver, $c_ver_alt, $user_tel1);
 								
                                 $jurnal_out .= "
                                 <tr valign=\"top\" align=\"center\">
@@ -1218,7 +1217,6 @@ if (isset($_SESSION['user_id']))
                                 $is_first = "true";
                                 if (isset($_GET['export']) AND $_GET['export'] == "do") $export .=  "\"".$row['id']." \\ ".$nomenclatura[$row['nom']]."\";\"".$blank_num."\";\"".$row['to_num']."\";\"".$row['data']."\";\"".$row['subj']."\";\"".$users[$row['user']]."\";\"".$row['to']."\";\"{LANG_HOW_".$row['how']."}\";\"".$row['money']."\";\n";
                             }
-						$page = str_replace("{JURNAL_OUT_AFFIX}", "data-spy=\"affix\" data-offset-top=\"170\"", $page);
                         $page .= $modals;
                         $page = str_replace("{JURNAL_OUT}", $jurnal_out, $page);
                         $page = str_replace("{JURNAL_OUT_STAT}", "{JURNAL_OUT_NUM_ON_PAGE}: ".$list." / ".mysql_num_rows($res)." / ".($b[0] - mysql_num_rows($res) - $list), $page);
@@ -1236,7 +1234,6 @@ if (isset($_SESSION['user_id']))
                     }
             }
         $page = str_replace("{JURNAL_OUT_TOP_STAT}", "", $page);
-        $page = str_replace("{JURNAL_OUT_AFFIX}", "", $page);
     }
     else
     {

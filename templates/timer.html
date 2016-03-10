@@ -1,13 +1,13 @@
 <script type="text/javascript">
 	time_diff = {TIMEOUT_AUHT};
-
+	var show_timeout = {TIMEOUT_SHOW_OF_NOT};
 	function countDown()
 	{
 		if (time_diff == 0)
 			{
 				clearInterval(timer1);
-				document.getElementById('counter').innerHTML = '<font color="red">Сесія завершена!</font>';
-				$('#SessionEnd').modal('show');
+				if (show_timeout) document.getElementById('counter').innerHTML = '<font color="red">Сесія завершена!</font>';
+				if (show_timeout) $('#SessionEnd').modal('show');
 			}
 			else
 			{
@@ -25,7 +25,7 @@
 					declOfNum(minutes, ["хвилина", "хвилини", "хвилин"]),
 					declOfNum(seconds, ["секунда", "секунди", "секунд"])
 				];
-				document.getElementById('counter').innerHTML =  values.join(" ") + ".";
+				if (show_timeout) document.getElementById('counter').innerHTML =  values.join(" ") + ".";
 			}
 	}
 
@@ -58,6 +58,64 @@
 		xhttp.send();
 	}
 	
+	var corir = {VIEW_OVERDUE};
+	var mig_timer = false;
+	function check_overdue_rows()
+	{
+		var xhttp;
+		if (window.XMLHttpRequest)
+			{
+				xhttp = new XMLHttpRequest();
+			}
+			else
+			{
+				xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		xhttp.onreadystatechange = function()
+			{
+				if (xhttp.readyState == 4 && xhttp.status == 200 && xhttp.responseText.length > 100)
+					{
+						document.getElementById('check_overdue_rows_html').innerHTML = xhttp.responseText;
+						document.getElementById('a_overdue_rows').className = 'label label-danger';
+						if (!mig_timer)
+							{
+								var timer2 = setInterval("mig()", 750);
+								mig_timer = true;
+							}
+						if (corir)
+							{
+								$('#check_overdue_rows').modal('show');
+								corir = false;
+							}
+					}
+			}
+		xhttp.open("GET", "ajax.php?do=check_overdue_rows", true);
+		xhttp.send();
+	}
+	
+	function set_overdue_time()
+	{
+		$('#check_overdue_rows').modal('hide');
+		var xhttp;
+		if (window.XMLHttpRequest)
+			{
+				xhttp = new XMLHttpRequest();
+			}
+			else
+			{
+				xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+			}
+		xhttp.onreadystatechange = function()
+			{
+				if (xhttp.readyState == 4 && xhttp.status == 200)
+					{
+						// Hi!
+					}
+			}
+		xhttp.open("GET", "ajax.php?do=set_view_overdue", true);
+		xhttp.send();
+	}
+	
 	function set_view_time()
 	{
 		$('#check_new_rows').modal('hide');
@@ -80,8 +138,23 @@
 		xhttp.open("GET", "ajax.php?do=set_view", true);
 		xhttp.send();
 	}
+	
+	var migalkac = 0;
+	function mig()
+	{
+		var migalka = document.getElementById('a_overdue_rows');
+		if (migalkac == 1)
+			{
+				migalka.className = 'label label-warning';
+			}
+			else
+			{
+				migalka.className = 'label label-danger';
+			}
+		migalkac++;
+		if (migalkac > 2) migalkac = 1;
+	}
 
-var timer1 = setInterval("countDown()", 1000);
-//var timer2 = setInterval("check_new_rows()", 15000);
+if (show_timeout) var timer1 = setInterval("countDown()", 1000);
 {SHOW_CHECK_NEW_ROWS}
 </script>{LANG_TIMER_TO_CLOSE_SESSION}

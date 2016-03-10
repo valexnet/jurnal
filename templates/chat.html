@@ -176,7 +176,8 @@ function PlaySound()
 	{
 		if (play_sounds)
 			{
-				document.getElementById("tmp_sound").remove();
+				var sound_for_del = document.getElementById("tmp_sound");
+				sound_for_del.parentNode.removeChild(sound_for_del);
 				$('body').append('<div id="tmp_sound" style="display:none;"><audio autoplay="autoplay"><source src="templates/images/notify.mp3" type="audio/mpeg" /><embed hidden="true" autostart="true" loop="false" src="templates/images/notify.mp3" /></audio></div>');
 			}
 	}

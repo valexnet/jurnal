@@ -1,0 +1,18 @@
+CREATE TABLE `DB_{YEAR}_DOX_1` (
+`id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+  `add_user` int(11) NOT NULL,
+  `add_time` datetime NOT NULL,
+  `add_ip` varchar(15) NOT NULL,
+  `edit_user` int(11) NULL DEFAULT NULL,
+  `edit_time` datetime NULL DEFAULT NULL,
+  `edit_ip` varchar(15) NULL DEFAULT NULL,
+  `vys_nom` varchar(15) NOT NULL,
+  `vys_data` datetime NOT NULL,
+  `plat_cod` varchar(15) NOT NULL,
+  `plat_name` varchar(150) NOT NULL,
+  `kbk` varchar(150) NOT NULL,
+  `suma` decimal(15,2) NOT NULL,
+  `from_rah` varchar(14) NOT NULL,
+  `to_rah` varchar(14) NOT NULL,
+  `new_plat` varchar(150) NOT NULL
+) ;

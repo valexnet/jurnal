@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{USER_LANG}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,14 +13,17 @@
 	<link href="templates/css/base.css" rel="stylesheet">
 	<link href="templates/css/font-awesome.css" rel="stylesheet">
 	<link href="templates/css/prettify-1.css" rel="stylesheet">
-
+	<link href="templates/css/custom.css" rel="stylesheet">
+	
+	{BROWSER_INFORMATION}
+	
 	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
 		<script src="templates/js/html5shiv.min.js"></script>
 		<script src="templates/js/respond.min.js"></script>
 	<![endif]-->
-
+	
 	<script src="templates/js/jquery-2.js"></script>
 	<script src="templates/js/moment-with-locales.js"></script>
 	<script src="templates/js/transition.js"></script>
@@ -31,43 +34,8 @@
 	<script src="templates/js/prettify-1.js"></script>
 	<script src="templates/js/bootstrap-datetimepicker.js"></script>
 	<script src="templates/js/analytics.js"></script>
-
-	<script type="text/javascript">
-	// <![CDATA[
-	function skm_LockScreen()
-		{
-			var timer = 0
-			var lock = document.getElementById('skm_LockPane');
-			lock.className = 'LockOn';
-			lock.innerHTML = '<h2><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND}</font></h2>';
-			var timerId = setInterval(function()
-				{
-					timer = timer + 0.5;
-					timer = parseFloat(timer.toFixed(1));
-					document.getElementById('skm_LockPane').innerHTML = '<h2><img src="templates/images/logo.png"><br /><font color="green">{LANG_YOUR_REQUEST_SEND} <h2>' + timer + '<h2></font></h2>';
-				}, 500);
-		}
-	function show_admin_menu()
-		{
-			var menu = document.getElementById('dropdown_admin_menu');
-			if (menu.className == "dropdown")
-				{
-					menu.className = 'dropdown open';
-				}
-				else
-				{
-					menu.className = 'dropdown';
-				}
-		}
-	// ]]>
-	</script>
-	<style>
-		.LockOff { display: none; visibility: hidden; }
-		.LockOn { display: block; visibility: visible; position: absolute; z-index: 999; top: 0px; left: 0px; width: 105%; height: 105%; background-color: #fff; text-align: center; padding-top: 15%; }
-
-		.affix { top: 0; width: 100%; }
-		.affix + .container-fluid { padding-top: 70px; }
-	</style>
+	<script src="templates/js/dom4.js"></script>
+	<script src="templates/js/custom.js"></script>
 </head>
 <body>
 <div class="container text-center" style="margin-top: 10px;">
@@ -80,6 +48,7 @@
 				<td class="text-left" style="vertical-align: middle;">
 					<p style="font-size: 18px;">
 						<a href="index.php" onclick="skm_LockScreen()"><strong>{LANG_HEADERINFO}</strong> <span class="label label-primary" data-toggle="tooltip" data-placement="bottom" data-original-title="{LANG_JUNAL_VER_TOOLTIP}">v.{VER_NUM}</span></a>
+						<a data-toggle="modal" href="#check_overdue_rows" aria-expanded="false" aria-controls="check_overdue_rows"><span id="a_overdue_rows" class="label label-danger hidden">Є Прострочена інформація</span></a>
 						<br>{SITENAME}
 					</p>
 					{SHOW_C_ANO}

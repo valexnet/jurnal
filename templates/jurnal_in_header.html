@@ -1,10 +1,10 @@
-<div class="container" {JURNAL_IN_AFFIX} style="background-color: #FFF;">
+<div class="container" style="background-color: #FFF;">
 	<h3><p class="text-center">{LANG_YEAR} {USER_YEAR}. {LANG_JURNAL_IN}</p></h3>
 	<form method="POST">
 		<div class="col-sm-12 text-center">
 			<a onclick="skm_LockScreen()" href="jurnal_in.php{JURNAL_OUT_PRE_LINK}"><img src="templates/images/home2.png"></a>
-			<a href="jurnal_in.php?do=add#form"><img src="templates/images/add.png"></a>
-			<a href="jurnal_in.php?do=src#form"><img src="templates/images/search2.png"></a>
+			<a href="jurnal_in.php?do=add&md5={MD5_FORM}#form"><img src="templates/images/add.png"></a>
+			<a href="jurnal_in.php?do=src&md5={MD5_FORM}#form"><img src="templates/images/search2.png"></a>
 			{LANG_YEAR}: <select NAME="show_year">{SELECT_YEARS}</select>
 			<button type="submit" class="btn btn-primary btn-xs" onclick="skm_LockScreen()" >{LANG_YEAR_CHANGE}</button>
 		</div>

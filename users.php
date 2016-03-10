@@ -542,6 +542,8 @@ if ($user_p_users == 1)
                                         if (in_array(5, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_5}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_5}", "", $template2);}
                                         if (in_array(6, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_6}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_6}", "", $template2);}
                                         if (in_array(7, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_7}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_7}", "", $template2);}
+                                        if (in_array(8, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_8}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_8}", "", $template2);}
+                                        if (in_array(9, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_9}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_9}", "", $template2);}
                                         $page.= $template2;
                                     }
                             }

@@ -9,10 +9,12 @@ if (isset($_SESSION['user_id']))
         if ($c_tmt == 0 OR $user_a_ip == "1" AND $user_ip == $_SERVER['REMOTE_ADDR'])
             {
                 $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "", $page);
+                $page = str_replace("{TIMEOUT_SHOW_OF_NOT}", "false", $page);
             }
             else
             {
                 $page = str_replace("{LANG_TIMER_TO_CLOSE_SESSION}", "{LANG_SESSION_TO} <a id=\"counter\"></a><br />", $page);
+                $page = str_replace("{TIMEOUT_SHOW_OF_NOT}", "true", $page);
             }
     }
     else
@@ -31,13 +33,29 @@ if (isset($timeout))
         $page = str_replace("{INFORMATION}", "{REDIRECT_ANNONCE}", $page);
         $page = str_replace("{REDIRECT_GIF}", "<td style=\"vertical-align: middle;\"><img src=\"templates/images/globe64.gif\"></td>", $page);
         $page = str_replace("{SHOW_CHECK_NEW_ROWS}", "", $page);
+		$page = str_replace("{VIEW_OVERDUE}", "false", $page);
     }
     else
     {
         $page = str_replace("{META_REFRESH}", "", $page);
         $page = str_replace("{REDIRECT_ANNONCE}", "", $page);
         $page = str_replace("{REDIRECT_GIF}", "", $page);
-        $page = str_replace("{SHOW_CHECK_NEW_ROWS}", "check_new_rows();", $page);
+        $page = str_replace("{SHOW_CHECK_NEW_ROWS}", "check_new_rows(); check_overdue_rows();", $page);
+		if (isset($_SESSION['overdue_timestamp']))
+			{
+				if (time() > $_SESSION['overdue_timestamp'] + 60)
+					{
+						$page = str_replace("{VIEW_OVERDUE}", "true", $page);
+					}
+					else
+					{
+						$page = str_replace("{VIEW_OVERDUE}", "false", $page);
+					}
+			}
+			else
+			{
+				$page = str_replace("{VIEW_OVERDUE}", "true", $page);
+			}
     }
 
 $page = str_replace("{SITENAME}", $c_nam, $page);
@@ -103,17 +121,21 @@ if ($user_p_mod == 1) {$page = str_replace("{USER_P_MOD}", "{LANG_ALLOW}", $page
 if ($c_ano == 1) {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{ANONYMOUS_ALLOW}", "{LANG_DISALLOW}", $page);}
 if ($c_lch == 1) {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_ALLOW}", $page);} else {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_DISALLOW}", $page);}
 
-// Шукаємо старі версії ІЕ
-$browser_alarm = "";
-preg_match("/(MSIE)(?:\/| )([0-9]{1,}\.+)/i", $_SERVER['HTTP_USER_AGENT'], $browser_info);
-list(,$browser_name,$browser_version) = $browser_info;
-$browser_version = substr($browser_version, 0, strpos($browser_version, "."));
-if ($browser_name == 'MSIE' AND $browser_version < 8)
-    {
+// Шукаємо нормальний браузер
+if (preg_match("/rv:([1-9][0-9]*)/i", $_SERVER['HTTP_USER_AGENT'], $ie_ver)) $browser_version = "Internet Explorer v.".$ie_ver[1];
+if (preg_match("/Firefox\/([1-9][0-9]*)/i", $_SERVER['HTTP_USER_AGENT'], $firefox_ver)) $browser_version = "Mozilla Firefox v.".$firefox_ver[1];
+if (preg_match("/Chrome\/([1-9][0-9]*)/i", $_SERVER['HTTP_USER_AGENT'], $chrome_ver)) $browser_version = "Google Chrome v.".$chrome_ver[1];
+if ($ie_ver[1] >= 11 OR $firefox_ver[1] >= 40 OR $chrome_ver[1] >= 48)
+	{
+		$browser_alarm .= "<!-- BROWSER: ".$browser_version." //-->";
+	}
+	else
+	{
         $browser_alarm = file_get_contents("templates/information_warning.html");
-        $browser_alarm = str_replace("{INFORMATION}", $browser_name." | ver:".$browser_version, $browser_alarm);
-    }
-$page = str_replace("{ALARM_IE_IS_OLD}", $browser_alarm, $page);
+        $browser_alarm = str_replace("{INFORMATION}", $_SERVER['HTTP_USER_AGENT'], $browser_alarm);
+	}
+$page = str_replace("{BROWSER_INFORMATION}", $browser_alarm, $page);
+
 // Показуємо повідомлення про закритий журнал
 if ($c_ano == 0)
     {
@@ -144,7 +166,11 @@ if ($free_giga_space < 6)
     }
 ////
 
+// Генеруємо {MD5_FORM}
+$page = str_replace("{MD5_FORM}", md5(date('His')), $page);
+
 // Підключаємо мову
+$page = str_replace("{USER_LANG}", $c_lng, $page);
 if (!file_exists("inc/lang/".$c_lng.".php")) die("Language file [inc/lang/".$c_lng.".php] not exist");
 include_once ("lang/".$c_lng.".php");
 foreach ($lang as $key => $value)

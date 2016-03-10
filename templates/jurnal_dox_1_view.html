@@ -1,0 +1,431 @@
+
+<script>
+function ajax_load(sort, asc_desc)
+	{
+		$("#ajax_content").html("<hr>{LANG_WAIT_FOR_SERVER}... <img src=\"templates/images/loading.gif\"><hr>");
+		$("#tbody_content").load("jurnal_dox_1_ajax.php", {act: "load", sort: sort, asc_desc: asc_desc},
+			function()
+				{
+					var rightNow = new Date();
+					var res = zero(rightNow.getHours()) + ":" + zero(rightNow.getMinutes()) + ":" + zero(rightNow.getSeconds());
+					$("#ajax_content").html("<hr>Запит отримано: <font color=green>" + res + "</font><hr>");
+				}
+		);
+	};
+
+var zero = function (value)
+	{
+		return value < 10 ? '0' + value : value;
+    };
+
+function ajax_refresh()
+	{
+		ajax_load('id','desc');
+	};
+
+var rotate_print = 1;
+var ajax_content_previos = '';
+function ajax_print()
+	{
+		if (rotate_print == 1)
+			{
+				rotate_print = 0;
+				ajax_content_previos = $('#ajax_content').html();
+				$('.container, #refresh_button').hide();
+				$('#ajax_content').html('<center><h3>{LANG_JOURNAL_OF_FINDINGS}</h3></center><center class="no-print" onclick="ajax_print()"><hr>Повернутись<hr></center>');
+				$('#ajax_content, #view_content').show();
+			}
+			else
+			{
+				rotate_print = 1;
+				$("#ajax_content").html(ajax_content_previos);
+				$('.container, #ajax_content, #refresh_button').show();
+			}
+	};
+	
+function ajax_add()
+	{
+		var cheak = true;
+		var edit_id = $("#edit_id").val();
+		var vys_nom = $("#vys_nom").val();
+		var vys_data = $("#vys_data").val();
+		var plat_cod = $("#plat_cod").val();
+		var plat_name = $("#plat_name").val();
+		var kbk = $("#kbk").val();
+		var suma = $("#suma").val();
+		var from_rah = $("#from_rah").val();
+		var to_rah = $("#to_rah").val();
+		var new_plat = $("#new_plat").val();
+		
+		if (vys_nom == '') cheak = false;
+		if (vys_data == '') cheak = false;
+		if (plat_cod == '') cheak = false;
+		if (plat_name == '') cheak = false;
+		if (kbk == '') cheak = false;
+		if (suma == '') cheak = false;
+		if (from_rah == '') cheak = false;
+		if (to_rah == '') cheak = false;
+		if (new_plat == '') cheak = false;
+		
+		if (cheak)
+			{
+				$('#dox_1_add').modal('hide');
+				$('#header_content').hide();
+				$('#ajax_content').html('<hr>{LANG_WAIT_FOR_SERVER}... <img src="templates/images/loading.gif"><hr>');
+				$('#ajax_content').load('jurnal_dox_1_ajax.php', {act: 'add', edit_id: edit_id, vys_nom: vys_nom, vys_data: vys_data, plat_cod: plat_cod, plat_name: plat_name, kbk: kbk, suma: suma, from_rah: from_rah, to_rah: to_rah, new_plat: new_plat},
+					function()
+						{
+							$('#header_content').show();
+							addSuccess();
+						}
+				);
+				
+			}
+			else
+			{
+				alert('Заповніть всі поля');
+			}
+	};
+
+function addSuccess()
+	{
+		$('#tbody_content > tr').removeClass('success');
+		$('#tbody_content > tr').removeClass('danger');
+		var result = $('#result').val();
+		var new_id = $('#new_id').val();
+		var vys_nom = $("#vys_nom").val();
+		var vys_data = $("#vys_data").val();
+		var plat_cod = $("#plat_cod").val();
+		var plat_name = $("#plat_name").val();
+		var kbk = $("#kbk").val();
+		var suma = $("#suma").val();
+		var from_rah = $("#from_rah").val();
+		var to_rah = $("#to_rah").val();
+		var new_plat = $("#new_plat").val();
+		var editId = $('#editId').val();
+		var reason = $('#reason').val();
+		
+		if (result == 'addSuccess')
+			{
+				$('#tbody_content').prepend('<tr id="tr_' + new_id + '"><input id="del_' + new_id + '" value="1" class="hidden" type="hidden" /><td>' + new_id + '</td><td>' + vys_nom + '</td><td>' + vys_data + '</td><td>' + plat_cod + '</td><td>' + plat_name + '</td><td>' + kbk + '</td><td>' + suma + '</td><td>' + from_rah + '</td><td>' + to_rah + '</td><td>' + new_plat + '</td></tr>');
+				$('#tr_' + new_id).addClass('success');
+				$('#del_' + (new_id - 1)).val('0');
+			};
+			
+		if (result == 'editSuccess')
+			{
+				$('#tr_' + editId).html('<td>' + editId + '</td><td id="vys_nom_' + editId + '">' + vys_nom + '</td><td id="vys_data_' + editId + '">' + vys_data + '</td><td id="plat_cod_' + editId + '">' + plat_cod + '</td><td id="plat_name_' + editId + '">' + plat_name + '</td><td id="kbk_' + editId + '">' + kbk + '</td><td id="suma_' + editId + '">' + suma + '</td><td id="from_rah_' + editId + '">' + from_rah + '</td><td id="to_rah_' + editId + '">' + to_rah + '</td><td id="new_plat_' + editId + '">' + new_plat + '</td>');
+				$('#tr_' + editId).addClass('success');
+			};
+			
+		if (result == 'addError')
+			{
+				if (editId != '0')
+					{
+						$('#tr_' + editId).addClass('danger');
+					};
+			};
+			
+		if (result == 'editError')
+			{
+				$('#tr_' + editId).addClass('danger');
+				if (reason == 'lastYear')
+					{
+						alert ('Правка дозволена тільки в межах нинішнього року');
+					}
+				if (reason == 'noExists')
+					{
+						alert ('Номер не знайдено в базі даних');
+					}
+				if (reason == 'noModer')
+					{
+						alert ('Ви не автор номеру і не модератор');
+					}
+			};
+		
+	};
+
+function loadHelp(a, b, c)
+    {
+		$(a).load('jurnal_dox_1_ajax.php', {act: 'loadhelp', help_name: a, from: b, input: c});
+    };
+
+function insertData(a, b)
+	{
+		$(a).val(b);
+		$('.help_div').html('');
+	};
+	
+function delete_id(a)
+	{
+		$('#dox_1_add').modal('hide');
+		$('#ajax_content').html('');
+		$('#ajax_content').load('jurnal_dox_1_ajax.php', {act: 'del', del_id: a},
+		function()
+			{
+				DeleteSuccess(a);
+			}
+		);
+	};
+
+function DeleteSuccess(a)
+	{
+		var result = $('#result').val();
+		if (result == 'delSuccess')
+			{
+				$('#tr_' + a).remove();
+				$('#del_' + (a - 1)).val('1');
+			};
+		if (result == 'delError')
+			{
+				$('#tr_' + a).addClass('danger');
+			};
+		showInformer();
+	};
+	
+function showInformer()
+	{
+		var result_html = $('#result_html').html();
+		$('#informer_body').html(result_html);
+		$('#informer').modal('show');
+	};
+
+function showAdd()
+	{
+		$('.help_div').html('');
+		$('#edit_id').val('0');
+		$('#vys_nom').val('');
+		$('#vys_data').val('');
+		$('#plat_cod').val('');
+		$('#plat_name').val('');
+		$('#kbk').val('');
+		$('#suma').val('');
+		$('#from_rah').val('');
+		$('#to_rah').val('');
+		$('#new_plat').val('');
+		$('#myModalLabel').html('{LANG_ADD_NEW} ({USER_NAME})');
+		$('#submit').html('{LANG_ADD_NEW}');
+		$('#delete_button').hide();
+		$('#dox_1_add').modal('show');
+	};
+	
+function showInfo(a)
+	{
+		$('.help_div').html('');
+		$('#vys_nom').val($('#vys_nom_' + a).html());
+		$('#vys_data').val($('#vys_data_' + a).html());
+		$('#plat_cod').val($('#plat_cod_' + a).html());
+		$('#plat_name').val($('#plat_name_' + a).html());
+		$('#kbk').val($('#kbk_' + a).html());
+		$('#suma').val($('#suma_' + a).html().replace(/\s/g, ''));
+		$('#from_rah').val($('#from_rah_' + a).html());
+		$('#to_rah').val($('#to_rah_' + a).html());
+		$('#new_plat').val($('#new_plat_' + a).html());
+		$('#edit_id').val(a);
+		$('#myModalLabel').html('{LANG_USERS_ADMIN_EDIT} №' + a);
+		$('#submit').html('{LANG_USERS_ADMIN_EDIT}');
+		$('#delete_button').hide();
+		if ($('#del_' + a).val() == '1') $('#delete_button').show();
+		$('#dox_1_add').modal('show');
+	};
+
+	
+$(document).ready(function()
+	{
+		ajax_refresh();
+		
+		$('#form').on('keydown', 'input', function (event)
+		{
+			if (event.which == 13)
+				{
+					var $this = $(event.target);
+					var index = parseFloat($this.attr('data-index'));
+					if (index == 8)
+						{
+							ajax_add();
+						}
+						else
+						{
+							$('[data-index="' + (index + 1).toString() + '"]').select();
+							$('[data-index="' + (index + 1).toString() + '"]').focus();
+						}
+					event.preventDefault();
+				}
+		});
+	});
+</script>
+
+<style>
+.table-striped > thead > tr > td {
+border: 1px solid #111;
+vertical-align:middle;
+text-align:center;
+}
+
+.form-control {
+font-size: 16px;
+color: #333;
+font-weight: bold;
+}
+
+@media print {
+    body {
+        color: #000;
+        background: #fff;
+    }
+	.no-print { 
+		display: none !important;
+	}
+}
+</style>
+
+<div class="modal fade strong" id="informer" tabindex="-1" role="dialog" aria-labelledby="informerLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="{LANG_JURN_OUT_NUM_CLOSE}"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center" id="informerLabel">Інформування</h4>
+			</div>
+			<div class="modal-body text-center" id="informer_body">
+			
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade strong" id="dox_1_add" tabindex="-1" role="dialog" aria-labelledby="dox_1_addLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<form role="form" data-toggle="validator" id="form" action="" onsubmit="ajax_add(); return false;">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="{LANG_JURN_OUT_NUM_CLOSE}"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title text-center" id="myModalLabel">{LANG_ADD_NEW} ({USER_NAME})</h4>
+				</div>
+				<div class="modal-body text-center">
+					<input name="edit_id" id="edit_id" value="0" type="hidden" class="hidden" />
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<td align="right">
+									<div class="input-group">
+										<div class="input-group-addon" ondblclick="$('#vys_nom').val(''); $('#vys_nom').focus();">{LANG_DOX_FINDING} №</div>
+										<input type="text" NAME="vys_nom" class="form-control" id="vys_nom" value="" data-index="1" autocomplete="off" required />
+									</div>
+								</td>
+								<td align="left">
+									<div class="input-group date" id='datetimepicker_vys_data'>
+										<div class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;{LANG_DOX_FINDING} {LANG_DATA}
+										</div>
+										<input type="text" NAME="vys_data" class="form-control" id="vys_data" value="{FORM_GET_DATA}" autocomplete="off" required />
+									</div>
+									<script type="text/javascript">
+										$(function () {
+											$('#datetimepicker_vys_data').datetimepicker({
+												locale: 'uk',
+												format: 'L'
+											});
+										});
+									</script>
+								</td>
+							</tr>
+							<tr>
+								<td align="right">
+									<div class="input-group" data-toggle="tooltip" data-placement="left" data-original-title="{LANG_DOX_PLAT_COD}">
+										<div class="input-group-addon" ondblclick="$('#plat_cod').val(''); $('#plat_cod').focus();">{LANG_DOX_PLAT_COD_S}</div>
+										<input onkeyup="loadHelp('#help_plat_cod', this.id, this.value)" autocomplete="off" type="text" NAME="plat_cod" class="form-control" id="plat_cod" value="" data-index="2" required />
+									</div>
+									<div id="help_plat_cod" class="help_div"></div>
+								</td>
+								<td align="left">
+									<div class="input-group" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_DOX_PLAT_NAME}">
+										<div class="input-group-addon" ondblclick="$('#plat_name').val(''); $('#plat_name').focus();">{LANG_DOX_PLAT_NAME_S}</div>
+										<input onkeyup="loadHelp('#help_plat_name', this.id, this.value)" autocomplete="off" type="text" NAME="plat_name" class="form-control" style="font-weight: unset; font-size: 14px;" id="plat_name" value="" data-index="3" required />
+									</div>
+									<div id="help_plat_name" class="help_div"></div>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2" align="center">
+									<div class="input-group" data-toggle="tooltip" data-placement="left" data-original-title="{LANG_DOX_KBK}">
+										<div class="input-group-addon" ondblclick="$('#kbk').val(''); $('#kbk').focus();">
+											{LANG_DOX_KBK_S}
+										</div>
+										<input onkeyup="loadHelp('#help_kbk', this.id, this.value)" autocomplete="off" type="text" NAME="kbk" class="form-control" id="kbk" value="" data-index="4" required />
+									</div>
+									<div id="help_kbk" class="help_div"></div>
+								</td>
+							</tr>
+							<tr>
+								<td align="right">
+									<div class="input-group" data-toggle="tooltip" data-placement="left" data-original-title="{LANG_DOX_FROM_RAH}">
+										<div class="input-group-addon" ondblclick="$('#from_rah').val(''); $('#from_rah').focus();">{LANG_DOX_FROM_RAH_S}</div>
+										<input onkeyup="loadHelp('#help_from_rah', this.id, this.value)" autocomplete="off" type="text" NAME="from_rah" class="form-control" id="from_rah" value="" data-index="5" required />
+									</div>
+									<div id="help_from_rah" class="help_div"></div>
+								</td>
+								<td align="left">
+									<div class="input-group form-inline" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_DOX_TO_RAH}">
+										<div class="input-group-addon" ondblclick="$('#to_rah').val(''); $('#to_rah').focus();">{LANG_DOX_TO_RAH_S}</div>
+										<input onkeyup="loadHelp('#help_to_rah', this.id, this.value)" autocomplete="off" type="text" NAME="to_rah" class="form-control" id="to_rah" value="" data-index="6" required />
+									</div>
+									<div id="help_to_rah" class="help_div"></div>
+								</td>
+							</tr>
+							<tr>
+								<td align="right">
+									<div class="input-group" data-toggle="tooltip" data-placement="left" data-original-title="{LANG_DOX_SUMA}">
+										<div class="input-group-addon" ondblclick="$('#suma').val(''); $('#suma').focus();">{LANG_DOX_SUMA_S}</div>
+										<input type="text" NAME="suma" class="form-control" id="suma" value="" data-index="7" required />
+									</div>
+								</td>
+								<td align="left">
+									<div class="input-group" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_DOX_NEW_PLAT}">
+										<div class="input-group-addon" ondblclick="$('#new_plat').val(''); $('#new_plat').focus();">{LANG_DOX_NEW_PLAT_S}</div>
+										<input type="text" NAME="new_plat" class="form-control" id="new_plat" value="" data-index="8" required />
+									</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" id="delete_button" class="btn btn-danger" onclick="delete_id($('#edit_id').val());">{LANG_DELETE}</button>
+					<button type="submit" id="submit" class="btn btn-success">{LANG_ADD_NEW}</button>
+					<button type="reset" class="btn btn-warning">{LANG_RESET_FORM}</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">{LANG_JURN_OUT_NUM_CLOSE}</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div id="view_content" style="padding: 10px;">
+	<table id="table_content" class="table table-striped">
+		<thead>
+			<tr>
+				<td rowspan=2>№<br/>з/п</td>
+				<td colspan=2>Висновок</td>
+				<td colspan=2>Платник податку</td>
+				<td rowspan=2 style="font-size: 10px;">Код бюджетної класифікації доходів та назва платежу, що повертається</td>
+				<td rowspan=2 style="font-size: 10px;">Сума до повернення</td>
+				<td colspan=2>Підлягає перерахуванню</td>
+				<td rowspan=2 width="20" style="font-size: 10px;">Номер, дата платіжного доручення</td>
+			</tr>
+			<tr>
+				<td>№</td>
+				<td>дата</td>
+				<td width="20" style="font-size: 10px;">код за ЄДРПОУ та/або реєстраційний номер облікової картки платника податків (серія та номер паспорта)</td>
+				<td style="font-size: 10px;">найменування (для юридичної особи) або прізвище, ім'я та по батькові (для фізичної особи)</td>
+				<td>з рахунку</td>
+				<td>на рахунок</td>
+			</tr>
+		</thead>
+		<tbody id="tbody_content">
+		</tbody>
+	</table>
+</div>
