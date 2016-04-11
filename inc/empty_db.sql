@@ -126,3 +126,76 @@ CREATE TABLE `users` (
 ) AUTO_INCREMENT=2 ;
 
 INSERT INTO `users` VALUES (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 0, 'Адміністратор', 1442993102, '10.98.97.31', 1, 1, '0', 1, 'ua', 1294922873, 1, 1, 1, 1, 0, 1, 1, '0', '0', '34-27-003', '(047-31) 3-00-93', '(097) 491-73-34', '3,4,5,6,7,8,9,15,11,12,13,', '1,2,3,4,5,6', 0);
+
+CREATE TABLE `db_it_invent` (
+`id` int(11) NOT NULL auto_increment,
+`invent` int(11) NOT NULL,
+`inv_plus` varchar(10) NOT NULL,
+`name` varchar(250) NOT NULL,
+`data_made` date NOT NULL,
+`data_install` date NOT NULL,
+`room_id` int(11) NOT NULL,
+`user_id` int(11) NOT NULL,
+`status_id` int(11) NOT NULL,
+`suma` decimal(15,2) NOT NULL,
+`amort` int(3) NOT NULL,
+PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `db_it_kt` (
+`id` int(11) NOT NULL auto_increment,
+`invent_id` int(11) NOT NULL,
+`name` varchar(250) NOT NULL,
+`sn` varchar(100) NOT NULL,
+`data_made` int(4) NOT NULL,
+`data_install` int(4) NOT NULL,
+`status_1_id` int(11) NOT NULL,
+`status_2_id` int(11) NOT NULL,
+`func` varchar(250) NOT NULL,
+`note` text NOT NULL,
+PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `db_it_rooms` (
+`id` int(11) NOT NULL auto_increment,
+`nom` int(11) NOT NULL,
+`name` varchar(150) NOT NULL,
+`name_full` varchar(250) NOT NULL,
+`str_id` int(11) NOT NULL,
+PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `db_it_specs` (
+`id` int(11) NOT NULL auto_increment,
+`kt_id` int(11) NOT NULL,
+`name` varchar(150) NOT NULL,
+`value` varchar(50) NOT NULL,
+PRIMARY KEY  (`id`)
+);
+
+CREATE TABLE `db_it_status` (
+`id` int(11) NOT NULL auto_increment,
+`name` varchar(150) NOT NULL,
+`name_full` varchar(250) NOT NULL,
+`text_color` varchar(7) NOT NULL,
+`bg_color` varchar(7) NOT NULL,
+PRIMARY KEY  (`id`)
+);
+
+INSERT INTO `db_it_status` VALUES (1, 'Робочий', 'Техніка працює, вади відсутні', 'green', '#fff');
+INSERT INTO `db_it_status` VALUES (2, 'Потребує ремонту', 'Техніка потребує ремонту, ремонт доцільний', 'green', '#ff0');
+INSERT INTO `db_it_status` VALUES (3, 'До списання', 'Техніка морально застаріла, або ремонт не доцільний', '#fff', 'red');
+INSERT INTO `db_it_status` VALUES (4, 'Архів', 'Техніка робоча', '#000', '#888');
+INSERT INTO `db_it_status` VALUES (5, 'Оренда', 'Техніка орендована', '#666', '#fff');
+INSERT INTO `db_it_status` VALUES (9, 'Резерв', 'Техніка в робочому стані, знаходиться в резерві', '#000', '#666');
+INSERT INTO `db_it_status` VALUES (10, 'Інформація не повна', 'Техніка додана, але не відповідайє дійсності.', '#fff', '#000');
+
+CREATE TABLE `db_it_soft` (
+`id` int(11) NOT NULL auto_increment,
+`invent_id` int(11) NOT NULL,
+`name` varchar(150) NOT NULL,
+`ver` varchar(15) NOT NULL,
+`data` date NOT NULL,
+`lic` varchar(150) NOT NULL,
+PRIMARY KEY  (`id`)
+);
