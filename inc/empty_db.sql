@@ -33,7 +33,7 @@ CREATE TABLE `config` (
   PRIMARY KEY  (`id`)
 ) ;
 
-INSERT INTO `config` VALUES (1, 'Назва УДКСУ', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|eml|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 12, 250, "[index]/[str]-[nom]");
+INSERT INTO `config` VALUES (1, 'Назва УДКСУ', '', 15, 0, 0, 3600, 20, 1, 2015, '2314', 'zip|eml|rar|7z|txt|doc|xls|docx|xlcx|pdf|jpg', 10, 14, 250, "[index]/[str]-[nom]");
 
 
 DROP TABLE IF EXISTS `cron`;

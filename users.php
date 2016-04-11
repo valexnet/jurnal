@@ -544,6 +544,8 @@ if ($user_p_users == 1)
                                         if (in_array(7, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_7}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_7}", "", $template2);}
                                         if (in_array(8, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_8}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_8}", "", $template2);}
                                         if (in_array(9, $usr_privat_array)) {$template2 = str_replace("{PRIVAT_9}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_9}", "", $template2);}
+                                        if (in_array('a', $usr_privat_array)) {$template2 = str_replace("{PRIVAT_a}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_a}", "", $template2);}
+                                        if (in_array('b', $usr_privat_array)) {$template2 = str_replace("{PRIVAT_b}", "selected", $template2);} else {$template2 = str_replace("{PRIVAT_b}", "", $template2);}
                                         $page.= $template2;
                                     }
                             }
@@ -671,3 +673,5 @@ if ($user_p_users == 1)
         $timeout = "index.php";
     }
 include ("inc/blender.php");
+?>
+

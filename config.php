@@ -282,3 +282,4 @@ if ($user_p_config == 1)
         $timeout = "index.php";
     }
 include ("inc/blender.php");
+?>

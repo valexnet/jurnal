@@ -1,0 +1,50 @@
+
+<div class="modal strong" id="room_modal" tabindex="-1" role="dialog" aria-labelledby="room_modalLabel">
+	<div class="modal-dialog" role="document">
+		<form>
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="{LANG_JURN_OUT_NUM_CLOSE}"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center" id="room_modalLabel"></h4>
+			</div>
+			<div class="modal-body text-center">
+				<input name="edit_id" id="edit_id" value="0" type="hidden" class="hidden" />
+				<table class="table table-hover">
+					<tbody>
+						<tr>
+							<td align="right">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#nom').val(''); $('#nom').focus();">{LANG_ROOM_N}</div>
+									<input NAME="nom" id="nom" data-index="1" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+							</td>
+							<td align="left">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#name').val(''); $('#name').focus();">{LANG_ROOM_NAME}</div>
+									<input NAME="name" id="name" data-index="2" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#name_full').val(''); $('#name_full').focus();">
+										{LANG_ROOM_NAME_FULL}
+									</div>
+									<input NAME="name_full" id="name_full" data-index="3" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<div id="help_kbk" class="help_div"></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button onclick="delete_id('rooms', $('#name').val(), $('#edit_id').val(), '0');" type="button" id="delete_button" class="btn btn-danger">{LANG_DELETE}</button>
+				<button onclick="add_id('rooms', $('#edit_id').val());" type="button" id="add_button" class="btn btn-success">{LANG_ADD_NEW}</button>
+				<button type="reset" class="btn btn-warning">{LANG_RESET_FORM}</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

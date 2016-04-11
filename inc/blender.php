@@ -125,7 +125,9 @@ if ($c_lch == 1) {$page = str_replace("{LOGIN_CHOOSE_ALLOW}", "{LANG_ALLOW}", $p
 if (preg_match("/rv:([1-9][0-9]*)/i", $_SERVER['HTTP_USER_AGENT'], $ie_ver)) $browser_version = "Internet Explorer v.".$ie_ver[1];
 if (preg_match("/Firefox\/([1-9][0-9]*)/i", $_SERVER['HTTP_USER_AGENT'], $firefox_ver)) $browser_version = "Mozilla Firefox v.".$firefox_ver[1];
 if (preg_match("/Chrome\/([1-9][0-9]*)/i", $_SERVER['HTTP_USER_AGENT'], $chrome_ver)) $browser_version = "Google Chrome v.".$chrome_ver[1];
-if ($ie_ver[1] >= 11 OR $firefox_ver[1] >= 40 OR $chrome_ver[1] >= 48)
+if (preg_match("/OPR\/([1-9][0-9]*)/i", $_SERVER['HTTP_USER_AGENT'], $opera_ver)) $browser_version = "Opera v.".$opera_ver[1];
+
+if ($ie_ver[1] >= 11 OR $firefox_ver[1] >= 40 OR $chrome_ver[1] >= 45 OR $opera_ver >= 32)
 	{
 		$browser_alarm .= "<!-- BROWSER: ".$browser_version." //-->";
 	}
@@ -192,12 +194,14 @@ $page = str_replace("{PAGE_QUERYES_NUM}", " include ".$queryes_num." MySQL query
 
 if (isset($_GET['export']) AND $_GET['export'] == "do")
     {
-        //$export = str_replace($srch_csv, $rpls_csv, $export);
         header("Content-Type: ".$export_type.";");
         header("Content-Disposition: attachment; filename=".$export_name."");
-        echo(iconv('UTF-8', 'windows-1251', $export));
+		$export = htmlspecialchars_decode($export, ENT_NOQUOTES);
+		$export = str_replace("&quot;", "'", $export);
+		echo(@iconv('UTF-8', 'windows-1251//IGNORE', $export));
     }
     else
     {
         echo $page;
     }
+?>

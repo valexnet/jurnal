@@ -1,0 +1,23 @@
+
+<div class="content text-center" id="pz_modal">
+	<h4 id="pz_modalLabel"></h4>
+	<table class="table table-hover">
+		<thead>
+			<tr>
+				<th>Назва ПЗ</th>
+				<th>Версія ПЗ</th>
+				<th width="10">{LANG_IT_DATA_INSTALL}</th>
+				<th>Ліцензійність</th>
+			</tr>
+		</thead>
+		<tbody id="pz_tbody">
+			
+		</tbody>
+	</table>
+	<hr>
+		<button onclick="pz_add_row()" type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
+	</hr>
+	<button onclick="delete_id('pz', $('#name').val(), $('#edit_id').val(), '0');" type="button" id="delete_button" class="btn btn-danger">{LANG_DELETE}</button>
+	<button onclick="add_id('pz', $('#edit_id').val());" type="button" id="add_button" class="btn btn-success">{LANG_ADD_NEW}</button>
+	<button type="reset" class="btn btn-warning">{LANG_RESET_FORM}</button>
+</div>

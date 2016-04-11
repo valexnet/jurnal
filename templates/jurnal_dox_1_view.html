@@ -1,9 +1,9 @@
 
 <script>
-function ajax_load(sort, asc_desc)
+function ajax_load(sort, asc_desc, limit)
 	{
 		$("#ajax_content").html("<hr>{LANG_WAIT_FOR_SERVER}... <img src=\"templates/images/loading.gif\"><hr>");
-		$("#tbody_content").load("jurnal_dox_1_ajax.php", {act: "load", sort: sort, asc_desc: asc_desc},
+		$("#tbody_content").load("jurnal_dox_1_ajax.php", {act: "load", sort: sort, asc_desc: asc_desc, limit: limit},
 			function()
 				{
 					var rightNow = new Date();
@@ -20,7 +20,7 @@ var zero = function (value)
 
 function ajax_refresh()
 	{
-		ajax_load('id','desc');
+		ajax_load('id','desc', {PAGE_LIMIT});
 	};
 
 var rotate_print = 1;
@@ -190,19 +190,21 @@ function showInformer()
 		$('#informer').modal('show');
 	};
 
+var gregorianData = '{D-A-T-A}';
 function showAdd()
 	{
 		$('.help_div').html('');
 		$('#edit_id').val('0');
 		$('#vys_nom').val('');
-		$('#vys_data').val('');
+		$('#vys_data').val(gregorianData);
 		$('#plat_cod').val('');
 		$('#plat_name').val('');
 		$('#kbk').val('');
 		$('#suma').val('');
 		$('#from_rah').val('');
 		$('#to_rah').val('');
-		$('#new_plat').val('');
+		var next_num = Number($('#tbody_content td:first').text()) + 1;
+		$('#new_plat').val('№' + next_num + '; ' + gregorianData);
 		$('#myModalLabel').html('{LANG_ADD_NEW} ({USER_NAME})');
 		$('#submit').html('{LANG_ADD_NEW}');
 		$('#delete_button').hide();
@@ -256,16 +258,14 @@ $(document).ready(function()
 </script>
 
 <style>
-.table-striped > thead > tr > td {
-border: 1px solid #111;
-vertical-align:middle;
-text-align:center;
-}
-
 .form-control {
 font-size: 16px;
 color: #333;
 font-weight: bold;
+}
+
+.small_text {
+font-size: 12px;
 }
 
 @media print {
@@ -279,7 +279,7 @@ font-weight: bold;
 }
 </style>
 
-<div class="modal fade strong" id="informer" tabindex="-1" role="dialog" aria-labelledby="informerLabel">
+<div class="modal strong" id="informer" tabindex="-1" role="dialog" aria-labelledby="informerLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -297,7 +297,7 @@ font-weight: bold;
 </div>
 
 
-<div class="modal fade strong" id="dox_1_add" tabindex="-1" role="dialog" aria-labelledby="dox_1_addLabel">
+<div class="modal strong" id="dox_1_add" tabindex="-1" role="dialog" aria-labelledby="dox_1_addLabel">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<form role="form" data-toggle="validator" id="form" action="" onsubmit="ajax_add(); return false;">
@@ -405,7 +405,7 @@ font-weight: bold;
 </div>
 
 <div id="view_content" style="padding: 10px;">
-	<table id="table_content" class="table table-striped">
+	<table id="table_content" class="table table-bordered">
 		<thead>
 			<tr>
 				<td rowspan=2>№<br/>з/п</td>

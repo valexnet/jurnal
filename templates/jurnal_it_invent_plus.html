@@ -1,0 +1,129 @@
+
+<div class="modal strong" id="invent_modal" tabindex="-1" role="dialog" aria-labelledby="invent_modalLabel">
+	<div class="modal-dialog" role="document">
+		<form>
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="{LANG_JURN_OUT_NUM_CLOSE}"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center" id="invent_modalLabel"></h4>
+			</div>
+			<div class="modal-body text-center">
+				<input name="edit_id" id="edit_id" value="0" type="hidden" class="hidden" />
+				<table class="table table-hover">
+					<tbody>
+						<tr>
+							<td align="right">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#invent').val(''); $('#invent').focus();">{LANG_INVENT}</div>
+									<input NAME="invent" id="invent" data-index="1" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+							</td>
+							<td align="left">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#inv_plus').val(''); $('#inv_plus').focus();">{LANG_INV_PLUS}</div>
+									<input NAME="inv_plus" id="inv_plus" data-index="1" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#status_id').val(''); $('#status_id').focus();">{LANG_STATUS}</div>
+									<SELECT NAME="status_id" id="status_id" class="form-control" required>
+										<option>{LANG_CHOOSE}</option>
+										{OPTIONS_STATUS_ID}
+									</SELECT>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#name').val(''); $('#name').focus();">
+										{LANG_INVENT_NAME}
+									</div>
+									<input NAME="name" id="name" onkeyup="loadHelp('#help_name', this.id, this.value)" data-index="2" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<div id="help_name" class="help_div"></div>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<div class="input-group date" id='datetimepicker_data_made'>
+									<div class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;{LANG_IT_DATA_MADE}
+									</div>
+									<input NAME="data_made" id="data_made" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<script type="text/javascript">
+									$(function () {
+										$('#datetimepicker_data_made').datetimepicker({
+											locale: 'uk',
+											format: 'L'
+										});
+									});
+								</script>							
+							</td>
+							<td align="left">
+								<div class="input-group date" id='datetimepicker_data_install'>
+									<div class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>&nbsp;&nbsp;{LANG_IT_DATA_INSTALL}
+									</div>
+									<input NAME="data_install" id="data_install" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<script type="text/javascript">
+									$(function () {
+										$('#datetimepicker_data_install').datetimepicker({
+											locale: 'uk',
+											format: 'L'
+										});
+									});
+								</script>							
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#room_id').val(''); $('#room_id').focus();">{LANG_IT_ROOM}</div>
+									<SELECT NAME="room_id" id="room_id" class="form-control" required>
+										<option>{LANG_CHOOSE}</option>
+										{OPTIONS_ROOMS_ID}
+									</SELECT>
+								</div>
+							</td>
+							<td align="left">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#user_id').val(''); $('#user_id').focus();">{LANG_MVO}</div>
+									<SELECT NAME="user_id" id="user_id" class="form-control" required>
+										<option>{LANG_CHOOSE}</option>
+										{OPTIONS_USERS_ID}
+									</SELECT>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#suma').val(''); $('#suma').focus();">{LANG_IT_INV_SUMA}</div>
+									<input NAME="suma" id="suma" data-index="3" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+							</td>
+							<td align="left">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#amort').val(''); $('#amort').focus();">{LANG_AMORT} %</div>
+									<input NAME="amort" id="amort" data-index="4" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button onclick="delete_id('invent', $('#name').val(), $('#edit_id').val(), '0');" type="button" id="delete_button" class="btn btn-danger">{LANG_DELETE}</button>
+				<button onclick="add_id('invent', $('#edit_id').val());" type="button" id="add_button" class="btn btn-success">{LANG_ADD_NEW}</button>
+				<button type="reset" class="btn btn-warning">{LANG_RESET_FORM}</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

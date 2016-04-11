@@ -18,7 +18,7 @@ if (isset($_SESSION['user_id']))
 							Del($_SESSION['user_id'], $_SERVER['REMOTE_ADDR'], $privat8, $user_p_mod);
 							break;
 						case "load" :
-							Load($_SESSION['user_year'], $privat8);
+							Load($_SESSION['user_year'], $privat8, $c_lmt);
 							break;
 						case "loadhelp" :
 							LoadHelp($_SESSION['user_year'], $privat8, $privat9, $srch, $rpls);
@@ -117,12 +117,14 @@ function LoadHelp($view_year, $view_permission, $add_permission, $srch, $rpls)
 			}
 	}
 
-function Load($view_year, $view_permission)
+function Load($view_year, $view_permission, $c_lmt)
 	{
 		if ($view_permission == 1)
 			{
 				$sort = 'id';
 				$asc_desc = 'DESC';
+				$limit = "LIMIT ".$c_lmt;
+				if ($_POST['limit'] == '0') $limit = '';
 				if ($_POST['asc_desc'] == 'asc') $asc_desc = 'ASC';
 				if ($_POST['sort'] == 'vys_nom') $sort = 'vys_nom';
 				if ($_POST['sort'] == 'vys_data') $sort = 'vys_data';
@@ -134,7 +136,7 @@ function Load($view_year, $view_permission)
 				if ($_POST['sort'] == 'to_rah') $sort = 'to_rah';
 				if ($_POST['sort'] == 'new_plat') $sort = 'new_plat';
 				
-				$res = mysql_query("SELECT * FROM `db_".$view_year."_dox_1` ORDER BY `".$sort."` ".$asc_desc." ;");
+				$res = mysql_query("SELECT * FROM `db_".$view_year."_dox_1` ORDER BY `".$sort."` ".$asc_desc." ".$limit." ;");
 				if (mysql_num_rows($res) > 0)
 					{
 						$a = 0;
@@ -158,19 +160,19 @@ function Load($view_year, $view_permission)
 			<input id="edit_ip_'.$row["id"].'" value="'.$row["edit_ip"].'" class="hidden" type="hidden" />
 		
 		<td>'.$row["id"].'</td>
-		<td id="vys_nom_'.$row["id"].'">'.$row["vys_nom"].'</td>
-		<td id="vys_data_'.$row["id"].'">'.data_trans("mysql", "ua", $row["vys_data"]).'</td>
+		<td class="small_text" id="vys_nom_'.$row["id"].'">'.$row["vys_nom"].'</td>
+		<td class="small_text" id="vys_data_'.$row["id"].'">'.data_trans("mysql", "ua", $row["vys_data"]).'</td>
 		<td id="plat_cod_'.$row["id"].'">'.$row["plat_cod"].'</td>
-		<td id="plat_name_'.$row["id"].'">'.$row["plat_name"].'</td>
-		<td id="kbk_'.$row["id"].'">'.$row["kbk"].'</td>
-		<td id="suma_'.$row["id"].'">'.number_format($row["suma"], 2, ',', ' ').'</td>
+		<td class="small_text" id="plat_name_'.$row["id"].'">'.$row["plat_name"].'</td>
+		<td class="small_text" id="kbk_'.$row["id"].'">'.$row["kbk"].'</td>
+		<td id="suma_'.$row["id"].'">'.number_format($row["suma"], 2, ',', '').'</td>
 		<td id="from_rah_'.$row["id"].'">'.$row["from_rah"].'</td>
 		<td id="to_rah_'.$row["id"].'">'.$row["to_rah"].'</td>
-		<td id="new_plat_'.$row["id"].'">'.$row["new_plat"].'</td>
+		<td class="small_text" id="new_plat_'.$row["id"].'">'.$row["new_plat"].'</td>
 	</tr>';
 							}
 						echo $table;
-						echo '<tr><td colspan="6" align="left">Показано <strong>'.$a.'</strong> зиписи(ів)</td><td colspan="2">Разом <strong>'.number_format($suma_all, 2, ',', ' ').'</strong></td><td colspan="2" align="right"></td>';
+						echo '<tr><td colspan="6" align="left">Показано <strong>'.$a.'</strong> зиписи(ів)</td><td colspan="4">Разом <strong>'.number_format($suma_all, 2, ',', ' ').'</strong></td>';
 						//echo '<tr><td colspan="10" align="left">Debug: sort:'.$sort.'. asc_desc:'.$asc_desc.'.</td>';
 					}
 					else
@@ -278,3 +280,4 @@ function Add($add_user, $add_ip, $add_permission, $srch, $rpls, $user_p_mod)
 				echo "<input id=\"result\" value=\"addError\" class=\"hidden\" type=\"hidden\"/>";
 			}
 	}
+?>

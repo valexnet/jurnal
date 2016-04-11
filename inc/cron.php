@@ -128,3 +128,4 @@ SET CHARACTER SET 'utf8';
                 $queryes_num++;
             }
     }
+?>

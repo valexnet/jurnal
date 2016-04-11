@@ -1078,7 +1078,7 @@ if (isset($_SESSION['user_id']))
                                 </tr>";
 
                                 $modals .= "
-                                <div class=\"modal fade\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
+                                <div class=\"modal\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
                                   <div class=\"modal-dialog\" role=\"document\">
                                     <div class=\"modal-content\">
                                       <div class=\"modal-header\">
@@ -1136,7 +1136,10 @@ if (isset($_SESSION['user_id']))
                                   </div>
                                 </div>";
                                 $is_first = 1;
-                                if (isset($_GET['export']) AND $_GET['export'] == "do")$export .=  "\"".$row['id']."\";\"".$glyphicon_export."\";\"".$users[$row['add_user']]."\";\"".data_trans("mysql", "ua", $row['add_time'])."\";\"".data_trans("mysql", "ua", $row['get_data'])."\";\"".$row['org_name']."\";\"".$row['org_index']."\";\"".data_trans("mysql", "ua", $row['org_data'])."\";\"".$row['org_subj']."\";\"".$users[$row['do_user']]."\";\"".$row['make_visa']."\";\"".data_trans("mysql", "ua", $row['make_data'])."\";\"".data_trans("mysql", "ua", $row['do_view'])."\";\"".data_trans("mysql", "ua", $row['do_made'])."\";\n";
+								$row['org_name'] = mb_convert_encoding($row['org_name'], 'UTF-8', mb_detect_encoding($row['org_name']));
+								$row['org_index'] = mb_convert_encoding($row['org_index'], 'UTF-8', mb_detect_encoding($row['org_index']));
+								$row['org_subj'] = mb_convert_encoding($row['org_subj'], 'UTF-8', mb_detect_encoding($row['org_subj']));
+                                if (isset($_GET['export']) AND $_GET['export'] == "do") $export .=  "\"".$row['id']."\";\"".$glyphicon_export."\";\"".$users[$row['add_user']]."\";\"".data_trans("mysql", "ua", $row['add_time'])."\";\"".data_trans("mysql", "ua", $row['get_data'])."\";\"".$row['org_name']."\";\"".$row['org_index']."\";\"".data_trans("mysql", "ua", $row['org_data'])."\";\"".$row['org_subj']."\";\"".$users[$row['do_user']]."\";\"".$row['make_visa']."\";\"".data_trans("mysql", "ua", $row['make_data'])."\";\"".data_trans("mysql", "ua", $row['do_view'])."\";\"".data_trans("mysql", "ua", $row['do_made'])."\";\n";
                             }
                     }
                     else
@@ -1160,3 +1163,4 @@ if (isset($_SESSION['user_id']))
     }
 
 include ("inc/blender.php");
+?>

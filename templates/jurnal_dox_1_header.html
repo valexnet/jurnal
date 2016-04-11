@@ -9,6 +9,10 @@
 			{LANG_YEAR}: <select NAME="show_year">{SELECT_YEARS}</select>
 			<button type="submit" class="btn btn-primary btn-xs" onclick="skm_LockScreen()">{LANG_YEAR_CHANGE}</button>
 		</div>
+		<div class="col-sm-12 text-center" style="padding-top: 10px;">
+			<a class="btn btn-default" role="button" herf="#" onclick="ajax_load('id','desc', 0);">Показати всі записи</a>
+			{LANG_USER_SET_LIMIT_PAGE} <INPUT TYPE="text" NAME="show_num_list" value="{PAGE_LIMIT}" size="2" /> {LANG_USER_SET_LIMIT_PAGE2}
+		</div>
 	</form>
 </div>
 <div class="container" id="ajax_content" style="text-align:center;">&nbsp;</div>

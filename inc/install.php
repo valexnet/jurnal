@@ -1,4 +1,4 @@
-<?PHP
+<?php
 
 // Перевірка переданих даних для первинної настройки
 if (isset($_POST['mysql']) AND $_POST['mysql'] <> "") $post_mysql = 1;

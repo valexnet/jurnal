@@ -1,0 +1,51 @@
+
+<script src="templates/js/jurnal_it.js"></script>
+<style>
+.container_print {
+padding-left: 15px;
+padding-right: 15px;
+}
+</style>
+
+<div id="menu_content" class="container" style="background-color: #fff;">
+		<div class="col-sm-12 text-center">
+			<a onclick="skm_LockScreen()" href="jurnal_it.php"><h3>{LANG_JURNAL_IT}</h3></a>
+		</div>
+		<div id="top_menu" class="col-sm-12 text-center">
+			<a onclick="show('invent')" id="top_menu_button_invent" class="btn btn-default" href="#" role="button">{LANG_INVENT}</a>
+			<a onclick="show('request')" id="top_menu_button_request" class="btn btn-default" href="#" role="button">{LANG_IT_REQUEST}</a>
+			<a onclick="show('repair')" id="top_menu_button_repair" class="btn btn-default" href="#" role="button">{LANG_IT_REPAIR}</a>
+			<a onclick="show('rooms')" id="top_menu_button_rooms" class="btn btn-default" href="#" role="button">{LANG_IT_ROOMS}</a>
+			<a onclick="show('status')" id="top_menu_button_status" class="btn btn-default" href="#" role="button">{LANG_IT_STATUS}</a>
+			<hr>
+		</div>
+		<div id="top_menu_action" class="hidden" style="position: fixed; top: 10px; left: 5px; padding-top: 15%; text-align: left; widht: 200px;background-color: #fff;">
+			<a onclick="load()" id="button_glyphicon_refresh" class="btn btn-sm btn-default hidden" style="margin-top: 3px;" role="button" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_REFRESH}"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></a><br />
+			<a onclick="plus('0')" id="button_glyphicon_plus" class="btn btn-sm btn-default hidden" style="margin-top: 3px;" role="button" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_ADD_NEW} [Insert]"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a><br />
+			<a onclick="print()" id="button_glyphicon_print" class="btn btn-sm btn-default hidden" style="margin-top: 3px;" role="button" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_PRINT} [F4]"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></a><br />
+			<a onclick="showKT()" id="button_glyphicon_tasks" class="btn btn-sm btn-default hidden" style="margin-top: 3px;" role="button" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_IT_KT} [F8]"><span class="glyphicon glyphicon-tasks" aria-hidden="true"></span></a><br />
+			<a onclick="showPZ()" id="button_glyphicon_cd" class="btn btn-sm btn-default hidden" style="margin-top: 3px;" role="button" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_IT_PZ} [F2]"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span></a><br />
+			<a onclick="delete_row_id()" id="button_glyphicon_trash" class="btn btn-sm btn-warning hidden" style="margin-top: 3px;" role="button" data-toggle="tooltip" data-placement="right" data-original-title="{LANG_DELETE} [Delete]"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a><br />
+		</div>
+</div>
+<div class="container hidden" id="hide_content"></div>
+<div class="container" id="info_content"></div>
+<div class="container" id="form_content"></div>
+<div class="container" id="ajax_content"></div>
+<div id="progress" style="border-radius: 4px; width: 200px; height: 100px; position: fixed; top: 10px; right: 10px; padding-top: 15px; text-align: center; background-color: #ddd;"><strong>{LANG_WAIT_FOR_SERVER}...<br /><img src="templates/images/loading.gif"></strong></div>
+
+<div class="modal strong" id="informer" tabindex="-1" role="dialog" aria-labelledby="informerLabel">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title text-center" id="informerLabel">Результат</h4>
+			</div>
+			<div class="modal-body text-center" id="informer_body">
+				
+			</div>
+			<div class="modal-footer" id="informer_footer">
+				
+			</div>
+		</div>
+	</div>
+</div>

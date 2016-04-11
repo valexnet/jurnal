@@ -188,3 +188,4 @@ function Members($view_ip)
                 echo "<a onclick=\"DoLoadMembers()\" class=\"btn btn-default btn-block\" role=\"button\">Чат пустий ".count($names)." (".date('H:i:s').")</a><br>";
             }
     }
+?>

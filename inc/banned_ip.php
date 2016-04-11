@@ -26,3 +26,4 @@ if ($numberall4 <> 0)
 @mysql_close();
 
 DIE(file_get_contents("templates/banned.html"));
+?>

@@ -1,0 +1,77 @@
+
+<div class="modal strong" id="status_modal" tabindex="-1" role="dialog" aria-labelledby="status_modalLabel">
+	<div class="modal-dialog" role="document">
+		<form>
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="{LANG_JURN_OUT_NUM_CLOSE}"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title text-center" id="status_modalLabel"></h4>
+			</div>
+			<div class="modal-body text-center">
+				<input name="edit_id" id="edit_id" value="0" type="hidden" class="hidden" />
+				<table class="table table-hover">
+					<tbody>
+						<tr>
+							<td colspan="2" align="center">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#name').val(''); $('#name').focus();">
+										{LANG_STATUS_NAME}
+									</div>
+									<input NAME="name" id="name" data-index="1" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<div id="help_kbk" class="help_div"></div>
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2" align="center">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#name_full').val(''); $('#name_full').focus();">
+										{LANG_STATUS_NAME_FULL}
+									</div>
+									<input NAME="name_full" id="name_full" data-index="2" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<div id="help_kbk" class="help_div"></div>
+							</td>
+						</tr>
+						<tr>
+							<td align="right">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#text_color').val(''); $('#text_color').focus();">{LANG_STATUS_TEXT_COLOR}</div>
+									<input NAME="text_color" id="text_color" data-index="3" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<p align="center">
+									<a onclick="$('#text_color').val('#000'); $('#text_color').focus();">Чорний</a> / 
+									<a onclick="$('#text_color').val('#fff'); $('#text_color').focus();">Білий</a> /
+									<a onclick="$('#text_color').val('#ff0'); $('#text_color').focus();">Жовтий</a><br />
+									<a onclick="$('#text_color').val('#00f'); $('#text_color').focus();">Синій</a> / 
+									<a onclick="$('#text_color').val('#666'); $('#text_color').focus();">Сірий</a> /
+									<a onclick="$('#text_color').val('#070'); $('#text_color').focus();">Зелений</a>
+								</p>
+							</td>
+							<td align="left">
+								<div class="input-group">
+									<div class="input-group-addon" ondblclick="$('#bg_color').val(''); $('#bg_color').focus();">{LANG_STATUS_BG_COLOR}</div>
+									<input NAME="bg_color" id="bg_color" data-index="4" type="text" class="form-control" value="" autocomplete="off" required />
+								</div>
+								<p align="center">
+									<a onclick="$('#bg_color').val('#000'); $('#text_color').focus();">Чорний</a> / 
+									<a onclick="$('#bg_color').val('#fff'); $('#text_color').focus();">Білий</a> /
+									<a onclick="$('#bg_color').val('#ff0'); $('#text_color').focus();">Жовтий</a><br />
+									<a onclick="$('#bg_color').val('#00f'); $('#text_color').focus();">Синій</a> / 
+									<a onclick="$('#bg_color').val('#666'); $('#text_color').focus();">Сірий</a> /
+									<a onclick="$('#bg_color').val('#070'); $('#text_color').focus();">Зелений</a>
+								</p>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button onclick="delete_id('status', $('#name').val(), $('#edit_id').val(), '0');" type="button" id="delete_button" class="btn btn-danger">{LANG_DELETE}</button>
+				<button onclick="add_id('status', $('#edit_id').val());" type="button" id="add_button" class="btn btn-success">{LANG_ADD_NEW}</button>
+				<button type="reset" class="btn btn-warning">{LANG_RESET_FORM}</button>
+			</div>
+		</div>
+		</form>
+	</div>
+</div>

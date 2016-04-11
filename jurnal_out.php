@@ -1026,8 +1026,7 @@ if (isset($_SESSION['user_id']))
                 if (isset($_GET['export']) AND $_GET['export'] == "do")
                     {
                         $query_order_by = "ORDER BY `id` ";
-                        $list = 0;
-                        $c_lmt = 999999;
+						$sql_limit = "";
                         $export_type = "text/csv";
                         $export_name = "jurnal_out.csv";
                     }
@@ -1162,7 +1161,7 @@ if (isset($_SESSION['user_id']))
                                 </tr>";
 
                                 $modals .= "
-                                <div class=\"modal fade\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
+                                <div class=\"modal\" id=\"JOn".$row['id']."\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"JOn".$row['id']."Label\">
                                   <div class=\"modal-dialog\" role=\"document\">
                                     <div class=\"modal-content\">
                                       <div class=\"modal-header\">
@@ -1246,3 +1245,4 @@ if (isset($_SESSION['user_id']))
     }
 
 include ("inc/blender.php");
+?>

@@ -263,3 +263,4 @@ if ($user_p_mod == 1)
         $timeout = "index.php";
     }
 include ("inc/blender.php");
+?>
