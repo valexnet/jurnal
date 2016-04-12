@@ -6,7 +6,6 @@ CREATE TABLE `DB_{YEAR}_OUT` (
 `nom` INT( 11 ) NOT NULL ,
 `data` DATETIME NOT NULL ,
 `to` VARCHAR( 250 ) NOT NULL ,
-`to_mail` VARCHAR( 250 ) NOT NULL ,
 `subj` VARCHAR( 250 ) NOT NULL ,
 `to_num` VARCHAR( 250 ) NOT NULL ,
 `user` INT( 11 ) NOT NULL ,
