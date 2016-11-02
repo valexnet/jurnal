@@ -50,7 +50,7 @@ function Del($user_id, $user_ip, $view_permission, $user_p_mod)
 										if ($row['add_user'] == $add_user OR $user_p_mod == 1)
 											{
 												mysql_query("DELETE FROM `db_".date('Y')."_dox_1` WHERE `id`='".$_POST['del_id']."' LIMIT 1 ;") or die(mysql_error());
-												mysql_query("ALTER TABLE `db_".date('Y')."_out` AUTO_INCREMENT =".$_POST['del_id']." ;") or die(mysql_error());
+												mysql_query("ALTER TABLE `db_".date('Y')."_dox_1` AUTO_INCREMENT =".$_POST['del_id']." ;") or die(mysql_error());
 												echo "<div id=\"result_html\"><hr>Результат: <font color=green>Дані вилучено</font> №<strong>".$_POST['del_id']."</strong>.<hr></div>";
 												echo "<input id=\"result\" value=\"delSuccess\" class=\"hidden\" type=\"hidden\"/>";
 											}
