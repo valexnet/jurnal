@@ -33,7 +33,7 @@ if (isset($_SESSION['user_id']))
 		echo "Помилка авторизації, поверніться до головної сторінки.";
 	}
 
-function Del($user_id, $user_ip, $view_permission, $user_p_mod)
+function Del($user_id, $user_ip, $privat8, $user_p_mod)
 	{
 		if (preg_match("/^[1-9][0-9]*$/", $_POST['del_id']))
 			{
@@ -46,18 +46,23 @@ function Del($user_id, $user_ip, $view_permission, $user_p_mod)
 								$query = mysql_fetch_row(mysql_query($query));
 								if ($query[0] == $_POST['del_id'])
 									{
-										$row=mysql_fetch_row($res);
-										if ($row['add_user'] == $add_user OR $user_p_mod == 1)
+										while ($row=mysql_fetch_array($res))
 											{
-												mysql_query("DELETE FROM `db_".date('Y')."_dox_1` WHERE `id`='".$_POST['del_id']."' LIMIT 1 ;") or die(mysql_error());
-												mysql_query("ALTER TABLE `db_".date('Y')."_dox_1` AUTO_INCREMENT =".$_POST['del_id']." ;") or die(mysql_error());
-												echo "<div id=\"result_html\"><hr>Результат: <font color=green>Дані вилучено</font> №<strong>".$_POST['del_id']."</strong>.<hr></div>";
-												echo "<input id=\"result\" value=\"delSuccess\" class=\"hidden\" type=\"hidden\"/>";
-											}
-											else
-											{
-												echo "<div id=\"result_html\"><hr>Результат: <font color=red>Дані не вилучено</font> Ви не автор №<strong>".$_POST['del_id']."</strong> та не являєтесь модератором.<hr></div>";
-												echo "<input id=\"result\" value=\"delError\" class=\"hidden\" type=\"hidden\"/>";
+												$del_permission = 0;
+												if ($row['add_user'] == $user_id) $del_permission = 1;
+												if ($user_p_mod == 1) $del_permission = 1;
+												if ($del_permission == 1)
+													{
+														mysql_query("DELETE FROM `db_".date('Y')."_dox_1` WHERE `id`='".$_POST['del_id']."' LIMIT 1 ;") or die(mysql_error());
+														mysql_query("ALTER TABLE `db_".date('Y')."_dox_1` AUTO_INCREMENT =".$_POST['del_id']." ;") or die(mysql_error());
+														echo "<div id=\"result_html\"><hr>Результат: <font color=green>Дані вилучено</font> №<strong>".$_POST['del_id']."</strong>.<hr></div>";
+														echo "<input id=\"result\" value=\"delSuccess\" class=\"hidden\" type=\"hidden\"/>";
+													}
+													else
+													{
+														echo "<div id=\"result_html\"><hr>Результат: <font color=red>Дані не вилучено</font> Ви не автор №<strong>".$_POST['del_id']."</strong> та не являєтесь модератором.<hr></div>";
+														echo "<input id=\"result\" value=\"delError\" class=\"hidden\" type=\"hidden\"/>";
+													}												
 											}
 									}
 									else
