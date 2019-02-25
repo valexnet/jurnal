@@ -19,20 +19,20 @@ if ($user_p_mod == 1)
                                 $res = mysql_query($query) or die(mysql_error());
                                 $queryes_num++;
                                 $numberall = mysql_num_rows($res);
-                                if ($numberall == 0)
-                                    {
+                                //if ($numberall == 0)
+                                    //{
                                         $query = "INSERT INTO `structura` (`id`, `index`, `name`, `user`, `time`, `do`, `work`) VALUES (NULL , '".$index."', '".$name."', '".$_SESSION['user_id']."', '".time()."', '{LANG_NDI_STR_ADMIN_ADD}', '1');";
                                         $res = mysql_query($query) or die(mysql_error());
                                         $queryes_num++;
                                         $page.= file_get_contents("templates/information_success.html");
                                         $page = str_replace("{INFORMATION}", "{LANG_STR_ADD_OK}", $page);
                                         $timeout = "ndi_str.php";
-                                    }
-                                    else
-                                    {
-                                        $page.= file_get_contents("templates/information_danger.html");
-                                        $page = str_replace("{INFORMATION}", "{LANG_STR_ADD_EXIST}", $page);
-                                    }
+                                    //}
+                                    //else
+                                    //{
+                                        //$page.= file_get_contents("templates/information_danger.html");
+                                        //$page = str_replace("{INFORMATION}", "{LANG_STR_ADD_EXIST}", $page);
+                                    //}
                             }
                             else
                             {
