@@ -73,7 +73,7 @@ if ($error == "")
 					}
 					else
 					{
-						die ($page."</head><body>Не можливо підключитись до SMTP серверу, виправте дані.<hr><a href=\"index.php\">Повернутись</a></body></html>");
+						echo $page."</head><body>Не можливо підключитись до SMTP серверу, не критично, але поштові можливості працювати не будуть</body></html>";
 					}
 
 				if ($_POST['install_type'] == "new")
