@@ -19,7 +19,7 @@ $dbName = $db_connect[3];
 $admin_mail = $db_connect[4];
 $c_lng = "ua";
 $c_ver = 14;
-$c_ver_alt = "2 beta";
+$c_ver_alt = "3 beta";
 $c_ver_lang = "Punctum";
 
 // Налаштування пошти
